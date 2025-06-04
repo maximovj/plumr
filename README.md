@@ -10,3 +10,4 @@ Requisitos
 - node v18.20.4
   - npm v9.6.2 
   - tailwindcss v2.2.19
+  - alpinejs v2.8.2
