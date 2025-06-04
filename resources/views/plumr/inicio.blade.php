@@ -3,6 +3,8 @@
 @section('main')
 <h1>Página principal</h1>
 
+@livewire('welcome-card', ['subtitulo' => 'Juan Perez'])
+
 <hr>
 
 <div x-data="{ open: false }">

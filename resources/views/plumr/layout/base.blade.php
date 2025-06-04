@@ -6,9 +6,9 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script src="{{ mix('js/app.js') }}"></script>
     <title>Document</title>
+    @livewireStyles
 </head>
 <body>
-
     <nav>
         <ul>
             <li>Blogs</li>
@@ -23,5 +23,6 @@
         </section>
     </main>
 
+    @livewireScripts
 </body>
 </html>
