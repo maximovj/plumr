@@ -9,7 +9,7 @@
     @livewireStyles
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-gray-200 p-4">
+    <nav class="bg-gray-400 p-4">
         <div class="flex flex-row justify-between justify-items-center gap-4">
             <div>
                 <p class="text-black text-opacity-0">Plumr</p>
