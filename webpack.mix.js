@@ -15,4 +15,14 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
     ])
-    .version();
+    .version()
+    .browserSync({
+        proxy: 'http://plumr.local', // Cambia por tu dominio local
+        open: false,
+        files: [
+            'app/**/*.php',
+            'resources/views/**/*.blade.php',
+            'public/js/**/*.js',
+            'public/css/**/*.css'
+        ]
+    });
