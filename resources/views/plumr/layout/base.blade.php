@@ -8,16 +8,21 @@
     <title>Document</title>
     @livewireStyles
 </head>
-<body>
-    <nav>
-        <ul>
-            <li>Blogs</li>
-            <li>Iniciar sesión</li>
-            <li>Registrarme</li>
-        </ul>
+<body class="bg-gray-50">
+    <nav class="bg-gray-200 p-4">
+        <div class="flex flex-row justify-between justify-items-center gap-4">
+            <div>
+                <p class="text-black text-opacity-0">Plumr</p>
+                <h1 class="text-4xl font-semibold text-red-800">Plumr</h1>
+            </div>
+            <div class="flex flex-column gap-4 justify-items-center">
+                <a href="#">Iniciar sesión</a>
+                <a href="#">Registrarme</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
+    <main class="m-2 md:m-12">
         <section>
             @yield('main')
         </section>
