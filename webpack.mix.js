@@ -26,3 +26,6 @@ mix.js('resources/js/app.js', 'public/js')
             'public/css/**/*.css'
         ]
     });
+
+mix.copy('node_modules/bootstrap-icons/font/bootstrap-icons.css', 'public/css/bootstrap-icons.min.css');
+mix.copyDirectory('node_modules/bootstrap-icons/font/fonts', 'public/fonts');
