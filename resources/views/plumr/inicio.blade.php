@@ -1,6 +1,7 @@
-@extends('plumr.layout.base')
+@extends('plumr.layout.app')
 
 @section('main')
+<x-main>
 <h1>Página principal</h1>
 
 @livewire('welcome-card', ['subtitulo' => 'Juan Perez'])
@@ -14,5 +15,5 @@
         ¡Hola desde Alpine.js! 🎉
     </p>
 </div>
-
+</x-main>
 @endsection
