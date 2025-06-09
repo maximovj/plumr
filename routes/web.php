@@ -19,17 +19,17 @@ Route::get('/', function () {
     return view('plumr.inicio');
 });
 
-Route::get('/login', [LoginController::class, 'index'])->name('auth.login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 
-Route::post('/login', [LoginController::class, 'login'])->name('auth.login.attempt');
+Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 
 Route::post('/logout', function () {
     return "Cerrar cuenta.";
 })->name('logout');
 
-Route::get('/register', [RegisterController::class, 'create'])->name('auth.register');
+Route::get('/register', [RegisterController::class, 'create'])->name('register');
 
-Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.attempt');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.attempt');
 
 Route::get('/recover-password', function () {
     return "Recuperar Cuenta (FrontEnd).";

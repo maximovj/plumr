@@ -3,16 +3,16 @@
 @section('main')
     <x-main class="m-0 h-screen flex items-center justify-center">
         <div class="w-full h-auto max-w-prose border-2 p-14 shadow-sm rounded-lg bg-white">
-            <form action="{{  route('auth.register.attempt') }}" method="POST">
+            <form action="{{  route('register.attempt') }}" method="POST">
                 @csrf @method('POST')
                 <section class="flex flex-col gap-2 mb-4">
-                    <label class="text-base text-gray-700" for="username">Nombre completo</label>
-                    <input type="text" name="username" value="{{ old('username') }}" id="username"
+                    <label class="text-base text-gray-700" for="name">Nombre completo</label>
+                    <input type="text" name="name" value="{{ old('name') }}" id="name"
                         placeholder="Ingresa tu nombre completo" autocomplete="off" autofocus
                         class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('name')
+                        <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
@@ -29,9 +29,15 @@
                             max="{{ date('Y') }}" id="birthday" autocomplete="off"
                             class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
                     </div>
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('birthday_day')
+                    <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
+                    @error('birthday_month')
+                    <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
+                    @error('birthday_year')
+                    <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
@@ -43,9 +49,9 @@
                         <option value="Hombre"></option>
                         <option value="Mujer"></option>
                     </datalist>
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('sex')
+                    <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
@@ -53,9 +59,9 @@
                     <input type="text" name="username" value="{{ old('username') }}" id="username"
                         placeholder="Ingresa tu nombre de usuario" autocomplete="off"
                         class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('username')
+                        <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
@@ -63,29 +69,29 @@
                     <input type="text" name="email" old="{{ old('email') }}" id="email"
                         placeholder="Ingresa tu correo electrónico" autocomplete="off"
                         class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('email')
+                        <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
                     <label class="text-base text-gray-700" for="password">Contraseña</label>
-                    <input type="text" name="password" value="{{ old('password') }}" id="password"
+                    <input type="password" name="password" value="{{ old('password') }}" id="password"
                         placeholder="Ingresa una contraseña" autocomplete="off"
                         class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('password')
+                        <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <section class="flex flex-col gap-2">
-                    <label class="text-base text-gray-700" for="confirm_password">Confirmar contraseña</label>
-                    <input type="text" name="confirm_password" value="{{ old('confirm_password') }}"
-                        id="confirm_password" placeholder="Confirma su contraseña" autocomplete="off"
+                    <label class="text-base text-gray-700" for="password_confirmation">Confirmar contraseña</label>
+                    <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}"
+                        id="password_confirmation" placeholder="Confirma su contraseña" autocomplete="off"
                         class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
-                    <p class="text-xs text-red-400 hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Accusamus ipsum sit laboriosam sint? In aliquid voluptates incidunt ad eveniet eum provident maiores
-                        eaque, reprehenderit beatae totam est neque, culpa nihil.</p>
+                    @error('password_confirmation')
+                        <p class="text-xs text-red-400">{{ $message }}</p>
+                    @enderror
                 </section>
 
                 <div class="text-center py-4">
