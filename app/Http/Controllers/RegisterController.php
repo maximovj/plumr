@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -49,13 +52,13 @@ class RegisterController extends Controller
             $year  = $request->input('birthday_year');
 
             if (!checkdate($month, $day, $year)) {
-                $validator->errors()->add('birthday_day', 'La fecha de nacimiento no es válida.');
+                $validator->errors()->add('birthday_year', 'La fecha de nacimiento no es válida.');
                 return;
             }
 
             $birthday = Carbon::createFromDate($year, $month, $day);
             if ($birthday->age < 18) {
-                $validator->errors()->add('birthday_day', 'Debes tener al menos 18 años.');
+                $validator->errors()->add('birthday_year', 'Debes tener al menos 18 años.');
             }
         });
 
@@ -64,8 +67,16 @@ class RegisterController extends Controller
             return back()
                 ->withErrors($validator)
                 ->withInput();
+        } else {
+            // Crear un nuevo usuario
+            $new_user = new User();
+            $new_user->fill($validator->validated());
+            $new_user->username = Str::slug($request->username);
+            $new_user->password = Hash::make($request->password);
+            $new_user->save();
+
+            dd($request->all(), $validator->validated(), $new_user);
         }
 
-        dd($request->all());
     }
 }
