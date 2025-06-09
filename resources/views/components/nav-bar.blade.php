@@ -6,9 +6,9 @@
                 <h1 class="text-4xl font-semibold text-red-800">Plumr</h1>
             </a>
         </div>
-        @if(!Route::is('auth.register'))
+        @if(!Route::is('auth.register') && !Route::is('auth.login'))
         <div class="flex flex-column gap-4 justify-items-center">
-            <a href="{{ route('login') }}" class="text-white">Iniciar sesión</a>
+            <a href="{{ route('auth.login') }}" class="text-white">Iniciar sesión</a>
             <a href="{{ route('auth.register') }}" class="text-white">Registrarme</a>
         </div>
         @endif

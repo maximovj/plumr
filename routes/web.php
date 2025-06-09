@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,13 +19,9 @@ Route::get('/', function () {
     return view('plumr.inicio');
 });
 
-Route::get('/login', function () {
-    return "Iniciar sesión.";
-})->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('auth.login');
 
-Route::post('/login', function () {
-    return "Iniciar sesión.";
-})->name('login.attempt');
+Route::post('/login', [LoginController::class, 'login'])->name('auth.login.attempt');
 
 Route::post('/logout', function () {
     return "Cerrar cuenta.";
