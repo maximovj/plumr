@@ -14,7 +14,7 @@ class AddColumnsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username', 15)->unique();
+            $table->string('username', 15)->unique()->after('id');
         });
     }
 
