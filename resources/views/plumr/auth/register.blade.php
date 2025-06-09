@@ -9,7 +9,8 @@
                     <label class="text-base text-gray-700" for="name">Nombre completo</label>
                     <input type="text" name="name" value="{{ old('name') }}" id="name"
                         placeholder="Ingresa tu nombre completo" autocomplete="off" autofocus
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('name') }} shadow-sm"
+                        />
                     @error('name')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -20,14 +21,14 @@
                     <div class="grid grid-cols-3 gap-4">
                         <input type="number" placeholder="Día" name="birthday_day" value="{{ old('birthday_day', 1) }}"
                             min="1" max="32" id="birthday" autocomplete="off"
-                            class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                            class="rounded-md p-2 bg-blue-50 {{ e_class('birthday_day') }} shadow-sm" />
                         <input type="number" placeholder="Mes" name="birthday_month" value="{{ old('birthday_month', 1) }}"
                             min="1" max="12" id="birthday" autocomplete="off"
-                            class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                            class="rounded-md p-2 bg-blue-50 {{ e_class('birthday_month') }} shadow-sm" />
                         <input type="number" placeholder="Año" name="birthday_year"
                             value="{{ old('birthday_year', date('Y') - 18) }}" min="{{ date('Y') - 100 }}"
                             max="{{ date('Y') }}" id="birthday" autocomplete="off"
-                            class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                            class="rounded-md p-2 bg-blue-50 {{ e_class('birthday_year') }} shadow-sm" />
                     </div>
                     @error('birthday_day')
                     <p class="text-xs text-red-400">{{ $message }}</p>
@@ -44,7 +45,7 @@
                     <label class="text-base text-gray-700" for="sex">Sexo</label>
                     <input type="text" name="sex" value="{{ old('sex') }}" id="sex" list="select-sex"
                         placeholder="Ingresa tu sexo" autocomplete="off"
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('sex') }} shadow-sm" />
                     <datalist id="select-sex">
                         <option value="Hombre"></option>
                         <option value="Mujer"></option>
@@ -58,7 +59,7 @@
                     <label class="text-base text-gray-700" for="username">Usuario</label>
                     <input type="text" name="username" value="{{ old('username') }}" id="username"
                         placeholder="Ingresa tu nombre de usuario" autocomplete="off"
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('username') }} shadow-sm" />
                     @error('username')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -68,7 +69,7 @@
                     <label class="text-base text-gray-700" for="email">Correo electrónico</label>
                     <input type="text" name="email" old="{{ old('email') }}" id="email"
                         placeholder="Ingresa tu correo electrónico" autocomplete="off"
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('email') }} shadow-sm" />
                     @error('email')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -78,7 +79,7 @@
                     <label class="text-base text-gray-700" for="password">Contraseña</label>
                     <input type="password" name="password" value="{{ old('password') }}" id="password"
                         placeholder="Ingresa una contraseña" autocomplete="off"
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('password') }} shadow-sm" />
                     @error('password')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -88,7 +89,7 @@
                     <label class="text-base text-gray-700" for="password_confirmation">Confirmar contraseña</label>
                     <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}"
                         id="password_confirmation" placeholder="Confirma su contraseña" autocomplete="off"
-                        class="rounded-md p-2 bg-blue-50 border-1 border-gray-600 shadow-sm" />
+                        class="rounded-md p-2 bg-blue-50 {{ e_class('password_confirmation') }} shadow-sm" />
                     @error('password_confirmation')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
