@@ -33,6 +33,9 @@ class RegisterController extends Controller
         $min_year = (date('Y') - 100);
         $max_year = (date('Y'));
 
+        // Modificar request
+        $request->request->add(['username' => Str::slug($request->username)]);
+
         // Crear validador
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3|max:255',
@@ -40,7 +43,7 @@ class RegisterController extends Controller
             'birthday_month' => 'required|numeric|between:1,12',
             'birthday_year' => ['required', 'numeric', "between:$min_year,$max_year"],
             'sex' => ['nullable', Rule::in(['Hombre', 'Mujer', '*'])],
-            'username' => ['required', 'string', 'min:4', 'max:15', 'alpha_num', 'unique:users,username'],
+            'username' => ['required', 'string', 'min:4', 'max:15', 'unique:users,username'],
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -83,7 +86,6 @@ class RegisterController extends Controller
             // Crear un nuevo usuario
             $new_user = new User();
             $new_user->fill($validator->validated());
-            $new_user->username = Str::slug($request->username);
             $new_user->password = Hash::make($request->password);
             $new_user->save();
 
