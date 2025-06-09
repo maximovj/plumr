@@ -89,7 +89,7 @@ class RegisterController extends Controller
             $new_user->password = Hash::make($request->password);
             $new_user->save();
 
-            dd($request->all(), $validator->validated(), $new_user);
+            return redirect()->route('home');
         }
 
     }
