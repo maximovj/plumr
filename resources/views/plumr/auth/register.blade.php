@@ -62,12 +62,13 @@
                         class="rounded-md p-2 bg-blue-50 {{ e_class('username') }} shadow-sm" />
                     @error('username')
                         <p class="text-xs text-red-400">{{ $message }}</p>
+                        @endif
                     @enderror
                 </section>
 
                 <section class="flex flex-col gap-2 mb-4">
                     <label class="text-base text-gray-700" for="email">Correo electrónico</label>
-                    <input type="text" name="email" old="{{ old('email') }}" id="email"
+                    <input type="text" name="email" value="{{ old('email') }}" id="email"
                         placeholder="Ingresa tu correo electrónico" autocomplete="off"
                         class="rounded-md p-2 bg-blue-50 {{ e_class('email') }} shadow-sm" />
                     @error('email')
