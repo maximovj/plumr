@@ -3,7 +3,9 @@
 @section('main')
     <x-main class="m-0 h-screen flex items-center justify-center">
         <div class="w-full h-auto max-w-xl border-2 p-14 shadow-sm rounded-lg bg-white">
-            <form action="">
+            <form action="{{ route('auth.login.attempt') }}" method="POST">
+                @csrf
+                @method('POST')
                 <section class="flex flex-col gap-2 mb-4">
                     <label class="text-base text-gray-700" for="email">Correo electrónico</label>
                     <input type="text" name="email" old="{{ old('email') }}" id="email"

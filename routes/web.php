@@ -29,9 +29,7 @@ Route::post('/logout', function () {
 
 Route::get('/register', [RegisterController::class, 'create'])->name('auth.register');
 
-Route::post('/register', function () {
-    return "Registar cuenta (BackEnd).";
-})->name('register.store');
+Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.attempt');
 
 Route::get('/recover-password', function () {
     return "Recuperar Cuenta (FrontEnd).";

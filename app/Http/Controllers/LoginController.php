@@ -11,8 +11,8 @@ class LoginController extends Controller
         return view('plumr.auth.login');
     }
 
-    public function login()
+    public function login(Request $request)
     {
-
+        dd($request->all());
     }
 }
