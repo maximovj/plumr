@@ -35,7 +35,7 @@ class RegisterController extends Controller
 
         // Crear validador
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:10|max:255',
+            'name' => 'required|min:3|max:255',
             'birthday_day' => 'required|numeric|between:1,32',
             'birthday_month' => 'required|numeric|between:1,12',
             'birthday_year' => ['required', 'numeric', "between:$min_year,$max_year"],
@@ -64,9 +64,21 @@ class RegisterController extends Controller
 
         // Verificar si existe fallas en la validación
         if ($validator->fails()) {
+            $inputUsername = $request->input('username');
+
+            // Generar sugerencias
+            $suggestions = collect();
+            for ($i = 0; $i < 5; $i++) {
+                $suggested = $inputUsername . Str::random(2);
+                if (!User::where('username', $suggested)->exists()) {
+                    $suggestions->push($suggested);
+                }
+            }
+
             return back()
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('username_suggestions', $suggestions);
         } else {
             // Crear un nuevo usuario
             $new_user = new User();

@@ -62,6 +62,15 @@
                         class="rounded-md p-2 bg-blue-50 {{ e_class('username') }} shadow-sm" />
                     @error('username')
                         <p class="text-xs text-red-400">{{ $message }}</p>
+                        @if (session('username_suggestions'))
+                            <div class="text-xs text-gray-700 mt-2">
+                                <p class="font-semibold">Nombres disponibles:</p>
+                                <ul class="list-disc ml-4">
+                                    @foreach (session('username_suggestions') as $suggestion)
+                                        <li>{{ $suggestion }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
                     @enderror
                 </section>
