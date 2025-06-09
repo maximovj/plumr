@@ -13,6 +13,12 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validación de formulario
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
         dd($request->all());
     }
 }
