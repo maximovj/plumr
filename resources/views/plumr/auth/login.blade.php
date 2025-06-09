@@ -10,7 +10,7 @@
                     <label class="text-base text-gray-700" for="email">Correo electrónico</label>
                     <input type="text" name="email" value="{{ old('email') }}" id="email"
                         placeholder="Ingresa tu correo electrónico" autocomplete="off"
-                        class="rounded-md p-2 border-1 border-gray-600 bg-blue-50 shadow-sm" />
+                        class="rounded-md p-2 {{ e_class('email') }} bg-blue-50 shadow-sm" />
                     @error('email')
                         <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
@@ -20,7 +20,7 @@
                     <label class="text-base text-gray-700" for="password">Contraseña</label>
                     <input type="password" name="password" value="{{ old('password') }}" id="password"
                         placeholder="Ingresa tu contraseña" autocomplete="off"
-                        class="rounded-md p-2 border-1 border-gray-600 bg-blue-50 shadow-sm" />
+                        class="rounded-md p-2 {{ e_class('password') }} bg-blue-50 shadow-sm" />
                     @error('password')
                     <p class="text-xs text-red-400">{{ $message }}</p>
                     @enderror
