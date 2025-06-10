@@ -19,7 +19,7 @@ class LoginController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        if(!auth()->attempt($request->only('email', 'password')))
+        if(!auth()->attempt($request->only('email', 'password'), $request->remember))
         return redirect()->back()->with('error_auth', 'Correo electrónico o contraseña incorrectas.');
 
         return redirect()->route('main_account');

@@ -32,6 +32,12 @@
                     <hr>
                 </div>
 
+
+                <div class="mb-5">
+                    <input type="checkbox" name="remember" /> <label>Recuerdame</label>
+                </div>
+
+
                 @if(session('error_auth'))
                 <div class="bg-red-500 text-white py-2 px-4 rounded-sm mb-4">
                     <p>{{ session('error_auth') }}</p>
