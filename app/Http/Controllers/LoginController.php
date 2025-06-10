@@ -11,7 +11,7 @@ class LoginController extends Controller
         return view('plumr.auth.login');
     }
 
-    public function login(Request $request)
+    public function store(Request $request)
     {
         // Validación de formulario
         $this->validate($request, [
@@ -19,6 +19,10 @@ class LoginController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        dd($request->all());
+        if(!auth()->attempt($request->only('email', 'password')))
+        return redirect()->back()->with('error_auth', 'Correo electrónico o contraseña incorrectas.');
+
+        return redirect()->route('main_account');
+
     }
 }

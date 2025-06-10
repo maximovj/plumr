@@ -24,16 +24,16 @@ Route::get('/home', [MainAccountController::class, 'index'])
     ->middleware(['auth'])
     ->name('main_account');
 
+// Rutas para login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-
-Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
+Route::post('/login', [LoginController::class, 'store'])->name('auth.login');
 
 Route::post('/logout', function () {
     return "Cerrar cuenta.";
 })->name('logout');
 
+// Login para registro
 Route::get('/register', [RegisterController::class, 'create'])->name('register');
-
 Route::post('/register', [RegisterController::class, 'store'])->name('register.attempt');
 
 Route::get('/recover-password', function () {

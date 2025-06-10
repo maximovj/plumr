@@ -1,9 +1,11 @@
 @extends('plumr.layout.app')
 
 @section('main')
-    <x-main class="m-0 h-screen flex items-center justify-center">
+    <x-main class="m-0 h-screen flex flex-col items-center justify-center">
         <div class="w-full h-auto max-w-xl border-2 p-14 shadow-sm rounded-lg bg-white">
-            <form action="{{ route('login.attempt') }}" method="POST">
+
+
+            <form action="{{ route('auth.login') }}" method="POST">
                 @csrf
                 @method('POST')
                 <section class="flex flex-col gap-2 mb-4">
@@ -30,9 +32,17 @@
                     <hr>
                 </div>
 
+                @if(session('error_auth'))
+                <div class="bg-red-500 text-white py-2 px-4 rounded-sm mb-4">
+                    <p>{{ session('error_auth') }}</p>
+                </div>
+                @endif
+
                 <button class="bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-sm text-white text-sm">Iniciar
                     sesión</button>
             </form>
+
+
         </div>
     </x-main>
 @endsection
