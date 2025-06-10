@@ -25,4 +25,12 @@ class LoginController extends Controller
         return redirect()->route('main_account');
 
     }
+
+    public function destroy()
+    {
+        auth()->logout();
+        return redirect()->route('auth.login');
+    }
+
+
 }

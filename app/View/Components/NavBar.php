@@ -6,6 +6,9 @@ use Illuminate\View\Component;
 
 class NavBar extends Component
 {
+
+    public $user;
+
     /**
      * Create a new component instance.
      *
@@ -14,6 +17,7 @@ class NavBar extends Component
     public function __construct()
     {
         //
+        $this->user = auth()->user();
     }
 
     /**

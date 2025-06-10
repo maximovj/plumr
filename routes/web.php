@@ -27,10 +27,7 @@ Route::get('/home', [MainAccountController::class, 'index'])
 // Rutas para login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('auth.login');
-
-Route::post('/logout', function () {
-    return "Cerrar cuenta.";
-})->name('logout');
+Route::post('/logout', [LoginController::class, 'destroy'])->name('auth.logout');
 
 // Login para registro
 Route::get('/register', [RegisterController::class, 'create'])->name('register');
