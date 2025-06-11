@@ -20,10 +20,6 @@ Route::get('/', function () {
     return view('plumr.inicio');
 });
 
-Route::get('/home', [MainAccountController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('main_account');
-
 // Rutas para login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('auth.login');
@@ -48,3 +44,8 @@ Route::get('/authorization-account', function () {
 Route::get('/authorization-account', function () {
     return "Autorizar operación (BackEnd).";
 })->name('authorization-account.index');
+
+// Rutas para la cuenta del usuario
+Route::get('/{user:username}', [MainAccountController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('main_account');

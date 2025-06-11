@@ -22,7 +22,7 @@ class LoginController extends Controller
         if(!auth()->attempt($request->only('email', 'password'), $request->remember))
         return redirect()->back()->with('error_auth', 'Correo electrónico o contraseña incorrectas.');
 
-        return redirect()->route('main_account');
+        return redirect()->route('main_account', ['user' => auth()->user()]);
 
     }
 

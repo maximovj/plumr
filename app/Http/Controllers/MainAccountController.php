@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MainAccountController extends Controller
@@ -12,8 +13,10 @@ class MainAccountController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(User $user)
     {
-        return view('plumr.account.main');
+        return view('plumr.account.main', [
+            'user' => $user,
+        ]);
     }
 }
