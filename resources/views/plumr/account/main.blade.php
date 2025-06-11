@@ -72,13 +72,59 @@
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
                     <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidores</p>
+                    <p class="text-sm"><i class="bi bi-file-post-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Publicaciones</p>
                     <p class="text-sm"><i class="bi bi-perplexity">&nbsp;</i><strong>1 000</strong>&nbsp;Artículos</p>
                     <p class="text-sm"><i class="bi bi-collection">&nbsp;</i><strong>1 000</strong>&nbsp;Multimedia</p>
                     <p class="text-sm"><i class="bi bi-people">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidos</p>
                 </section>
             </section>
             <section class="grid grid-cols-1 gap-4 mx-4 scroll-plumr" style="height: 100vh; max-height: 100vh; overflow: auto;">
-                <h4>Mis artículos</h4>
+                <div class="flex flex-row justify-between items-center px-2">
+                    <div
+                        class="px-2 rounded-full text-center
+                        flex items-center justify-center">
+                        <span class="text-xs">
+                            <i class="bi bi-file-post-fill"></i>
+                            <strong>1 000</strong>
+                        </span>
+                    </div>
+                    <h4>Mis publicaciones</h4>
+                </div>
+                <div class="border-2 border-gray-100 rounded-md">
+
+                    {{-- Crear nuevo publicación --}}
+                    <article class="p-4 bg-gray-100 shadow-md">
+                        <form>
+                            <section class="flex flex-col gap-2 mb-4">
+                                <label class="text-xs text-gray-700" for="title">Título</label>
+                                <input type="text" name="title" value="{{ old('title') }}" id="title"
+                                    placeholder="Ingresa tu Título" autocomplete="off"
+                                    class="rounded-md p-2 {{ e_class('title') }} bg-blue-50 shadow-sm" />
+                                @error('title')
+                                    <p class="text-xs text-red-400">{{ $message }}</p>
+                                @enderror
+                            </section>
+
+                            <section class="flex flex-col gap-2 mb-4">
+                                <label class="text-xs text-gray-700" for="content">Contenido</label>
+                                <textarea type="text" name="content" value="{{ old('content') }}" id="content"
+                                    placeholder="Ingresa tu contenido" autocomplete="off"
+                                    class="rounded-md p-2 {{ e_class('content') }} bg-blue-50 shadow-sm"
+                                ></textarea>
+                                @error('content')
+                                    <p class="text-xs text-red-400">{{ $message }}</p>
+                                @enderror
+                            </section>
+                        </form>
+
+                        {{-- Botones --}}
+                        <section>
+                            <button class="bg-green-100 p-2 rounded-md">
+                                <span class="text-xs"><i class="bi bi-save"></i> Crear artículo</span>
+                            </button>
+                        </section>
+                    </article>
+                </div>
                 @foreach ([1,2,3,4,5,6,7,8,9,10] as $articles)
                 <div class="border-2 border-gray-100 rounded-md">
                     <article class="p-4">
