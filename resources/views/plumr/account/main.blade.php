@@ -56,16 +56,25 @@
 
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
-
                     <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, eaque!</p>
                     <h1 class="font-extrabold">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-                            {{ $user->username }}
+                            <i class="bi bi-at"></i>{{ $user->username }}
                         </span>
                     </h1>
-                    <p class="text-sm">20/06/1994</p>
-                    <p class="text-sm">Hombre</p>
-                    <p class="text-sm">Ciudad de México</p>
+                    <p class="text-xs">20/06/1994</p>
+                    <p class="text-xs">Hombre</p>
+                    <p class="text-xs">Ciudad de México</p>
+                </section>
+
+                <hr>
+
+                {{-- Información de perfil  --}}
+                <section class="flex flex-col gap-1 px-4 py-2">
+                    <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidores</p>
+                    <p class="text-sm"><i class="bi bi-perplexity">&nbsp;</i><strong>1 000</strong>&nbsp;Artículos</p>
+                    <p class="text-sm"><i class="bi bi-collection">&nbsp;</i><strong>1 000</strong>&nbsp;Multimedia</p>
+                    <p class="text-sm"><i class="bi bi-people">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidos</p>
                 </section>
             </section>
             <section class="mx-4">
