@@ -77,10 +77,59 @@
                     <p class="text-sm"><i class="bi bi-people">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidos</p>
                 </section>
             </section>
-            <section class="mx-4">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum mollitia error porro labore quos soluta
-                natus eum impedit quod deserunt architecto consequatur voluptatibus unde, minus ipsam veniam aspernatur et
-                vel?
+            <section class="grid grid-cols-1 gap-4 mx-4 scroll-plumr" style="height: 100vh; max-height: 100vh; overflow: auto;">
+                <h4>Mis artículos</h4>
+                @foreach ([1,2,3,4,5,6,7,8,9,10] as $articles)
+                <div class="border-2 border-gray-100 rounded-md">
+                    <article class="p-4">
+                        {{-- Botones --}}
+                        <section class="flex flex-row justify-between gap-1 py-2">
+                            <i class="bi bi-chat-square-quote"></i>
+                            <div class="grid grid-cols-2 gap-2">
+                                <a href="#" class="bg-yellow-100 p-2 rounded-md">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                                <a href="#" class="bg-red-100 p-2 rounded-md">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        </section>
+
+                        <h1 class="font-bold">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum mollitia error porro labore quos soluta
+                            natus eum impedit quod deserunt architecto consequatur voluptatibus unde, minus ipsam veniam aspernatur et
+                            vel?
+                        </p>
+
+                        {{-- Información de la publicación --}}
+                        <section class="flex flex-row gap-1 py-2">
+                            <p class="text-xs">Creado hace 5 minutos</p>
+                        </section>
+
+                        {{-- Estadísticas --}}
+                        <section class="flex flex-row gap-1 py-2">
+                            <p class="text-sm"><i class="bi bi-wechat"></i>&nbsp;<strong>1 000</strong>&nbsp;Discusiones</p>
+                            <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>1 000</strong>&nbsp;Apoyo</p>
+                            <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>1 000</strong>&nbsp;Difiero</p>
+                            <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>1 000</strong>&nbsp;Neutral</p>
+                        </section>
+
+                        {{-- Botones --}}
+                        <section class="hidden">
+                            <button class="bg-green-100 p-2 rounded-md">
+                                <i class="bi bi-1-square"></i> Apoyo
+                            </button>
+                            <button class="bg-red-100 p-2 rounded-md">
+                                <i class="bi bi-1-square"></i> Difiero
+                            </button>
+                            <button class="bg-blue-100 p-2 rounded-md">
+                                <i class="bi bi-1-square"></i> Neutral
+                            </button>
+                        </section>
+                    </article>
+                </div>
+                @endforeach
             </section>
         </section>
     </x-main>

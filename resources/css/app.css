@@ -8,3 +8,23 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+/* Estilo para WebKit (Chrome, Edge, Safari) */
+.scroll-plumr::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-plumr::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0; /* gris claro */
+  border-radius: 8px;
+}
+
+.scroll-plumr::-webkit-scrollbar-track {
+  background-color: #f7fafc; /* blanco grisáceo */
+}
+
+/* Firefox */
+.scroll-plumr {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
