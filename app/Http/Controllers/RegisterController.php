@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -89,10 +90,22 @@ class RegisterController extends Controller
             $new_user->password = Hash::make($request->password);
             $new_user->save();
 
+            // Crear un perfil
+            $new_profile = new Profile();
+            $new_profile->user_id = $new_user->id;
+            $new_profile->fullname = $request->input('name');
+            $new_profile->sex = $request->input('sex');
+            $new_profile->birthday = Carbon::createFromDate(
+                $request->input('birthday_year'),
+                $request->input('birthday_month'),
+                $request->input('birthday_day')
+            );
+            $new_profile->save();
+
             // Autenticar el usuario
             auth()->attempt($request->only('email', 'password'));
 
-            return redirect()->route('main_account');
+            return redirect()->route('main_account', ['user' => auth()->user()]);
         }
 
     }
