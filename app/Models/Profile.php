@@ -36,6 +36,7 @@ class Profile extends Model
     ];
 
     public $dates = [
+        'birthday',
         'created_at',
         'updated_at',
     ];

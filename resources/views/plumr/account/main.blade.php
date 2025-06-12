@@ -11,7 +11,7 @@
                     <div class="transition-all duration-500 overflow-hidden" :class="showOptions ? 'h-60' : 'h-44'">
                         <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
                             class="w-32 pt-2 cursor-pointer rounded-full hover:shadow-lg" @click="showOptions = !showOptions" />
-                        <p class="font-bold rounded-md pt-2">Fabian Martinez Lopez Perez</p>
+                        <p class="font-bold rounded-md pt-2">{{ $profile->fullname }}</p>
                     </div>
 
                     <!-- Menú flotante con animaciones -->
@@ -38,7 +38,7 @@
                         </a>
                     </div>
                     <div class="flex flex-row items-center px-4 py-2">
-                        @foreach ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $item)
+                        @foreach ([1, 2, 3, 4, 5] as $item)
                             <div
                                 class="w-10 h-10 bg-white rounded-full text-center border-2 border-gray-400
                                 flex items-center justify-center
@@ -56,15 +56,25 @@
 
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
-                    <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, eaque!</p>
+                    @isset($profile->bio)
+                    <p class="py-2 text-sm">{{ $profile->bio }}</p>
+                    @endisset
                     <h1 class="font-extrabold">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
                             <i class="bi bi-at"></i>{{ $user->username }}
                         </span>
                     </h1>
-                    <p class="text-xs">20/06/1994</p>
-                    <p class="text-xs">Hombre</p>
-                    <p class="text-xs">Ciudad de México</p>
+                    @isset($profile->number_phone)
+                    <p class="text-xs">{{ $profile->number_phone }}</p>
+                    @endisset
+                    <p class="text-xs">{{ $profile->birthday->format('d/m/Y') }}</p>
+                    <p class="text-xs">{{ $profile->sex }}</p>
+                    @isset($profile->address)
+                    <p class="text-xs">{{ $profile->address }}</p>
+                    @endisset
+                    @isset($profile->city)
+                    <p class="text-xs">{{ $profile->city }}</p>
+                    @endisset
                 </section>
 
                 <hr>
