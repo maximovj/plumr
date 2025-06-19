@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainAccountController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,3 +50,13 @@ Route::get('/authorization-account', function () {
 Route::get('/{user:username}', [MainAccountController::class, 'index'])
     ->middleware(['auth'])
     ->name('main_account');
+
+// Rutas para editar perfil de usuario
+Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
+    ->middleware(['auth'])
+    ->name('profile.edit');
+
+Route::post('/{user:username}/profile', [ProfileController::class, 'update'])
+    ->middleware(['auth'])
+    ->name('profile.update');
+
