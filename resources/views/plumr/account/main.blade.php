@@ -22,7 +22,7 @@
                             <li><a href="#" class="text-white hover:text-green-300 text-sm">Cambiar foto de perfil</a>
                             </li>
                             <li><a href="#" class="text-white hover:text-green-300 text-sm">Cambiar portada</a></li>
-                            <li><a href="#" class="text-white hover:text-green-300 text-sm">Modificar información</a>
+                            <li><a href="{{ route('profile.edit', ['user' => $user]) }}" class="text-white hover:text-green-300 text-sm">Modificar información</a>
                             </li>
                         </ul>
                     </div>
@@ -57,7 +57,7 @@
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
                     @isset($profile->bio)
-                    <p class="py-2 text-sm">{{ $profile->bio }}</p>
+                    <p class="py-2 text-sm text-gray-500 italic border-l border-gray-500 pl-1">{{ $profile->bio }}</p>
                     @endisset
                     <h1 class="font-extrabold">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
@@ -69,11 +69,14 @@
                     @endisset
                     <p class="text-xs">{{ $profile->birthday->format('d/m/Y') }}</p>
                     <p class="text-xs">{{ $profile->sex }}</p>
-                    @isset($profile->address)
-                    <p class="text-xs">{{ $profile->address }}</p>
+                    @isset($profile->country)
+                    <p class="text-xs">{{ $profile->country }}</p>
                     @endisset
                     @isset($profile->city)
                     <p class="text-xs">{{ $profile->city }}</p>
+                    @endisset
+                    @isset($profile->address)
+                    <p class="text-xs">{{ $profile->address }}</p>
                     @endisset
                 </section>
 
