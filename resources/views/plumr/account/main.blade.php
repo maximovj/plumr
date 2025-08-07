@@ -31,7 +31,7 @@
                 {{-- Seguidores --}}
                 <section class="flex flex-row justify-between items-center px-4 py-2">
                     <div>
-                        <a href="#"
+                        <a href="{{ route('account.edit', ['user' => $user]) }}"
                             class="w-10 h-10 bg-blue-500 rounded-full text-center
                                 flex items-center justify-center">
                             <i class="bi bi-gear text-white"></i>
