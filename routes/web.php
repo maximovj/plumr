@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MainAccountController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,15 @@ Route::get('/authorization-account', function () {
 Route::get('/{user:username}', [MainAccountController::class, 'index'])
     ->middleware(['auth'])
     ->name('main_account');
+
+// Rutas para editar cuenta de usuario
+Route::get('/{user:username}/account', [AccountController::class, 'edit'])
+    ->middleware(['auth'])
+    ->name('account.edit');
+
+Route::post('/{user:username}/account', [AccountController::class, 'update'])
+    ->middleware(['auth'])
+    ->name('account.update');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
