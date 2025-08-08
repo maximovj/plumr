@@ -72,6 +72,8 @@ class AccountController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        //dd($user);
+        return redirect()->route('main_account', ['user' => $user]);
     }
 
     /**

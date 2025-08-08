@@ -3,6 +3,16 @@
 @section('main')
     <x-main class="m-0 h-screen flex items-center justify-center">
         <div class="w-full h-auto max-w-5xl border-2 p-14 shadow-sm rounded-lg bg-white">
+
+            <section class="mb-4">
+                <a
+                    class="bg-gray-700 py-2 px-4 rounded-sm text-white text-sm"
+                    role="button"
+                    href="{{ route('main_account', ['user' => $user]) }}">
+                    Volver
+                </a>
+            </section>
+
             <form action="{{  route('profile.update', ['user' => $user]) }}" method="POST">
                 @csrf @method('POST')
 
