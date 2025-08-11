@@ -6,6 +6,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\MainAccountController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,11 @@ Route::get('/authorization-account', function () {
 Route::get('/authorization-account', function () {
     return "Autorizar operación (BackEnd).";
 })->name('authorization-account.index');
+
+// Rutas para publicaciones
+Route::resource('post', PostController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'delete'])
+    ->middleware(['auth']);
 
 // Rutas para la cuenta del usuario
 Route::get('/{user:username}', [MainAccountController::class, 'index'])
