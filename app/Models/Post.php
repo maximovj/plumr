@@ -41,4 +41,9 @@ class Post extends Model
         return $this->belongsToMany(User::class, 'users_posts');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'url_access';
+    }
+
 }
