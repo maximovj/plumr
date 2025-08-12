@@ -64,7 +64,11 @@ Route::post('/{user:username}/account', [AccountController::class, 'update'])
 
 // Rutas para publicaciones
 Route::resource('/{user:username}/post', PostController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->scoped([
+        'user' => 'username',
+        'post' => 'url_access',
+    ])
+    ->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth']);
 
 // Rutas para editar perfil de usuario

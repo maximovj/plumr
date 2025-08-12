@@ -146,7 +146,7 @@
                             <article class="p-4">
                                 {{-- Botones --}}
                                 <section class="flex flex-row justify-between gap-1 py-2">
-                                    <i class="bi bi-chat-square-quote"></i>
+                                    <a href="{{ route("post.show", [$user, $post]) }}"><i class="bi bi-chat-square-quote"></i></a>
                                     <div class="grid grid-cols-2 gap-2">
                                         <a href="#" class="bg-yellow-100 p-2 rounded-md">
                                             <i class="bi bi-pencil"></i> Editar
