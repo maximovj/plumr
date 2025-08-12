@@ -68,8 +68,12 @@ Route::resource('/{user:username}/post', PostController::class)
         'user' => 'username',
         'post' => 'url_access',
     ])
-    ->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])
-    ->middleware(['auth']);
+    ->middleware(['auth'])
+    ->except(['show']);
+
+// Ruta pública para mostrar un post
+Route::get('/{user:username}/post/{post:url_access}', [PostController::class, 'show'])
+    ->name('post.show');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
