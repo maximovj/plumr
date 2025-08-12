@@ -15,7 +15,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('url-access')->unique();
+            $table->string('url_access')->unique();
             $table->string('title');
             $table->text('content');
             $table->json('links');

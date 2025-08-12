@@ -15,7 +15,7 @@ class Post extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'url-access',
+        'url_access',
         'title',
         'content',
         'links',
