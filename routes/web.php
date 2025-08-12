@@ -48,11 +48,6 @@ Route::get('/authorization-account', function () {
     return "Autorizar operación (BackEnd).";
 })->name('authorization-account.index');
 
-// Rutas para publicaciones
-Route::resource('post', PostController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'delete'])
-    ->middleware(['auth']);
-
 // Rutas para la cuenta del usuario
 Route::get('/{user:username}', [MainAccountController::class, 'index'])
     ->middleware(['auth'])
@@ -66,6 +61,11 @@ Route::get('/{user:username}/account', [AccountController::class, 'edit'])
 Route::post('/{user:username}/account', [AccountController::class, 'update'])
     ->middleware(['auth'])
     ->name('account.update');
+
+// Rutas para publicaciones
+Route::resource('/{user:username}/post', PostController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware(['auth']);
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
