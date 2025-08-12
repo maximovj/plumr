@@ -85,7 +85,9 @@
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
                     <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidores</p>
-                    <p class="text-sm"><i class="bi bi-file-post-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Publicaciones</p>
+                    <a href="{{ route('post.index', ['user' => $user]) }}">
+                        <p class="text-sm"><i class="bi bi-file-post-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Publicaciones</p>
+                    </a>
                     <p class="text-sm"><i class="bi bi-perplexity">&nbsp;</i><strong>1 000</strong>&nbsp;Artículos</p>
                     <p class="text-sm"><i class="bi bi-collection">&nbsp;</i><strong>1 000</strong>&nbsp;Multimedia</p>
                     <p class="text-sm"><i class="bi bi-people">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidos</p>
