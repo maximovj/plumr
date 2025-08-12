@@ -88,9 +88,14 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(User $user, Post $post)
     {
         //
+        return view("plumr.account.posts.show", [
+            'user' => $user,
+            'post' => $post,
+            'discussions' => collect([]),
+        ]);
     }
 
     /**
