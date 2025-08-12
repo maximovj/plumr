@@ -207,6 +207,66 @@
             </section>
         </section>
 
+        <section x-data="shareButtons()" class="mt-6 flex space-x-3">
+            <button
+                @click="shareFacebook()"
+                class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
+                title="Compartir en Facebook"
+            >
+                <i class="bi bi-facebook"></i> Facebook
+            </button>
+
+            <button
+                @click="shareTwitter()"
+                class="bg-blue-400 text-white px-3 py-2 rounded hover:bg-blue-500 transition"
+                title="Compartir en Twitter"
+            >
+                <i class="bi bi-twitter"></i> Twitter
+            </button>
+
+            <button
+                @click="shareWhatsapp()"
+                class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition"
+                title="Compartir en WhatsApp"
+            >
+                <i class="bi bi-whatsapp"></i> WhatsApp
+            </button>
+
+            <button
+                @click="shareLinkedin()"
+                class="bg-blue-700 text-white px-3 py-2 rounded hover:bg-blue-800 transition"
+                title="Compartir en LinkedIn"
+            >
+                <i class="bi bi-linkedin"></i> LinkedIn
+            </button>
+        </section>
+
+        <script>
+            function shareButtons() {
+                return {
+                    url: window.location.href, // toma la URL actual
+
+                    shareFacebook() {
+                        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.url)}`;
+                        window.open(fbUrl, 'fbShare', 'width=600,height=400');
+                    },
+                    shareTwitter() {
+                        const text = encodeURIComponent("¡Mira este post interesante!");
+                        const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(this.url)}&text=${text}`;
+                        window.open(twitterUrl, 'twShare', 'width=600,height=400');
+                    },
+                    shareWhatsapp() {
+                        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(this.url)}`;
+                        window.open(whatsappUrl, 'waShare');
+                    },
+                    shareLinkedin() {
+                        const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.url)}`;
+                        window.open(linkedinUrl, 'lnShare', 'width=600,height=400');
+                    }
+                }
+            }
+        </script>
+
         @guest
         <section class="bg-green-700 h-100 my-4 py-4 rounded-sm shadow-sm flex gap-4 justify-around">
             <div class="text-center">
