@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Database\QueryException;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\UserPost;
 
 class PostController extends Controller
 {
@@ -13,9 +18,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
+        return view("plumr.account.posts.index", [
+            'user' => $user,
+            'profile' => $user->profile,
+            'posts' => $user->posts,
+        ]);
     }
 
     /**
@@ -35,10 +44,42 @@ class PostController extends Controller
      * @param  \App\Http\Requests\StorePostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request, User $user)
     {
         //
-        dd('Registrar publicación');
+        try {
+            $fields = $request->validated();
+
+            $new_post = new Post();
+            $new_post->title = $fields['title'];
+            $new_post->descripcion = 'Sin descripción';
+            $new_post->url_access = Str::slug($fields['title'].'-'.now());
+            $new_post->content = $fields['content'];
+            $new_post->status = json_encode($fields['status']);
+            $new_post->tags = json_encode($fields['tags']);
+            $new_post->links = json_encode([]);
+            $new_post->save();
+
+            UserPost::create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $new_post->id,
+            ]);
+
+            return redirect()->route('post.index', [
+                'user' => $user,
+            ])->with('success', 'Publicación creada con éxito.');
+
+        } catch (QueryException $e) {
+            // 23000 → violación de restricción (clave duplicada, etc.)
+            if ($e->getCode() === '23000') {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'El valor para "url_access" ya está en uso. Por favor, elige otro.');
+            }
+
+            // Si es otro error de SQL, lo lanzamos de nuevo
+            throw $e;
+        }
     }
 
     /**
