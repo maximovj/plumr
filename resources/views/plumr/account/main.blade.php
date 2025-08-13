@@ -64,6 +64,9 @@
                             <i class="bi bi-at"></i>{{ $user->username }}
                         </span>
                     </h1>
+
+                    @livewire('follow-button', ['user' => $user])
+
                     @isset($profile->number_phone)
                     <p class="text-xs">{{ $profile->number_phone }}</p>
                     @endisset
