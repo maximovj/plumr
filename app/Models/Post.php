@@ -36,14 +36,20 @@ class Post extends Model
         'updated_at',
     ];
 
+    // Ruta amigable
+    public function getRouteKeyName()
+    {
+        return 'url_access';
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_posts');
     }
 
-    public function getRouteKeyName()
+    public function author()
     {
-        return 'url_access';
+        return $this->belongsToMany(User::class, 'users_posts')->with('profile');
     }
 
 }
