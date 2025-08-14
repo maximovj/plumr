@@ -37,21 +37,7 @@
                             <i class="bi bi-gear text-white"></i>
                         </a>
                     </div>
-                    <div class="flex flex-row items-center px-4 py-2">
-                        @foreach ([1, 2, 3, 4, 5] as $item)
-                            <div
-                                class="w-10 h-10 bg-white rounded-full text-center border-2 border-gray-400
-                                flex items-center justify-center
-                                transform transition ease-out duration-700
-                                hover:-translate-y-1.5 hover:shadow-md {{ !$loop->first ? '-ml-4' : '' }}">
-                                {{ $item }}
-                            </div>
-                        @endforeach
-                        <div
-                            class="w-10 h-10 bg-white rounded-full text-center border-2 border-gray-400
-                            flex items-center justify-center -ml-4 z-10">
-                            +32</div>
-                    </div>
+                        @livewire('list-followers',  ['user' => $user])
                 </section>
 
                 {{-- Información de perfil  --}}
@@ -87,13 +73,15 @@
 
                 {{-- Información de perfil  --}}
                 <section class="flex flex-col gap-1 px-4 py-2">
-                    <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidores</p>
+                    <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i>
+                        <strong>{{ $followings->count() }}</strong>&nbsp;Seguidores</p>
                     <a href="{{ route('post.index', ['user' => $user]) }}">
                         <p class="text-sm"><i class="bi bi-file-post-fill">&nbsp;</i><strong>{{ $user->posts->count() }}</strong>&nbsp;Publicaciones</p>
                     </a>
                     <p class="text-sm"><i class="bi bi-perplexity">&nbsp;</i><strong>1 000</strong>&nbsp;Artículos</p>
                     <p class="text-sm"><i class="bi bi-collection">&nbsp;</i><strong>1 000</strong>&nbsp;Multimedia</p>
-                    <p class="text-sm"><i class="bi bi-people">&nbsp;</i><strong>1 000</strong>&nbsp;Seguidos</p>
+                    <p class="text-sm"><i class="bi bi-people">&nbsp;</i>
+                        <strong>{{ $followers->count() }}</strong>&nbsp;Seguidos</p>
                 </section>
             </section>
             <section class="grid grid-cols-1 gap-4 mx-4 scroll-plumr" style="height: 100vh; max-height: 100vh; overflow: auto;">
