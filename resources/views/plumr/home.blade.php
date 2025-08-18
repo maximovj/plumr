@@ -69,7 +69,7 @@
         </div>
     </section>
 
-    <section class="mt-16 max-w-5xl mx-auto text-center">
+    <section class="mt-16 max-w-5xl mx-auto text-center rounded-2xl">
         <h2 class="text-3xl font-bold text-gray-900">¿Cómo funciona?</h2>
         <div class="mt-10 grid md:grid-cols-3 gap-8">
             <div class="p-6 bg-white rounded-xl shadow">
@@ -90,7 +90,7 @@
         </div>
     </section>
 
-    <section class="mt-16 max-w-5xl mx-auto text-center">
+    <section class="mt-16 max-w-5xl mx-auto text-center rounded-2xl">
         <h2 class="text-3xl font-bold text-gray-900">Lo que dicen nuestros usuarios</h2>
         <div class="mt-8 grid md:grid-cols-3 gap-6">
             <div class="bg-white p-6 rounded-xl shadow">
@@ -109,7 +109,7 @@
         </div>
     </section>
 
-    <section class="mt-16 bg-gray-100 py-12">
+    <section class="mt-16 bg-gray-100 py-12 rounded-2xl">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl font-bold text-gray-900">Próximamente en Plumr</h2>
             <p class="text-gray-600 mt-3">Estamos trabajando en nuevas funcionalidades:</p>
@@ -122,7 +122,7 @@
         </div>
     </section>
 
-    <section class="mt-16 bg-indigo-50 py-12">
+    <section class="mt-16 bg-indigo-50 py-12 rounded-2xl">
         <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
                 <h3 class="text-3xl font-bold text-indigo-600">+10k</h3>
