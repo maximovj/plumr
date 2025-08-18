@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\MainAccountController;
@@ -19,9 +20,7 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('plumr.inicio');
-});
+Route::get('/', HomeController::class)->name('home');
 
 // Rutas para login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
