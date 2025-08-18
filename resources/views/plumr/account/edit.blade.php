@@ -62,6 +62,11 @@
             </form>
 
             <button class="bg-red-500 hover:bg-red-600 py-2 px-4 mt-2 rounded-sm text-white text-sm">Eliminar cuenta</button>
+
+            <form action="{{ route('auth.logout') }}" method="POST">
+            @csrf @method('POST')
+                <button class="bg-blue-500 hover:bg-blue-600 py-2 px-4 mt-2 rounded-sm text-white text-sm">Cerrar sesión</button>
+            </form>
         </div>
     </x-main>
 @endsection
