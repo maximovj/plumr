@@ -21,6 +21,6 @@ class HomeController extends Controller
             ]);
         }
 
-        return view('plumr.inicio');
+        return view('plumr.home');
     }
 }
