@@ -18,6 +18,8 @@ class MainAccountController extends Controller
         return view('plumr.account.main', [
             'user' => $user,
             'profile' => $user->profile,
+            'followers' => $user->followers()->take(10)->get(),
+            'followings' => $user->followings()->take(10)->get(),
         ]);
     }
 }
