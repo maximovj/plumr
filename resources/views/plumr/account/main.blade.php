@@ -1,94 +1,106 @@
 @extends('plumr.layout.app')
 
 @section('main')
-    <x-main>
-        <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
-            <section class="mx-4 shadow-md" x-data="{ showOptions: false }">
-                <section x-data="{ showOptions: false }"
-                    class="flex flex-row justify-start items-center gap-4 p-4 relative
-                    bg-center bg-cover bg-no-repeat"
-                    style="background-image: url('{{ asset('img/fondo.jpg') }}')">
-                    <div class="transition-all duration-500 overflow-hidden" :class="showOptions ? 'h-60' : 'h-44'">
-                        <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                            class="w-32 pt-2 cursor-pointer rounded-full hover:shadow-lg" @click="showOptions = !showOptions" />
-                        <p class="font-bold rounded-md pt-2">{{ $profile->fullname }}</p>
-                    </div>
+<x-main>
+    <section class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                    <!-- Menú flotante con animaciones -->
-                    <div class="bg-gray-800 absolute inset-x-0 bottom-0 h-20 px-4" x-show="showOptions"
-                        x-transition:enter="animate__animated animate__backInDown"
-                        x-transition:leave="animate__animated animate__fadeOutUp">
-                        <ul>
-                            <li><a href="#" class="text-white hover:text-green-300 text-sm">Cambiar foto de perfil</a>
+        <!-- Tarjeta de perfil -->
+        <section class="mx-4 bg-white rounded-2xl shadow-lg overflow-hidden relative">
+
+            <!-- Imagen de portada -->
+            <div class="relative h-40">
+                <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ asset('img/fondo.jpg') }}')"></div>
+
+                <!-- Foto de usuario -->
+                <div class="absolute -bottom-12 left-6">
+                    <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
+                        class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
+                </div>
+
+                <!-- Botón de acciones (tres puntos) -->
+                <div class="absolute bottom-2 right-2" x-data="{ showOptions: false }">
+                    <button @click="showOptions = !showOptions"
+                        class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <!-- Menú desplegable -->
+                    <div x-show="showOptions" @click.outside="showOptions = false"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-90"
+                        class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
+                        <ul class="flex flex-col py-2">
+                            <li>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
                             </li>
-                            <li><a href="#" class="text-white hover:text-green-300 text-sm">Cambiar portada</a></li>
-                            <li><a href="{{ route('profile.edit', ['user' => $user]) }}" class="text-white hover:text-green-300 text-sm">Modificar información</a>
+                            <li>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Modificar información</a>
                             </li>
                         </ul>
                     </div>
-                </section>
+                </div>
+            </div>
 
-                {{-- Seguidores --}}
-                <section class="flex flex-row justify-between items-center px-4 py-2">
-                    <div>
-                        <a href="{{ route('account.edit', ['user' => $user]) }}"
-                            class="w-10 h-10 bg-blue-500 rounded-full text-center
-                                flex items-center justify-center">
-                            <i class="bi bi-gear text-white"></i>
-                        </a>
-                    </div>
+            <!-- Información principal -->
+            <div class="mt-16 px-6 pb-4">
+                <p class="font-bold text-xl">{{ $profile->fullname }}</p>
+                <h1 class="text-sm text-gray-500">@<span class="font-medium">{{ $user->username }}</span></h1>
 
-                    @livewire('list-followers',  ['user' => $user])
+                <!-- Bio -->
+                @isset($profile->bio)
+                    <p class="text-gray-500 text-sm italic mt-2 border-l-2 border-gray-300 pl-2">{{ $profile->bio }}</p>
+                @endisset
 
-                </section>
+                <!-- Información adicional -->
+                <div class="flex flex-wrap gap-3 mt-3 text-xs text-gray-600">
+                    @isset($profile->number_phone)<span><i class="bi bi-telephone-fill"></i> {{ $profile->number_phone }}</span>@endisset
+                    <span><i class="bi bi-calendar-fill"></i> {{ $profile->birthday->format('d/m/Y') }}</span>
+                    <span><i class="bi bi-gender-ambiguous"></i> {{ $profile->sex }}</span>
+                    @isset($profile->country)<span><i class="bi bi-geo-alt-fill"></i> {{ $profile->country }}</span>@endisset
+                    @isset($profile->city)<span><i class="bi bi-building"></i> {{ $profile->city }}</span>@endisset
+                    @isset($profile->address)<span><i class="bi bi-house-fill"></i> {{ $profile->address }}</span>@endisset
+                </div>
 
-                {{-- Información de perfil  --}}
-                <section class="flex flex-col gap-1 px-4 py-2">
-                    @isset($profile->bio)
-                    <p class="py-2 text-sm text-gray-500 italic border-l border-gray-500 pl-1">{{ $profile->bio }}</p>
-                    @endisset
-                    <h1 class="font-extrabold">
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-                            <i class="bi bi-at"></i>{{ $user->username }}
-                        </span>
-                    </h1>
-
-                    @livewire('follow-button', ['user' => $user])
-
-                    @isset($profile->number_phone)
-                    <p class="text-xs">{{ $profile->number_phone }}</p>
-                    @endisset
-                    <p class="text-xs">{{ $profile->birthday->format('d/m/Y') }}</p>
-                    <p class="text-xs">{{ $profile->sex }}</p>
-                    @isset($profile->country)
-                    <p class="text-xs">{{ $profile->country }}</p>
-                    @endisset
-                    @isset($profile->city)
-                    <p class="text-xs">{{ $profile->city }}</p>
-                    @endisset
-                    @isset($profile->address)
-                    <p class="text-xs">{{ $profile->address }}</p>
-                    @endisset
-                </section>
-
-                <hr>
-
-                {{-- Información de perfil  --}}
-                <section class="flex flex-col gap-1 px-4 py-2">
-                    <p class="text-sm"><i class="bi bi-people-fill">&nbsp;</i>
-                        <strong>{{ $followings->count() }}</strong>&nbsp;Seguidores</p>
-                    <a href="{{ route('post.index', ['user' => $user]) }}">
-                        <p class="text-sm"><i class="bi bi-file-post-fill">&nbsp;</i><strong>{{ $user->posts->count() }}</strong>&nbsp;Publicaciones</p>
+                <!-- Botones de acciones -->
+                <div class="mt-4 flex justify-between items-center gap-2">
+                    <a href="{{ route('account.edit', ['user' => $user]) }}"
+                        class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
+                        <i class="bi bi-gear"></i>
                     </a>
-                    <p class="text-sm"><i class="bi bi-perplexity">&nbsp;</i><strong>1 000</strong>&nbsp;Artículos</p>
-                    <p class="text-sm"><i class="bi bi-collection">&nbsp;</i><strong>1 000</strong>&nbsp;Multimedia</p>
-                    <p class="text-sm"><i class="bi bi-people">&nbsp;</i>
-                        <strong>{{ $followers->count() }}</strong>&nbsp;Seguidos</p>
-                </section>
+
+                    @livewire('list-followers', ['user' => $user])
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <!-- Estadísticas -->
+            <div class="px-6 pb-4 flex flex-col flex-wrap gap-2 text-sm text-gray-700">
+                <p><i class="bi bi-people-fill"></i> <strong>{{ $followings->count() }}</strong> Seguidores</p>
+                <a href="{{ route('post.index', ['user' => $user]) }}">
+                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
+                </a>
+                <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
+                <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
+                <p><i class="bi bi-people"></i> <strong>{{ $followers->count() }}</strong> Seguidos</p>
+            </div>
+
+            <!-- Seguidores Livewire -->
+            <section class="px-6 pb-4">
+                @livewire('follow-button', ['user' => $user])
             </section>
-
-            @livewire('posts-feed', ['user' => $user])
-
         </section>
-    </x-main>
+
+        <!-- Feed de posts -->
+        @livewire('posts-feed', ['user' => $user])
+
+    </section>
+</x-main>
 @endsection
