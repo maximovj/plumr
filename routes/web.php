@@ -54,11 +54,11 @@ Route::get('/{user:username}', [MainAccountController::class, 'index'])
 
 // Rutas para editar cuenta de usuario
 Route::get('/{user:username}/account', [AccountController::class, 'edit'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'owner'])
     ->name('account.edit');
 
 Route::post('/{user:username}/account', [AccountController::class, 'update'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'owner'])
     ->name('account.update');
 
 // Rutas para publicaciones
@@ -67,7 +67,7 @@ Route::resource('/{user:username}/post', PostController::class)
         'user' => 'username',
         'post' => 'url_access',
     ])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'owner'])
     ->except(['show']);
 
 // Ruta pública para mostrar un post
@@ -76,10 +76,10 @@ Route::get('/{user:username}/post/{post:url_access}', [PostController::class, 's
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'owner'])
     ->name('profile.edit');
 
 Route::post('/{user:username}/profile', [ProfileController::class, 'update'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'owner'])
     ->name('profile.update');
 
