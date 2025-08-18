@@ -30,7 +30,7 @@
         </div>
         @endauth
 
-        @guest
+        {{-- @guest
         @if(!Route::is('register') && !Route::is('login'))
         <div class="flex flex-col justify-end">
             <div class="flex flex-column gap-4 justify-items-center">
@@ -39,6 +39,6 @@
             </div>
         </div>
         @endif
-        @endguest
+        @endguest --}}
     </div>
 </nav>
