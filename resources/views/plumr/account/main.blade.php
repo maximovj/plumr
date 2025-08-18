@@ -17,35 +17,37 @@
                         class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
                 </div>
 
-                <!-- Botón de acciones (tres puntos) -->
-                <div class="absolute bottom-2 right-2" x-data="{ showOptions: false }">
-                    <button @click="showOptions = !showOptions"
-                        class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
+                <!-- Botón de acciones (solo para el dueño) -->
+                @if(Auth::check() && Auth::user()->id === $user->id)
+                    <div class="absolute bottom-2 right-2" x-data="{ showOptions: false }">
+                        <button @click="showOptions = !showOptions"
+                            class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
 
-                    <!-- Menú desplegable -->
-                    <div x-show="showOptions" @click.outside="showOptions = false"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 scale-90"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-200"
-                        x-transition:leave-start="opacity-100 scale-100"
-                        x-transition:leave-end="opacity-0 scale-90"
-                        class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
-                        <ul class="flex flex-col py-2">
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Modificar información</a>
-                            </li>
-                        </ul>
+                        <!-- Menú desplegable -->
+                        <div x-show="showOptions" @click.outside="showOptions = false"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-90"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-90"
+                            class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
+                            <ul class="flex flex-col py-2">
+                                <li>
+                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Modificar información</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             <!-- Información principal -->
@@ -68,12 +70,14 @@
                     @isset($profile->address)<span><i class="bi bi-house-fill"></i> {{ $profile->address }}</span>@endisset
                 </div>
 
-                <!-- Botones de acciones -->
+                <!-- Botones de acciones (solo para el dueño) -->
                 <div class="mt-4 flex justify-between items-center gap-2">
-                    <a href="{{ route('account.edit', ['user' => $user]) }}"
-                        class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
-                        <i class="bi bi-gear"></i>
-                    </a>
+                    @if(Auth::check() && Auth::user()->id === $user->id)
+                        <a href="{{ route('account.edit', ['user' => $user]) }}"
+                            class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
+                            <i class="bi bi-gear"></i>
+                        </a>
+                    @endif
 
                     @livewire('list-followers', ['user' => $user])
                 </div>
@@ -84,9 +88,17 @@
             <!-- Estadísticas -->
             <div class="px-6 pb-4 flex flex-col flex-wrap gap-2 text-sm text-gray-700">
                 <p><i class="bi bi-people-fill"></i> <strong>{{ $followings->count() }}</strong> Seguidores</p>
-                <a href="{{ route('post.index', ['user' => $user]) }}">
-                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
-                </a>
+
+                @if(Auth::check() && Auth::user()->id === $user->id)
+                    <a href="{{ route('post.index', ['user' => $user]) }}">
+                        <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
+                    </a>
+                @else
+                    <p class="cursor-not-allowed opacity-50">
+                        <i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones
+                    </p>
+                @endif
+
                 <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
                 <p><i class="bi bi-people"></i> <strong>{{ $followers->count() }}</strong> Seguidos</p>
