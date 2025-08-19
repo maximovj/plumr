@@ -38,9 +38,9 @@
                         <article class="bg-white border border-gray-200 rounded-md shadow-sm p-4">
 
                             <div class="flex justify-between items-start mb-2">
-                                {{-- <h5 class="font-bold text-gray-800">{{ $article->title }}</h5> --}}
+                                <h5 class="font-bold text-gray-800">{{ $article->title }}</h5>
                                 <div class="flex gap-2">
-                                    <a href="{{ route('post.show', [$user, $article]) }}"
+                                    <a href="#"
                                         class="text-gray-600 hover:text-blue-500"><i
                                             class="bi bi-file-richtext"></i></a>
                                     @owner($user)
@@ -54,9 +54,12 @@
                                 </div>
                             </div>
 
-                            {{-- <p class="text-gray-700">{{ $article->content }}</p> --}}
+                            <div class="p-3 border rounded bg-gray-50 shadow-sm">
+                                <div>{!! $article->summary !!}</div>
+                            </div>
+
                             <div class="flex justify-between text-xs text-gray-500 mt-2">
-                                {{-- <p>Creado {{ $article->created_at->diffForHumans() }}</p> --}}
+                                <span>Creado {{ $article->created_at->diffForHumans() }}</span>
                                 <div class="flex gap-3">
                                     <p><i class="bi bi-wechat"></i> <strong>0</strong> Discusiones</p>
                                     <p><i class="bi bi-1-square"></i> <strong>0</strong> Apoyo</p>
