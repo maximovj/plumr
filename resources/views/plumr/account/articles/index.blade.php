@@ -5,18 +5,27 @@
         <!-- Mis Artículos -->
         <section class="px-4" style="max-height: 90vh; overflow-y: auto;">
             <section class="flex justify-between items-center mb-4">
-                <div class="text-sm text-gray-600 flex items-center gap-2">
-                    <i class="bi bi bi-perplexity"></i> <strong>{{ $articles->count() }}</strong>
+                <div>
+                    <div class="text-sm text-gray-600 flex items-center gap-2">
+                        <i class="bi bi bi-perplexity"></i> <strong>{{ $articles->count() }}</strong>
+                    </div>
+
+                    @owner($user)
+                        <a href="{{ route('article.create', $user) }}" class="text-green-600 font-semibold hover:underline text-sm">Crear  un artículo</a>
+                    @endowner
                 </div>
-                @owner($user)
-                    <h4 class="text-lg font-semibold">Mis artículos</h4>
-                @else
-                    <h4>Artículos de
-                        <a href="{{ route('main_account', ['user' => $user]) }}">
-                            <span class="font-bold">{{ '@' . $user->username }}</span>
-                        </a>
-                    </h4>
-                @endowner
+
+                <div>
+                    @owner($user)
+                        <h4 class="text-lg font-semibold">Mis artículos</h4>
+                    @else
+                        <h4>Artículos de
+                            <a href="{{ route('main_account', ['user' => $user]) }}">
+                                <span class="font-bold">{{ '@' . $user->username }}</span>
+                            </a>
+                        </h4>
+                    @endowner
+                </div>
             </section>
 
             @if ($articles->count() <= 0)
