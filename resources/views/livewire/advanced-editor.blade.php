@@ -1,7 +1,7 @@
 <div x-data="{ height: {{ $height }} }" class="relative space-y-1">
 
     <!-- Toolbar Quill -->
-    <div wire:ignore id="toolbar" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded border shadow-sm">
+    <div wire:ignore id="toolbar-{{ $editorId }}" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded border shadow-sm">
         <!-- Encabezados -->
         <select class="ql-header border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400">
             <option value="1">H1</option>
@@ -65,14 +65,8 @@
     </div>
 
     <!-- Editor Quill -->
-    <div wire:ignore :style="`height: ${height}px`" id="quill-editor" class="border rounded shadow-sm bg-white p-2 overflow-y-auto">
+    <div wire:ignore :style="`height: ${height}px`" id="quill-editor-{{ $editorId }}" class="border rounded shadow-sm bg-white p-2 overflow-y-auto">
         {!! $content !!}
-    </div>
-
-    <!-- Contenido guardado -->
-    <div class="mt-2 p-4 border rounded bg-gray-50 shadow-sm">
-        <h3 class="font-semibold mb-2">Contenido guardado:</h3>
-        <div>{!! $content !!}</div>
     </div>
 </div>
 
@@ -89,22 +83,27 @@ document.addEventListener('livewire:load', function () {
         [{ list: 'ordered' }, { list: 'bullet' }]
     ];
 
-    var quill = new Quill('#quill-editor', {
+    var quill = new Quill('#quill-editor-{{ $editorId }}', {
         theme: 'snow',
-        placeholder: 'Escribe aquí...',
+        placeholder: '{{ $placeholder }}',
         readOnly: false,
         modules: {
             imageResize: {
                 displaySize: true
             },
             counter: true,
-            toolbar: '#toolbar',
+            toolbar: '#toolbar-{{ $editorId }}',
         }
     });
 
     // Detectar cambios y enviar a Livewire
     quill.on('text-change', function() {
-        Livewire.emit('quillContentUpdated', quill.root.innerHTML);
+        @this.content = quill.root.innerHTML;
+
+        // Emitimos un evento global para Alpine
+        Livewire.emit('editorUpdated', { editorId: {{ $editorId }}, _content_: quill.root.innerHTML });
+
+        Livewire.emit('quillContentUpdated', '{{ $editorId }}', quill.root.innerHTML);
     });
 
     // Interceptar la inserción de imágenes

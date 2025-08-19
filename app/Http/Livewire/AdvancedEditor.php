@@ -10,14 +10,26 @@ class AdvancedEditor extends Component
 {
     use WithFileUploads;
 
+    public $editorId;
     public $height = 300;
     public $content = '';
+    public $placeholder = '';
 
-    protected $listeners = ['quillContentUpdated' => 'updateContent', 'uploadImage' => 'handleImageUpload'];
+    protected $listeners = [
+        'quillContentUpdated' => 'updateContent',
+        'uploadImage' => 'handleImageUpload'
+    ];
 
-    public function updateContent($value)
+    public function mount($editorId = null)
     {
-        $this->content = $value;
+        $this->editorId = $editorId ?? uniqid('editor_');
+    }
+
+    public function updateContent($editorId, $value)
+    {
+        if (strval($editorId) == strval($this->editorId)) {
+            $this->content = $value;
+        }
     }
 
     public function handleImageUpload($fileBase64)
