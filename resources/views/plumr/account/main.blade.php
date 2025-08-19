@@ -96,7 +96,7 @@
                 </a>
 
                 <a href="{{ route('article.index', ['user' => $user]) }}">
-                    <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
+                    <p><i class="bi bi-perplexity"></i> <strong>{{ $user->articles->count() }}</strong> Artículos</p>
                 </a>
 
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
