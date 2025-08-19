@@ -95,7 +95,10 @@
                     <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
                 </a>
 
-                <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
+                <a href="{{ route('article.index', ['user' => $user]) }}">
+                    <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
+                </a>
+
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
 
                 <a href="{{ route('account.followings', ['user' => $user]) }}">
