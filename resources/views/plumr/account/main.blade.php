@@ -104,9 +104,11 @@
                 <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
 
-                <p><i class="bi bi-people"></i>
-                <strong>{{$followings->count() }}</strong> Seguidos
-                </p>
+                <a href="{{ route('account.followings', ['user' => $user]) }}">
+                    <p><i class="bi bi-people"></i>
+                    <strong>{{$followings->count() }}</strong> Seguidos
+                    </p>
+                </a>
             </div>
 
             <!-- Seguidores Livewire -->
