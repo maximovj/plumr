@@ -1,4 +1,4 @@
-<div x-data="{ height: {{ $height }} }" class="relative space-y-4">
+<div x-data="{ height: {{ $height }} }" class="relative space-y-1">
 
     <!-- Toolbar Quill -->
     <div wire:ignore id="toolbar" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded border shadow-sm">
@@ -26,15 +26,15 @@
         </select>
 
         <!-- Colores -->
-        <select class="ql-color border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400"></select>
-        <select class="ql-background border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400"></select>
+        <button class="ql-color ql-picker ql-color-picker border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400"></button>
+        <button class="ql-background ql-picker ql-color-picker border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400"></button>
 
         <!-- Formato básico -->
+        <button class="ql-clean px-2 py-1 rounded border hover:bg-gray-200 transition">🧹</button>
         <button class="ql-bold px-2 py-1 rounded border hover:bg-gray-200 transition">B</button>
         <button class="ql-italic px-2 py-1 rounded border hover:bg-gray-200 transition">I</button>
         <button class="ql-underline px-2 py-1 rounded border hover:bg-gray-200 transition">U</button>
         <button class="ql-strike px-2 py-1 rounded border hover:bg-gray-200 transition">S</button>
-        <button class="ql-clean px-2 py-1 rounded border hover:bg-gray-200 transition">🧹</button>
 
         <!-- Sub/superíndice -->
         <button class="ql-script" value="sub" class="px-2 py-1 rounded border hover:bg-gray-200 transition">Sub</button>
@@ -47,12 +47,12 @@
         <button class="ql-indent" value="+1" class="px-2 py-1 rounded border hover:bg-gray-200 transition">+</button>
 
         <!-- Alineación -->
-        <select class="ql-align border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400">
+        <button class="ql-align border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-indigo-400">
             <option selected></option>
             <option value="center">Centro</option>
             <option value="right">Derecha</option>
             <option value="justify">Justificado</option>
-        </select>
+        </button>
 
         <!-- Bloques especiales -->
         <button class="ql-blockquote px-2 py-1 rounded border hover:bg-gray-200 transition">❝</button>
