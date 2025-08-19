@@ -77,7 +77,7 @@ Route::resource('/{user:username}/post', PostController::class)
         'user' => 'username',
         'post' => 'url_access',
     ])
-    ->middleware(['auth', 'owner'])
+    ->middleware(['auth'])
     ->except(['show']);
 
 // Ruta pública para mostrar un post
