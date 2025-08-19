@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\HomeController;
@@ -83,6 +84,15 @@ Route::resource('/{user:username}/post', PostController::class)
 // Ruta pública para mostrar un post
 Route::get('/{user:username}/post/{post:url_access}', [PostController::class, 'show'])
     ->name('post.show');
+
+// Ruta para artículos
+Route::resource('/{user:username}/article', ArticleController::class)
+    ->scoped([
+        'user' => 'username',
+        'article' => 'slug',
+    ])
+    ->middleware(['auth'])
+    ->except(['show']);
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
