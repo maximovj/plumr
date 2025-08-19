@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -60,6 +61,10 @@ Route::get('/{user:username}/account', [AccountController::class, 'edit'])
 Route::post('/{user:username}/account', [AccountController::class, 'update'])
     ->middleware(['auth', 'owner'])
     ->name('account.update');
+
+Route::get('/{user:username}/followers', FollowersController::class)
+    ->middleware(['auth'])
+    ->name('account.followers');
 
 // Rutas para publicaciones
 Route::resource('/{user:username}/post', PostController::class)
