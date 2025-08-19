@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -20,7 +23,7 @@ class ArticleController extends Controller
         //
         return view('plumr.account.articles.index', [
             'user' => $user,
-            'articles' => $user->articles()->take(10)->get(),
+            'articles' => $user->articles()->latest()->take(10)->get(),
         ]);
     }
 
@@ -46,6 +49,21 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         //
+        // Guardar un artículo
+        $new_article = new Article();
+        $new_article->fill($request->all());
+        $new_article->slug = Str::slug($new_article->title.'-'.now()->format('H:m:s:m:Y'));
+        $new_article->save();
+
+        // Almacenar articulo en la tabla pivote
+        $id = DB::table('articles_users')->insert([
+            'article_id' => $new_article->id,
+            'user_id' => auth()->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route("article.index",  ['user' => auth()->user()]);
     }
 
     /**

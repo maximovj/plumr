@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -13,7 +16,18 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // Obteniendo el parámetro 'user' de la ruta
+        $username = $this->route('user');
+
+        // Si tienes un model User
+        $user = \App\Models\User::where('username', $username)->first();
+
+        // Retornar false si no existe
+        if (!$user) {
+            return false;
+        }
+
+        return Auth::check() && Auth::user()->id == $user->id;
     }
 
     /**
@@ -24,7 +38,11 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'string', 'min:3', 'max:160'],
+            'summary' => ['required', 'string', 'min:3', 'max:255'],
+            'header' => ['nullable', 'string', 'min:3'],
+            'content' => ['nullable', 'string', 'min:3'],
+            'footer' => ['nullable', 'string', 'min:3'],
         ];
     }
 }
