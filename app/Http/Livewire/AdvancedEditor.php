@@ -13,6 +13,7 @@ class AdvancedEditor extends Component
     public $editorId;
     public $height = 300;
     public $content = '';
+    public $fieldName = '';
     public $placeholder = '';
 
     protected $listeners = [
@@ -20,9 +21,12 @@ class AdvancedEditor extends Component
         'uploadImage' => 'handleImageUpload'
     ];
 
-    public function mount($editorId = null)
+    public function mount($editorId, $placeholder, $fieldName, $content = '')
     {
-        $this->editorId = $editorId ?? uniqid('editor_');
+        $this->editorId     = $editorId;
+        $this->placeholder  = $placeholder;
+        $this->fieldName    = $fieldName;
+        $this->content      = $content;
     }
 
     public function updateContent($editorId, $value)

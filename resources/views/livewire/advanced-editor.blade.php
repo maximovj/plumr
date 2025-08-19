@@ -68,12 +68,17 @@
     <div wire:ignore :style="`height: ${height}px`" id="quill-editor-{{ $editorId }}" class="border rounded shadow-sm bg-white p-2 overflow-y-auto">
         {!! $content !!}
     </div>
+    {{-- Input oculto que se enviará en el form --}}
+    <input type="hidden" name="{{ $fieldName }}" value="{{ $content }}">
+
 </div>
 
 
 <script>
 document.addEventListener('livewire:load', function () {
     Quill.register('modules/imageResize', QuillResizeModule);
+
+
 
     // Inicializar Quill con toolbar personalizada
     var toolbarOptions = [
@@ -96,14 +101,19 @@ document.addEventListener('livewire:load', function () {
         }
     });
 
+    quill.root.innerHTML = @json($content);
+
     // Detectar cambios y enviar a Livewire
     quill.on('text-change', function() {
         @this.content = quill.root.innerHTML;
 
         // Emitimos un evento global para Alpine
-        Livewire.emit('editorUpdated', { editorId: {{ $editorId }}, _content_: quill.root.innerHTML });
+        //Livewire.emit('editorUpdated', { editorId: {{ $editorId }}, _content_: quill.root.innerHTML });
 
         Livewire.emit('quillContentUpdated', '{{ $editorId }}', quill.root.innerHTML);
+
+        document.querySelector("input[name='{{ $fieldName }}']").value =
+            quill.root.innerHTML;
     });
 
     // Interceptar la inserción de imágenes
