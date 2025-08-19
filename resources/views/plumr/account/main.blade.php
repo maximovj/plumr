@@ -87,26 +87,33 @@
 
             <!-- Estadísticas -->
             <div class="px-6 pb-4 flex flex-col flex-wrap gap-2 text-sm text-gray-700">
-                <p><i class="bi bi-people-fill"></i> <strong>{{ $followings->count() }}</strong> Seguidores</p>
+                <a href="{{ route('account.followers', ['user' => $user]) }}">
+                    <p><i class="bi bi-people-fill"></i> <strong>{{ $followers->count() }}</strong> Seguidores</p>
+                </a>
 
-                @if(Auth::check() && Auth::user()->id === $user->id)
-                    <a href="{{ route('post.index', ['user' => $user]) }}">
-                        <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
-                    </a>
-                @else
+                @if(Auth::check() && Auth::user()->id !== $user->id)
                     <p class="cursor-not-allowed opacity-50">
                         <i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones
                     </p>
+                @else
+                    <a href="{{ route('post.index', ['user' => $user]) }}">
+                        <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
+                    </a>
                 @endif
 
                 <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
-                <p><i class="bi bi-people"></i> <strong>{{ $followers->count() }}</strong> Seguidos</p>
+
+                <p><i class="bi bi-people"></i>
+                <strong>{{$followings->count() }}</strong> Seguidos
+                </p>
             </div>
 
             <!-- Seguidores Livewire -->
             <section class="px-6 pb-4">
-                @livewire('follow-button', ['user' => $user])
+                @if(Auth::check() && Auth::user()->id !== $user->id)
+                    @livewire('follow-button', ['user' => $user])
+                @endif
             </section>
         </section>
 
