@@ -8,5 +8,8 @@
                 <p class="text-lg font-semibold">Crear un nuevo artículo</p>
             </section>
         </section>
+        @livewire('advanced-editor', [
+            'content' => 'Hola mundo'
+        ])
     </x-main>
 @endsection
