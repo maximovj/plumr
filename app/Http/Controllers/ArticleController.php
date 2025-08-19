@@ -18,7 +18,10 @@ class ArticleController extends Controller
     public function index(Request  $request, User $user)
     {
         //
-        return view('plumr.account.articles.index');
+        return view('plumr.account.articles.index', [
+            'user' => $user,
+            'articles' => $user->articles()->take(10)->get(),
+        ]);
     }
 
     /**
