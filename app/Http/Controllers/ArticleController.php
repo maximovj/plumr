@@ -29,9 +29,12 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request  $request, User $user)
     {
         //
+        return view('plumr.account.articles.create', [
+            'user' => $user,
+        ]);
     }
 
     /**
