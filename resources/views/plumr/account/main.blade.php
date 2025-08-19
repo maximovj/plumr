@@ -91,15 +91,9 @@
                     <p><i class="bi bi-people-fill"></i> <strong>{{ $followers->count() }}</strong> Seguidores</p>
                 </a>
 
-                @if(Auth::check() && Auth::user()->id !== $user->id)
-                    <p class="cursor-not-allowed opacity-50">
-                        <i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones
-                    </p>
-                @else
-                    <a href="{{ route('post.index', ['user' => $user]) }}">
-                        <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
-                    </a>
-                @endif
+                <a href="{{ route('post.index', ['user' => $user]) }}">
+                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
+                </a>
 
                 <p><i class="bi bi-perplexity"></i> <strong>1 000</strong> Artículos</p>
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>

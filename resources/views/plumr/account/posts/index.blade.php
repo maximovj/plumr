@@ -2,8 +2,9 @@
 
 @section('main')
 <x-main>
-    <section class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <section class="grid grid-cols-1 gap-6 @owner($user) md:grid-cols-2 @endowner ">
 
+        @owner($user)
         <!-- Crear nueva publicación -->
         <section class="px-4">
             @if(session('error'))
@@ -102,14 +103,23 @@
                 </form>
             </div>
         </section>
+        @endowner
 
         <!-- Mis publicaciones -->
         <section class="px-4" style="max-height: 90vh; overflow-y: auto;">
             <div class="flex justify-between items-center mb-4">
-                <h4 class="text-lg font-semibold">Mis publicaciones</h4>
                 <div class="text-sm text-gray-600 flex items-center gap-2">
                     <i class="bi bi-file-post-fill"></i> <strong>{{ $posts->count() }}</strong>
                 </div>
+                @owner($user)
+                <h4 class="text-lg font-semibold">Mis publicaciones</h4>
+                @else
+                <h4>Publicaciones de
+                    <a href="{{ route('main_account', ['user' => $user]) }}">
+                        <span class="font-bold">{{ "@".$user->username  }}</span>
+                    </a>
+                </h4>
+                @endowner
             </div>
 
             @if($posts->count() <= 0)
@@ -120,14 +130,18 @@
                 <div class="space-y-4">
                     @foreach ($posts as $post)
                         <div class="bg-white border border-gray-200 rounded-md shadow-sm p-4">
+
                             <div class="flex justify-between items-start mb-2">
                                 <h5 class="font-bold text-gray-800">{{ $post->title }}</h5>
                                 <div class="flex gap-2">
                                     <a href="{{ route('post.show', [$user, $post]) }}" class="text-gray-600 hover:text-blue-500"><i class="bi bi-chat-square-quote"></i></a>
-                                    <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded hover:bg-yellow-200 text-xs flex items-center gap-1"><i class="bi bi-pencil"></i> Editar</a>
-                                    <a href="#" class="bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 text-xs flex items-center gap-1"><i class="bi bi-trash"></i> Eliminar</a>
+                                    @owner($user)
+                                        <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded hover:bg-yellow-200 text-xs flex items-center gap-1"><i class="bi bi-pencil"></i> Editar</a>
+                                        <a href="#" class="bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 text-xs flex items-center gap-1"><i class="bi bi-trash"></i> Eliminar</a>
+                                    @endowner
                                 </div>
                             </div>
+
                             <p class="text-gray-700">{{ $post->content }}</p>
                             <div class="flex justify-between text-xs text-gray-500 mt-2">
                                 <p>Creado {{ $post->created_at->diffForHumans() }}</p>
