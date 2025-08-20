@@ -38,21 +38,6 @@
         <div class="flex flex-col lg:flex-row justify-between items-end gap-4">
 
             <!-- Perfil de usuario -->
-
-
-            {{-- <section class="hidden lg:flex flex-col items-center">
-                <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center space-y-2 transition hover:shadow-lg">
-                    <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                        class="w-20 h-20 rounded-full border-2 border-gray-200 shadow-md">
-                    <h3 class="font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</h3>
-                    <span class="text-xs text-gray-500">{{ '@'.$user->username }}</span>
-
-                    @if(Auth::check() && Auth::user()->id !== $user->id)
-                        @livewire('follow-button', ['user' => $user])
-                    @endif
-                </div>
-            </section> --}}
-
             <section class="hidden lg:flex flex-col items-center" x-data="{ open: false }">
                 <div @mouseenter="open = true" @mouseleave="open = false" class="relative">
                     <!-- Foto de usuario compacta -->
@@ -70,9 +55,6 @@
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 translate-y-2"
                         class="absolute left-1/2 transform -translate-x-1/2 w-56 bg-white rounded-xl shadow-lg border p-4 text-center z-10 animate__animated animate__fadeIn animate__fast">
-
-                        {{-- <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                            class="w-24 h-24 rounded-full border-2 border-gray-100 shadow mx-auto mb-2"> --}}
 
                         <h3 class="font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</h3>
                         <p class="text-xs text-gray-500 mb-2">{{ '@'.$user->username }}</p>
@@ -99,23 +81,6 @@
                 <!-- Usuario debajo de la foto -->
                 <span class="mt-2 text-xs text-gray-500">{{ '@'.$user->username }}</span>
             </section>
-
-
-            {{-- <section class="hidden lg:flex flex-col items-center">
-                <a href="{{ route('main_account', [$user]) }}">
-                    <div class="relative flex flex-col items-center">
-                        <div class="h-28 w-28 rounded-full p-1 bg-gradient-to-r from-green-400 to-blue-500">
-                            <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                                class="w-full h-full rounded-full border-4 border-white shadow-md">
-                        </div>
-                        <span class="mt-2 text-sm font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</span>
-                        <span class="text-xs text-gray-500">{{ '@'.$user->username }}</span>
-                        @if(Auth::check() && Auth::user()->id !== $user->id)
-                            @livewire('follow-button', ['user' => $user])
-                        @endif
-                    </div>
-                </a>
-            </section> --}}
 
             <!-- Información del artículo -->
             <section class="flex-1 space-y-1">
