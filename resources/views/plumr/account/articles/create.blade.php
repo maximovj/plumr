@@ -12,7 +12,7 @@
 
     <!-- Formularios de editores -->
     <form
-    action="{{ route('article.store', ['user' => $user]) }}"
+    action="{{ route('articles.store', ['user' => $user]) }}"
     method="POST"
     enctype="multipart/form-data"
     class="space-y-4"
