@@ -64,6 +64,7 @@ class ArticleController extends Controller
         if($request->hasFile('cover')) {
             $path = $request->file('cover')->store('articles/covers', 'public');
             $new_article->cover = $path;
+            $new_article->og_image = $path;
         }
 
         // Guardar un artículo
