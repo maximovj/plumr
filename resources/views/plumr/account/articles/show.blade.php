@@ -69,10 +69,10 @@
                         x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 translate-y-2"
-                        class="absolute -top-36 left-1/2 transform -translate-x-1/2 w-56 bg-white rounded-xl shadow-lg border p-4 text-center z-10 animate__animated animate__fadeIn animate__fast">
+                        class="absolute left-1/2 transform -translate-x-1/2 w-56 bg-white rounded-xl shadow-lg border p-4 text-center z-10 animate__animated animate__fadeIn animate__fast">
 
-                        <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                            class="w-24 h-24 rounded-full border-2 border-gray-100 shadow mx-auto mb-2">
+                        {{-- <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
+                            class="w-24 h-24 rounded-full border-2 border-gray-100 shadow mx-auto mb-2"> --}}
 
                         <h3 class="font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</h3>
                         <p class="text-xs text-gray-500 mb-2">{{ '@'.$user->username }}</p>
