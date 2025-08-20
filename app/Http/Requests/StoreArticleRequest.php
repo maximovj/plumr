@@ -39,10 +39,29 @@ class StoreArticleRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:15', 'max:160'],
+            'subtitle' => ['nullable', 'string', 'min:15'],
             'summary' => ['required', 'string', 'min:15', 'max:255'],
             'header' => ['nullable', 'string', 'min:15'],
             'content' => ['nullable', 'string', 'min:15'],
             'footer' => ['nullable', 'string', 'min:15'],
+            'author' => ['nullable', 'string', 'min:15'],
+            'profession' => ['nullable', 'string', 'min:15'],
+            'network_social' => ['nullable', 'array'],
+            'tags' => ['nullable', 'string', 'max:255'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'is_publish' => ['required', 'in:false,true'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'cover.image' => 'El archivo debe ser una imagen válida.',
+            'cover.mimes' => 'Solo se permiten imágenes JPG, JPEG o PNG.',
+            'cover.max' => 'El tamaño máximo permitido es de 5 MB.',
+        ];
+    }
+
+
+
 }
