@@ -39,6 +39,7 @@ class Article extends Model
     ];
 
     protected $casts = [
+        'is_publish' => 'bool',
         'tags' => 'array',
         'network_social' => 'array',
     ];
@@ -51,18 +52,24 @@ class Article extends Model
     ];
 
     protected $appends = [
-        'cover_url'
+        'cover_url',
+        'tags_str',
     ];
 
     public function getCoverUrlAttribute()
     {
-        $path = "articles/cover/";
-        $exists = Storage::disk('public')->exists($path.$this->cover);
+        $cover_default = 'articles/cover/cover-default.jpg';
+        $exists = Storage::disk('public')->exists($this->cover);
         if ($this->cover && $exists) {
-            return asset($path.$this->cover);
+            return asset('storage/'.$this->cover); // portada desde /storage
         }
 
-        return asset($path.'cover-default.jpg'); // portada por defecto
+        return asset('storage/'.$cover_default); // portada por defecto
+    }
+
+    public function getTagsStrAttribute()
+    {
+        return implode(',', $this->tags);
     }
 
     // Ruta amigable
