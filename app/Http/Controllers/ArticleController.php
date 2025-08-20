@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -18,7 +21,10 @@ class ArticleController extends Controller
     public function index(Request  $request, User $user)
     {
         //
-        return view('plumr.account.articles.index');
+        return view('plumr.account.articles.index', [
+            'user' => $user,
+            'articles' => $user->articles()->latest()->take(10)->get(),
+        ]);
     }
 
     /**
@@ -26,9 +32,12 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request  $request, User $user)
     {
         //
+        return view('plumr.account.articles.create', [
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -40,6 +49,36 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         //
+
+        $new_article = new Article();
+        $new_article->fill($request->validated());
+        $new_article->slug = Str::slug($new_article->title.'-'.now()->format('H:m:s:m:Y'));
+        $new_article->og_title = $new_article->title;
+        $new_article->seo_title = $new_article->title;
+        $new_article->seo_description = $new_article->summary;
+        $new_article->og_description = $new_article->summary;
+        $new_article->tags = explode(",", $new_article->tags);
+        $new_article->seo_keywords = implode(',', $new_article->tags);
+        $new_article->is_publish = $request->get('is_publish') == 'true' ? true : false;
+
+        if($request->hasFile('cover')) {
+            $path = $request->file('cover')->store('articles/covers', 'public');
+            $new_article->cover = $path;
+            $new_article->og_image = $path;
+        }
+
+        // Guardar un artículo
+        $new_article->save();
+
+        // Almacenar articulo en la tabla pivote
+        $id = DB::table('articles_users')->insert([
+            'article_id' => $new_article->id,
+            'user_id' => auth()->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route("article.index",  ['user' => auth()->user()]);
     }
 
     /**

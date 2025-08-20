@@ -92,7 +92,11 @@ Route::resource('/{user:username}/article', ArticleController::class)
         'article' => 'slug',
     ])
     ->middleware(['auth'])
-    ->except(['show']);
+    ->except(['show', 'create']);
+
+Route::get('/{user:username}/article/create', [ArticleController::class, 'create'])
+    ->middleware(['auth', 'owner'])
+    ->name('article.create');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
