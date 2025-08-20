@@ -38,6 +38,21 @@
         <div class="flex flex-col lg:flex-row justify-between items-end gap-4">
 
             <!-- Perfil de usuario -->
+
+
+            {{-- <section class="hidden lg:flex flex-col items-center">
+                <div class="bg-white rounded-xl shadow p-4 flex flex-col items-center space-y-2 transition hover:shadow-lg">
+                    <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
+                        class="w-20 h-20 rounded-full border-2 border-gray-200 shadow-md">
+                    <h3 class="font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</h3>
+                    <span class="text-xs text-gray-500">{{ '@'.$user->username }}</span>
+
+                    @if(Auth::check() && Auth::user()->id !== $user->id)
+                        @livewire('follow-button', ['user' => $user])
+                    @endif
+                </div>
+            </section> --}}
+
             <section class="hidden lg:flex flex-col items-center" x-data="{ open: false }">
                 <div @mouseenter="open = true" @mouseleave="open = false" class="relative">
                     <!-- Foto de usuario compacta -->
@@ -62,7 +77,7 @@
                         <h3 class="font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</h3>
                         <p class="text-xs text-gray-500 mb-2">{{ '@'.$user->username }}</p>
 
-                        <div class="grid grid-rows-4 grid-flow-col space-x-1 text-sm text-gray-600 mb-3">
+                        <div class="grid grid-rows-4 grid-flow-col space-x-1 text-xs text-gray-600 mb-3">
                                 <span class="font-semibold">{{ $user->followers->count() ?? 0 }}</span>
                                 <span>Seguidores</span>
                                 <span class="font-semibold">{{ $user->articles->count() ?? 0 }}</span>
@@ -85,19 +100,6 @@
                 <span class="mt-2 text-xs text-gray-500">{{ '@'.$user->username }}</span>
             </section>
 
-            {{-- <section class="hidden lg:flex flex-col items-center justify-center">
-                <a href="{{ route('main_account', [$user]) }}">
-                    <div class="flex flex-col items-center bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
-                        <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                            class="w-20 h-20 rounded-full border-4 border-gray-100 shadow">
-                        <span class="mt-2 font-semibold text-gray-800">{{ $user->profile->fullname ?? 'Nombre' }}</span>
-                        <span class="text-xs text-gray-500">{{ '@'.$user->username }}</span>
-                        @if(Auth::check() && Auth::user()->id !== $user->id)
-                                    @livewire('follow-button', ['user' => $user])
-                                @endif
-                    </div>
-                </a>
-            </section> --}}
 
             {{-- <section class="hidden lg:flex flex-col items-center">
                 <a href="{{ route('main_account', [$user]) }}">
@@ -114,22 +116,6 @@
                     </div>
                 </a>
             </section> --}}
-
-            {{-- <section class="hidden lg:flex flex-col items-center" x-data="{ show: false }">
-                <a href="{{ route('main_account', [$user]) }}"
-                @mouseenter="show = true" @mouseleave="show = false" class="relative">
-                    <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
-                        class="w-20 h-20 rounded-full border-2 border-gray-200 shadow-md transition transform hover:scale-105">
-                    <div x-show="show" class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-90">
-                        {{ $user->profile->fullname ?? 'Nombre' }}
-                    </div>
-                </a>
-                <span class="mt-1 text-xs text-gray-500">{{ '@'.$user->username }}</span>
-                @if(Auth::check() && Auth::user()->id !== $user->id)
-                        @livewire('follow-button', ['user' => $user])
-                @endif
-            </section> --}}
-
 
             <!-- Información del artículo -->
             <section class="flex-1 space-y-1">
