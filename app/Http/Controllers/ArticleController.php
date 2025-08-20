@@ -93,9 +93,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(User $user, Article $article)
     {
         //
+        return view('plumr.account.articles.show', compact('user', 'article'));
     }
 
     /**
@@ -126,6 +127,7 @@ class ArticleController extends Controller
 
         // Actualizar los datos del artículo
         $article->fill($request->validated());
+        $article->slug = $old_article->slug;
         $article->og_title = $article->title;
         $article->seo_title = $article->title;
         $article->seo_description = $article->summary;
