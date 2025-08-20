@@ -1,6 +1,10 @@
 @extends('plumr.layout.app')
 
 @section('main')
+<style>
+html { scroll-behavior: smooth; }
+</style>
+
 <x-main>
     <article class="max-w-6xl mx-auto px-4 py-6 space-y-8">
 
@@ -111,13 +115,10 @@
             </div>
         </header>
 
-        {{-- TABLA DE CONTENIDO EXPANDIBLE CON ICONOS MINI --}}
+        {{-- TABLA DE CONTENIDO EXPANDIBLE FUNCIONAL --}}
         <nav
-            x-data="{ show: false, toc: [], expanded: true }"
-            x-init="
-                toc = Array.from(document.querySelectorAll('.ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4')).map((h, i) => ({id: h.id, text: h.innerText, icon: i+1}));
-                window.addEventListener('scroll', () => show = (window.scrollY > 300));
-            "
+            x-data="{ show: false, toc: initTOC(), expanded: false }"
+            x-init="window.addEventListener('scroll', () => show = window.scrollY > 300)"
             x-show="show"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-x-[-20px]"
@@ -132,19 +133,15 @@
             <div class="flex justify-between items-center mb-2">
                 <h5 class="font-semibold text-gray-700 dark:text-gray-200" x-show="expanded">Contenido</h5>
                 <button @click="expanded = !expanded" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-sm">
-                    <template x-if="expanded">
-                        <i class="bi bi-chevron-left"></i>
-                    </template>
-                    <template x-if="!expanded">
-                        <i class="bi bi-chevron-right"></i>
-                    </template>
+                    <template x-if="expanded"><i class="bi bi-chevron-left"></i></template>
+                    <template x-if="!expanded"><i class="bi bi-chevron-right"></i></template>
                 </button>
             </div>
 
             <ul class="space-y-1">
                 <template x-for="item in toc" :key="item.id">
                     <li>
-                        <a :href=`#${item.id}`
+                        <a :href="`#${item.id}`"
                         class="flex items-center justify-start text-xs text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 p-1 rounded"
                         x-bind:title="!expanded ? item.text : ''"
                         x-text="expanded ? item.text : '•'">
@@ -153,6 +150,7 @@
                 </template>
             </ul>
         </nav>
+
 
         <!-- Redes sociales -->
         @if (!empty($article->network_social))
@@ -325,6 +323,18 @@
         </div>
 
     </article>
+
+    <script>
+        function initTOC() {
+            var headers = document.querySelectorAll('.ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4');
+            var temp = [];
+            for (var i = 0; i < headers.length; i++) {
+                if (!headers[i].id) headers[i].id = 'toc-' + i;
+                temp.push({ id: headers[i].id, text: headers[i].innerText });
+            }
+            return temp;
+        }
+    </script>
 
     <script>
         // Contador de lectura
