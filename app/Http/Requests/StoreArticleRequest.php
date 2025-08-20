@@ -62,6 +62,4 @@ class StoreArticleRequest extends FormRequest
         ];
     }
 
-
-
 }
