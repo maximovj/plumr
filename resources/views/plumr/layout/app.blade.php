@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <x-head></x-head>
+<style>[x-cloak]{ display:none !important; }</style>
 <body class="bg-gray-50 min-h-screen flex flex-col">
     <x-navbar></x-navbar>
     <x-app-error-message></x-app-error-message>
