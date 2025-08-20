@@ -49,10 +49,24 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         //
-        // Guardar un artículo
+
         $new_article = new Article();
-        $new_article->fill($request->all());
+        $new_article->fill($request->validated());
         $new_article->slug = Str::slug($new_article->title.'-'.now()->format('H:m:s:m:Y'));
+        $new_article->og_title = $new_article->title;
+        $new_article->seo_title = $new_article->title;
+        $new_article->seo_description = $new_article->summary;
+        $new_article->og_description = $new_article->summary;
+        $new_article->tags = explode(",", $new_article->tags);
+        $new_article->seo_keywords = implode(',', $new_article->tags);
+        $new_article->is_publish = $request->get('is_publish') == 'true' ? true : false;
+
+        if($request->hasFile('cover')) {
+            $path = $request->file('cover')->store('articles/covers', 'public');
+            $new_article->cover = $path;
+        }
+
+        // Guardar un artículo
         $new_article->save();
 
         // Almacenar articulo en la tabla pivote
