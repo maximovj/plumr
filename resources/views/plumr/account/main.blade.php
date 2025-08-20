@@ -88,22 +88,26 @@
             <!-- Estadísticas -->
             <div class="px-6 pb-4 flex flex-col flex-wrap gap-2 text-sm text-gray-700">
                 <a href="{{ route('account.followers', ['user' => $user]) }}">
-                    <p><i class="bi bi-people-fill"></i> <strong>{{ $followers->count() }}</strong> Seguidores</p>
+                    <p><i class="bi bi-people-fill"></i> <strong>{{ $user->followers->count() }}</strong> Seguidores</p>
                 </a>
 
                 <a href="{{ route('post.index', ['user' => $user]) }}">
                     <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
                 </a>
 
-                <a href="{{ route('article.index', ['user' => $user]) }}">
+                <a href="{{ route('articles.index', ['user' => $user]) }}">
+                    @owner($user)
                     <p><i class="bi bi-perplexity"></i> <strong>{{ $user->articles->count() }}</strong> Artículos</p>
+                    @else
+                    <p><i class="bi bi-perplexity"></i> <strong>{{ $user->articles()->where('is_publish', true)->count() }}</strong> Artículos</p>
+                    @endowner
                 </a>
 
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
 
                 <a href="{{ route('account.followings', ['user' => $user]) }}">
                     <p><i class="bi bi-people"></i>
-                    <strong>{{$followings->count() }}</strong> Seguidos
+                    <strong>{{ $user->followings->count() }}</strong> Seguidos
                     </p>
                 </a>
             </div>
