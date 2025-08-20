@@ -1,5 +1,7 @@
 <div x-data="{ height: {{ $height }} }" class="relative space-y-1">
 
+    <input type="range" x-model="height" min="0" max="840" step="5" />
+
     <!-- Toolbar Quill -->
     <div wire:ignore id="toolbar-{{ $editorId }}" class="flex flex-wrap gap-2 p-2 bg-gray-100 rounded border shadow-sm">
         <!-- Encabezados -->
@@ -73,12 +75,9 @@
 
 </div>
 
-
 <script>
 document.addEventListener('livewire:load', function () {
     Quill.register('modules/imageResize', QuillResizeModule);
-
-
 
     // Inicializar Quill con toolbar personalizada
     var toolbarOptions = [
@@ -127,14 +126,16 @@ document.addEventListener('livewire:load', function () {
             let file = input.files[0];
             let reader = new FileReader();
             reader.onload = () => {
-                Livewire.emit('uploadImage', reader.result);
+                Livewire.emit('uploadImage', reader.result, '{{ $editorId }}');
             };
             reader.readAsDataURL(file);
         };
     });
 
     // Recibir URL de imagen subida y agregar a Quill
-    Livewire.on('imageUploaded', (url) => {
+    Livewire.on('imageUploaded', (url,  editorId) => {
+        if (editorId !== '{{ $editorId }}') return;
+
         let range = quill.getSelection();
         quill.insertEmbed(range.index, 'image', url);
     });

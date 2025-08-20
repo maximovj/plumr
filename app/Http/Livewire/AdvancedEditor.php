@@ -36,18 +36,20 @@ class AdvancedEditor extends Component
         }
     }
 
-    public function handleImageUpload($fileBase64)
+    public function handleImageUpload($fileBase64, $editorId)
     {
-        // Convertir base64 a archivo
-        $data = explode(',', $fileBase64);
-        $decoded = base64_decode($data[1]);
+        if (strval($editorId) == strval($this->editorId)) {
+            // Convertir base64 a archivo
+            $data = explode(',', $fileBase64);
+            $decoded = base64_decode($data[1]);
 
-        $fileName = 'quill/toolbar/image/' . uniqid() . '.png';
-        Storage::disk('public')->put($fileName, $decoded);
+            $fileName = 'quill/toolbar/image/' . uniqid() . '.png';
+            Storage::disk('public')->put($fileName, $decoded);
 
-        // Retornar URL pública para insertar en Quill
-        $url = asset('storage/' . $fileName);
-        $this->emit('imageUploaded', $url);
+            // Retornar URL pública para insertar en Quill
+            $url = asset('storage/' . $fileName);
+            $this->emit('imageUploaded', $url, $editorId);
+        }
     }
 
     public function render()
