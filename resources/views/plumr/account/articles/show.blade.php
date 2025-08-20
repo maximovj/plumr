@@ -365,44 +365,6 @@ class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gra
             </div>
         </header>
 
-        <hr>
-
-        <!-- Header personalizado -->
-        @if (!empty($article->header))
-        <div class="prose prose-lg max-w-none mb-6 p-4 bg-gray-50 rounded shadow-sm">
-            <div class="ql-snow">
-                <div class="ql-editor" contenteditable="false">{!! $article->header !!}</div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Contenido principal -->
-        <section class="prose prose-lg max-w-none mb-8 text-gray-800">
-            <div class="ql-snow">
-                <div class="ql-editor" contenteditable="false">{!! $article->content !!}</div>
-            </div>
-        </section>
-
-        <!-- Footer personalizado -->
-        @if (!empty($article->footer))
-        <footer class="prose max-w-none pt-6 mt-6 text-gray-700">
-            <div class="ql-snow">
-                <div class="ql-editor" contenteditable="false">{!! $article->footer !!}</div>
-            </div>
-        </footer>
-        @endif
-
-        <hr>
-
-        <!-- Tags -->
-        @if (!empty($article->tags))
-        <div class="mt-6 flex flex-wrap gap-2">
-            @foreach ($article->tags as $tag)
-            <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">{{ $tag }}</span>
-            @endforeach
-        </div>
-        @endif
-
         <!-- Redes sociales -->
         @if (!empty($article->network_social))
         <div class="mt-6 flex flex-wrap gap-3">
@@ -414,7 +376,51 @@ class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gra
         </div>
         @endif
 
-        <hr>
+        <div class="flex items-center my-6">
+            <hr class="flex-grow border-t border-gray-300">
+            <span class="mx-3 text-gray-500"><i class="bi bi-star"></i></span>
+            <hr class="flex-grow border-t border-gray-300">
+        </div>
+
+        <!-- Header personalizado -->
+        @if (!empty($article->header))
+        <div class="prose prose-lg max-w-none mb-6 p-4 bg-gray-50 text-gray-800">
+            <div class="ql-snow">
+                <div class="ql-editor" contenteditable="false">{!! $article->header !!}</div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Contenido principal -->
+        <section class="prose prose-lg max-w-none mb-6 p-4 bg-gray-50 text-gray-800">
+            <div class="ql-snow">
+                <div class="ql-editor" contenteditable="false">{!! $article->content !!}</div>
+            </div>
+        </section>
+
+        <!-- Footer personalizado -->
+        @if (!empty($article->footer))
+        <footer class="prose prose-lg max-w-none mb-6 p-4 bg-gray-50 text-gray-800">
+            <div class="ql-snow">
+                <div class="ql-editor" contenteditable="false">{!! $article->footer !!}</div>
+            </div>
+        </footer>
+        @endif
+
+        <div class="flex items-center my-6">
+            <hr class="flex-grow border-t border-gray-300">
+            <span class="mx-3 text-gray-500"><i class="bi bi-star-fill"></i></span>
+            <hr class="flex-grow border-t border-gray-300">
+        </div>
+
+        <!-- Tags -->
+        @if (!empty($article->tags))
+        <div class="mt-6 flex flex-wrap gap-2">
+            @foreach ($article->tags as $tag)
+            <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">{{ $tag }}</span>
+            @endforeach
+        </div>
+        @endif
 
         @php
         $shareUrl = urlencode(url()->current());
