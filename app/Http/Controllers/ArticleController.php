@@ -9,6 +9,7 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -21,9 +22,15 @@ class ArticleController extends Controller
     public function index(Request  $request, User $user)
     {
         //
+        if($user->id == auth()->user()->id) {
+            $articles = $user->articles()->latest('updated_at')->take(10)->get();
+        }else {
+            $articles = $user->articles()->where('is_publish', true)->latest('published_at')->take(10)->get();
+        }
+
         return view('plumr.account.articles.index', [
             'user' => $user,
-            'articles' => $user->articles()->latest()->take(10)->get(),
+            'articles' => $articles,
         ]);
     }
 
@@ -48,8 +55,7 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        //
-
+        // Crear un nuevo artículo
         $new_article = new Article();
         $new_article->fill($request->validated());
         $new_article->slug = Str::slug($new_article->title.'-'.now()->format('H:m:s:m:Y'));
@@ -62,7 +68,7 @@ class ArticleController extends Controller
         $new_article->is_publish = $request->get('is_publish') == 'true' ? true : false;
 
         if($request->hasFile('cover')) {
-            $path = $request->file('cover')->store('articles/covers', 'public');
+            $path = $request->file('cover')->store('articles/cover', 'public');
             $new_article->cover = $path;
             $new_article->og_image = $path;
         }
@@ -78,7 +84,7 @@ class ArticleController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route("article.index",  ['user' => auth()->user()]);
+        return redirect()->route('articles.index', ['user' => auth()->user()]);
     }
 
     /**
@@ -98,9 +104,13 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(User $user, Article $article)
     {
         //
+        return view("plumr.account.articles.edit", [
+            'user' => $user,
+            'article' => $article,
+        ]);
     }
 
     /**
@@ -110,9 +120,33 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, User $user, Article $article)
     {
-        //
+        $old_article = (object) $article->toArray(); // Guardar una copia del artículo antiguo
+
+        // Actualizar los datos del artículo
+        $article->fill($request->validated());
+        $article->og_title = $article->title;
+        $article->seo_title = $article->title;
+        $article->seo_description = $article->summary;
+        $article->og_description = $article->summary;
+        $article->tags = explode(",", $article->tags);
+        $article->seo_keywords = implode(',', $article->tags);
+
+        if($request->hasFile('cover')) {
+
+            // Eliminar portada del artículo antiguo
+            if($old_article->cover && Storage::disk('public')->exists($old_article->cover)) {
+                Storage::disk('public')->delete($old_article->cover);
+            }
+
+            $path = $request->file('cover')->store('articles/cover', 'public');
+            $article->cover = $path;
+            $article->og_image = $path;
+        }
+
+        $article->save();
+        return redirect()->route('articles.index', [$user]);
     }
 
     /**
