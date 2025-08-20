@@ -511,6 +511,30 @@ class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gra
         </div>
         @endowner
 
+        <!-- Botón "Ir al inicio" minimalista -->
+        <div x-data="{ show: false }"
+            x-init="window.addEventListener('scroll', () => show = (window.scrollY > 300))"
+            class="fixed bottom-6 right-6 z-50">
+
+            <button x-show="show"
+                    @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+                    x-transition:enter="animate__animated animate__fadeInUp"
+                    x-transition:leave="animate__animated animate__fadeOutDown"
+                    class="relative group w-14 h-14 flex items-center justify-center rounded-full
+                        bg-white shadow text-gray-700 animate__animated animate__pulse hover:shadow-md
+                        hover:bg-opacity-100 transition-all duration-300 transform hover:scale-110">
+
+                <!-- Icono -->
+                <i class="bi bi-arrow-up text-2xl"></i>
+
+                <!-- Tooltip -->
+                <span class="absolute -top-3 right-1/2 translate-x-1/2 bg-gray-800 text-white text-xs px-3 py-1 rounded-lg
+                            opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-lg">
+                    Ir al inicio
+                </span>
+            </button>
+        </div>
+
     </article>
 </x-main>
 @endsection
