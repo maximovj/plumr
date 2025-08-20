@@ -86,7 +86,7 @@ Route::get('/{user:username}/post/{post:url_access}', [PostController::class, 's
     ->name('post.show');
 
 // Ruta para artículos
-Route::resource('/{user:username}/article', ArticleController::class)
+Route::resource('{user:username}/articles', ArticleController::class)
     ->scoped([
         'user' => 'username',
         'article' => 'slug',
@@ -94,9 +94,12 @@ Route::resource('/{user:username}/article', ArticleController::class)
     ->middleware(['auth'])
     ->except(['show', 'create']);
 
-Route::get('/{user:username}/article/create', [ArticleController::class, 'create'])
+Route::get('{user:username}/articles/create', [ArticleController::class, 'create'])
     ->middleware(['auth', 'owner'])
-    ->name('article.create');
+    ->name('articles.create');
+
+Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
+    ->name('articles.show');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
