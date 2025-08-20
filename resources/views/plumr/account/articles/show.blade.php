@@ -385,12 +385,14 @@ class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gra
 
         <!-- Footer personalizado -->
         @if (!empty($article->footer))
-        <footer class="prose max-w-none border-t pt-6 mt-6 text-gray-700">
+        <footer class="prose max-w-none pt-6 mt-6 text-gray-700">
             <div class="ql-snow">
                 <div class="ql-editor" contenteditable="false">{!! $article->footer !!}</div>
             </div>
         </footer>
         @endif
+
+        <hr>
 
         <!-- Tags -->
         @if (!empty($article->tags))
@@ -411,6 +413,8 @@ class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gra
             @endforeach
         </div>
         @endif
+
+        <hr>
 
         @php
         $shareUrl = urlencode(url()->current());
