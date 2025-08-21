@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <x-head></x-head>
+<style>[x-cloak]{ display:none !important; }</style>
 <body class="bg-gray-50 min-h-screen flex flex-col">
     <x-navbar></x-navbar>
     <x-app-error-message></x-app-error-message>
@@ -12,5 +13,6 @@
     <script src="https://cdn.jsdelivr.net/gh/scrapooo/quill-resize-module@1.0.2/dist/quill-resize-module.js"></script>
 
     @livewireScripts
+    @livewire('confirm-delete-model-class')
 </body>
 </html>

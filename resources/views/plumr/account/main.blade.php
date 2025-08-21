@@ -112,7 +112,7 @@
                 </a>
             </div>
 
-            <!-- Seguidores Livewire -->
+            <!-- Botón de seguir -->
             <section class="px-6 pb-4">
                 @if(Auth::check() && Auth::user()->id !== $user->id)
                     @livewire('follow-button', ['user' => $user])

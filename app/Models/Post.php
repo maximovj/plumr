@@ -42,6 +42,12 @@ class Post extends Model
         return 'url_access';
     }
 
+    // Esta relación será usado por componente livewire `ConfirmDeleteModelClass`
+    public function owner()
+    {
+        return $this->belongsToMany(User::class, 'users_posts');
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_posts');

@@ -93,9 +93,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(User $user, Article $article)
     {
         //
+        return view('plumr.account.articles.show', compact('user', 'article'));
     }
 
     /**
@@ -126,6 +127,7 @@ class ArticleController extends Controller
 
         // Actualizar los datos del artículo
         $article->fill($request->validated());
+        $article->slug = $old_article->slug;
         $article->og_title = $article->title;
         $article->seo_title = $article->title;
         $article->seo_description = $article->summary;
@@ -138,14 +140,26 @@ class ArticleController extends Controller
             // Eliminar portada del artículo antiguo
             if($old_article->cover && Storage::disk('public')->exists($old_article->cover)) {
                 Storage::disk('public')->delete($old_article->cover);
+                toastr()->addInfo('Portada anterior eliminado correctamente');
             }
 
             $path = $request->file('cover')->store('articles/cover', 'public');
             $article->cover = $path;
             $article->og_image = $path;
+            toastr()->addSuccess('Portada modificado correctamente');
         }
 
         $article->save();
+        toastr()->addSuccess('Artículo modificado correctamente');
+
+        sweetalert()
+        ->showConfirmButton(
+           true,
+            "Enterado",
+            "btn btn-success",
+            "Enterado"
+        )
+        ->addSuccess('Artículo modificado correctamente');
         return redirect()->route('articles.index', [$user]);
     }
 
