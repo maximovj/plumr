@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ConfirmDeleteModelClass extends Component
 {
@@ -36,20 +37,24 @@ class ConfirmDeleteModelClass extends Component
 
         $model = $this->modelClass::find($this->modelId);
 
-        if ($model) {
-            $model->delete();
-            toastr()->addSuccess('Registro eliminado correctamente');
+        if ($model && $user = $model->owner->first()) {
+            if(Auth::check() && Auth::user()->id ==  $user->id) {
+                $model->delete();
+                toastr()->addSuccess('Registro eliminado correctamente');
 
-            sweetalert()
-            ->showConfirmButton(
-            true,
-                "Enterado",
-                "btn btn-success",
-                "Enterado"
-            )
-            ->addSuccess('Registro eliminado correctamente');
+                sweetalert()
+                ->showConfirmButton(
+                true,
+                    "Enterado",
+                    "btn btn-success",
+                    "Enterado"
+                )
+                ->addSuccess('Registro eliminado correctamente');
 
-            //session()->flash('success', 'Registro eliminado ✅');
+                //session()->flash('success', 'Registro eliminado ✅');
+            }
+        } else {
+            toastr()->addError('Registro no eliminado acción prohibida');
         }
 
         $this->showModal = false;

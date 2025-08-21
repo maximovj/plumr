@@ -78,4 +78,10 @@ class Article extends Model
         return 'slug';
     }
 
+    // Esta relación será usado por componente livewire `ConfirmDeleteModelClass`
+    public function owner()
+    {
+        return $this->belongsToMany(User::class, 'articles_users');
+    }
+
 }
