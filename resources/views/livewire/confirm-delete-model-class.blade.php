@@ -31,11 +31,11 @@
     <!-- Overlay -->
     <div x-show="open"
          x-ref="overlay"
-         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 animate__animated animate__fadeIn">
+         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 animate__animated animate__faster animate__fadeIn">
 
         <!-- Modal -->
         <div x-ref="modal"
-             class="bg-white rounded-lg shadow-lg p-6 w-96 animate__animated animate__zoomIn">
+             class="bg-white rounded-lg shadow-lg p-6 w-96 animate__animated animate__faster animate__zoomIn">
 
             <div class="flex items-center mb-4">
                 <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-2xl mr-2"></i>

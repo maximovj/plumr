@@ -86,6 +86,7 @@
                                         </button>
 
                                         {{-- @livewire('confirm-delete-model', [
+                                            'user' => $user,
                                             'model' => $article,
                                             'redirect' => route('articles.index', [$user]),
                                             'title' => '¿Eliminar artículo?',

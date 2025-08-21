@@ -42,14 +42,14 @@
     <!-- Modal -->
     <div x-show="open || closing"
          x-ref="overlay"
-         class="fixed inset-0 flex items-center justify-center z-50 animate__animated animate__fadeIn">
+         class="fixed inset-0 flex items-center justify-center z-50 animate__animated animate__faster animate__fadeIn">
 
         <!-- Fondo negro -->
         <div class="absolute inset-0 bg-black bg-opacity-50"></div>
 
         <!-- Contenedor del modal -->
         <div x-ref="modal"
-             class="bg-white rounded-lg shadow-lg p-6 w-96 animate__animated animate__zoomIn animate__bounceIn z-10">
+             class="bg-white rounded-lg shadow-lg p-6 w-96 animate__animated animate__faster animate__zoomIn animate__bounceIn z-10">
 
             <div class="flex items-center mb-4">
                 <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-2xl mr-2"></i>

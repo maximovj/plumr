@@ -54,7 +54,7 @@ class ConfirmDeleteModelClass extends Component
                 //session()->flash('success', 'Registro eliminado ✅');
             }
         } else {
-            toastr()->addError('Registro no eliminado acción prohibida');
+            toastr()->addError('Registro no eliminado, acción prohibida');
         }
 
         $this->showModal = false;
