@@ -102,17 +102,16 @@ document.addEventListener('livewire:load', function () {
 
     quill.root.innerHTML = @json($content);
 
-    // Detectar cambios y enviar a Livewire
     quill.on('text-change', function() {
+        // Actualiza propiedad 'content' del componente Livewire
+        @this.set('content', quill.root.innerHTML);
         @this.content = quill.root.innerHTML;
 
-        // Emitimos un evento global para Alpine
-        //Livewire.emit('editorUpdated', { editorId: {{ $editorId }}, _content_: quill.root.innerHTML });
-
+        // Emitimos un evento global para que Alpine u otros componentes lo escuchen
         Livewire.emit('quillContentUpdated', '{{ $editorId }}', quill.root.innerHTML);
 
-        document.querySelector("input[name='{{ $fieldName }}']").value =
-            quill.root.innerHTML;
+        // Opcional: actualiza input oculto para envío en forms
+        document.querySelector("input[name='{{ $fieldName }}']").value = quill.root.innerHTML;
     });
 
     // Interceptar la inserción de imágenes
@@ -130,6 +129,12 @@ document.addEventListener('livewire:load', function () {
             };
             reader.readAsDataURL(file);
         };
+    });
+
+
+    // Recibir contenido desde un componente padre usando ()
+    Livewire.on('updateQuillContent', content => {
+        quill.root.innerHTML = content;
     });
 
     // Recibir URL de imagen subida y agregar a Quill
