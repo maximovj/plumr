@@ -26,79 +26,79 @@
                 <h4 class="text-lg font-semibold">Crear una nueva publicación</h4>
             </div>
 
-            <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md">
-                <form action="{{ route('post.store', ['user' => $user]) }}" method="POST" class="p-4 space-y-4">
+            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-6">
+                <form action="{{ route('post.store', ['user' => $user]) }}" method="POST" class="space-y-5">
                     @csrf @method('POST')
 
                     <!-- Título -->
-                    <div class="flex flex-col gap-1">
-                        <label class="text-sm text-gray-700" for="title">Título</label>
-                        <input type="text" name="title" value="{{ old('title') }}" id="title"
-                               placeholder="Ingresa tu Título" autocomplete="off"
-                               class="rounded-md p-2 shadow-sm bg-white border {{ e_class('title') }}" />
-                        @error('title') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700">Título</label>
+                        <input type="text" name="title" id="title" value="{{ old('title') }}"
+                               placeholder="Ingresa tu Título"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2 @error('title') border-red-500 @enderror">
+                        @error('title') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Contenido -->
-                    <div class="flex flex-col gap-1">
-                        <label class="text-sm text-gray-700" for="content">Contenido</label>
-                        <textarea name="content" id="content" placeholder="Ingresa tu contenido" autocomplete="off"
-                                  class="rounded-md p-2 shadow-sm bg-white border {{ e_class('content') }}">{{ old('content') }}</textarea>
-                        @error('content') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
+                    <div>
+                        <label for="content" class="block text-sm font-medium text-gray-700">Contenido</label>
+                        <textarea name="content" id="content" placeholder="Ingresa tu contenido"
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2 @error('content') border-red-500 @enderror">{{ old('content') }}</textarea>
+                        @error('content') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Estados emocionales -->
-                    <div x-data="{ status: [] }" class="flex flex-col gap-1">
-                        <label class="text-sm text-gray-700">Estados emocionales</label>
+                    <div x-data="{ status: [] }">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Estados emocionales</label>
                         <div class="flex flex-wrap gap-2 mb-2">
-                            <template x-for="(state, index) in status" :key="index">
-                                <span class="bg-gray-200 px-2 py-1 rounded-full text-xs flex items-center">
-                                    <span x-text="state"></span>
-                                    <button type="button" class="ml-1 text-red-500 font-bold" @click="status.splice(index, 1)">×</button>
+                            <template x-for="(s, i) in status" :key="i">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs flex items-center gap-1">
+                                    <span x-text="s"></span>
+                                    <button type="button" @click="status.splice(i, 1)" class="text-red-500 font-bold">×</button>
                                 </span>
                             </template>
                         </div>
                         <input type="text" placeholder="Escribe y presiona Enter"
-                               class="rounded-md p-2 shadow-sm bg-white border"
+                               class="w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2"
                                @keydown.enter.prevent="
                                     if ($event.target.value.trim() !== '') {
                                         status.push($event.target.value.trim());
                                         $event.target.value = '';
                                     }
                                ">
-                        <template x-for="state in status" hidden>
-                            <input type="hidden" name="status[]" :value="state">
+                        <template x-for="s in status" hidden>
+                            <input type="hidden" name="status[]" :value="s">
                         </template>
                     </div>
 
                     <!-- Etiquetas -->
-                    <div x-data="{ tags: [] }" class="flex flex-col gap-1">
-                        <label class="text-sm text-gray-700">Etiquetas</label>
+                    <div x-data="{ tags: [] }">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Etiquetas</label>
                         <div class="flex flex-wrap gap-2 mb-2">
-                            <template x-for="(tag, index) in tags" :key="index">
-                                <span class="bg-gray-200 px-2 py-1 rounded-full text-xs flex items-center">
-                                    <span x-text="tag"></span>
-                                    <button type="button" class="ml-1 text-red-500 font-bold" @click="tags.splice(index, 1)">×</button>
+                            <template x-for="(t, i) in tags" :key="i">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs flex items-center gap-1">
+                                    <span x-text="t"></span>
+                                    <button type="button" @click="tags.splice(i, 1)" class="text-red-500 font-bold">×</button>
                                 </span>
                             </template>
                         </div>
                         <input type="text" placeholder="Escribe y presiona Enter"
-                               class="rounded-md p-2 shadow-sm bg-white border"
+                               class="w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
                                @keydown.enter.prevent="
                                     if ($event.target.value.trim() !== '') {
                                         tags.push($event.target.value.trim());
                                         $event.target.value = '';
                                     }
                                ">
-                        <template x-for="tag in tags" hidden>
-                            <input type="hidden" name="tags[]" :value="tag">
+                        <template x-for="t in tags" hidden>
+                            <input type="hidden" name="tags[]" :value="t">
                         </template>
                     </div>
 
                     <!-- Botón crear -->
                     <button type="submit"
-                            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition">
-                        <i class="bi bi-save"></i> Crear artículo
+                            class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition flex items-center justify-center gap-2">
+                        <i class="bi bi-save"></i> Crear publicación
                     </button>
                 </form>
             </div>
