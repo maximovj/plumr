@@ -140,14 +140,17 @@ class ArticleController extends Controller
             // Eliminar portada del artículo antiguo
             if($old_article->cover && Storage::disk('public')->exists($old_article->cover)) {
                 Storage::disk('public')->delete($old_article->cover);
+                toastr()->addInfo('Portada anterior eliminado correctamente');
             }
 
             $path = $request->file('cover')->store('articles/cover', 'public');
             $article->cover = $path;
             $article->og_image = $path;
+            toastr()->addSuccess('Portada modificado correctamente');
         }
 
         $article->save();
+        toastr()->addSuccess('Artículo modificado correctamente');
         return redirect()->route('articles.index', [$user]);
     }
 
