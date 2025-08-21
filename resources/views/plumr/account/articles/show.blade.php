@@ -106,9 +106,13 @@ html { scroll-behavior: smooth; }
                     <a href="{{ route('articles.edit', [$user, $article]) }}" class="flex items-center gap-2 bg-yellow-100 text-yellow-700 px-3 py-1 rounded hover:bg-yellow-200 transition">
                         <i class="bi bi-pencil"></i> Editar
                     </a>
-                    <a href="#" class="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition">
-                        <i class="bi bi-trash"></i> Eliminar
-                    </a>
+
+                    @livewire('confirm-delete-model', [
+                        'model' => $article,
+                        'redirect' => route('articles.index', [$user]),
+                        'title' => '¿Eliminar artículo?',
+                        'message' => 'Este artículo se eliminará permanentemente.'
+                    ], key($article->id))
                     @endowner
                 </section>
 

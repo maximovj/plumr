@@ -70,10 +70,13 @@
                                            class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded hover:bg-yellow-200 text-sm flex items-center gap-2 transform transition hover:scale-105 whitespace-nowrap">
                                            <i class="bi bi-pencil"></i> Editar
                                         </a>
-                                        <a href="#"
-                                           class="bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 text-sm flex items-center gap-2 transform transition hover:scale-105 whitespace-nowrap">
-                                           <i class="bi bi-trash"></i> Eliminar
-                                        </a>
+
+                                        @livewire('confirm-delete-model', [
+                                            'model' => $article,
+                                            'redirect' => route('articles.index', [$user]),
+                                            'title' => '¿Eliminar artículo?',
+                                            'message' => 'Este artículo se eliminará permanentemente.'
+                                        ], key($article->slug.$article->id))
                                     </div>
                                 @endowner
                             </div>
