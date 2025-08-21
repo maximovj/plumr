@@ -4,25 +4,22 @@
         close(type) {
             this.closing = true;
 
-            // Animación del overlay
+            // Animaciones opcionales (solo para visual)
             this.$refs.overlay.classList.remove('animate__fadeIn');
-            this.$refs.overlay.classList.add('animate__fadeOut');
-
-            // Animación del modal según tipo de cierre
             this.$refs.modal.classList.remove('animate__zoomIn','animate__bounceIn','animate__slideInDown');
+
             if(type === 'cancel') {
                 this.$refs.modal.classList.add('animate__slideOutDown');
             } else if(type === 'confirm') {
                 this.$refs.modal.classList.add('animate__zoomOut','animate__fadeOut');
             }
 
-            // Espera la animación antes de cerrar
-            setTimeout(() => {
-                this.open = false;
-                this.closing = false;
-                this.$refs.modal.classList.remove('animate__zoomOut','animate__fadeOut','animate__slideOutDown');
-                this.$refs.overlay.classList.remove('animate__fadeOut');
-            }, 300);
+            // Cerrar inmediatamente
+            this.open = false;
+            this.closing = false;
+
+            this.$refs.modal.classList.remove('animate__zoomOut','animate__fadeOut','animate__slideOutDown');
+            this.$refs.overlay.classList.remove('animate__fadeOut');
         }
     }"
     x-init="$watch('open', value => @this.set('showModal', value))"

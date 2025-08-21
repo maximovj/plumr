@@ -16,13 +16,12 @@
                 this.$refs.modal.classList.add('animate__zoomOut','animate__fadeOut');
             }
 
-            // Espera la animación antes de cerrar
-            setTimeout(() => {
-                this.open = false;
-                this.closing = false;
-                this.$refs.modal.classList.remove('animate__zoomOut','animate__fadeOut','animate__slideOutDown');
-                this.$refs.overlay.classList.remove('animate__fadeOut');
-            }, 300);
+            // Cerrar inmediatamente
+            this.open = false;
+            this.closing = false;
+
+            this.$refs.modal.classList.remove('animate__zoomOut', 'animate__fadeOut', 'animate__slideOutDown');
+            this.$refs.overlay.classList.remove('animate__fadeOut');
         }
     }"
     x-init="
