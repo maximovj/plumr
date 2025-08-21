@@ -13,5 +13,6 @@
     <script src="https://cdn.jsdelivr.net/gh/scrapooo/quill-resize-module@1.0.2/dist/quill-resize-module.js"></script>
 
     @livewireScripts
+    @livewire('confirm-delete-model-class')
 </body>
 </html>

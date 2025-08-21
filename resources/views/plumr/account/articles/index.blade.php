@@ -71,12 +71,26 @@
                                            <i class="bi bi-pencil"></i> Editar
                                         </a>
 
-                                        @livewire('confirm-delete-model', [
+                                        <button
+                                            x-data
+                                            x-on:click="Livewire.emit('confirmDeleteModelClass',
+                                                'App\\Models\\Article', // Clase del modelo
+                                                {{ $article->id }},     // ID del registro
+                                                '{{ route('articles.index', $user) }}', // Redirect (opcional)
+                                                '¿Eliminar artículo?',  // Título (opcional)
+                                                'Este artículo se eliminará permanentemente.' // Mensaje (opcional)
+                                            )"
+                                            class="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition"
+                                        >
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+
+                                        {{-- @livewire('confirm-delete-model', [
                                             'model' => $article,
                                             'redirect' => route('articles.index', [$user]),
                                             'title' => '¿Eliminar artículo?',
                                             'message' => 'Este artículo se eliminará permanentemente.'
-                                        ], key($article->slug.$article->id))
+                                        ], key($article->slug.$article->id)) --}}
                                     </div>
                                 @endowner
                             </div>
