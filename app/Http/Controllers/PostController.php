@@ -55,9 +55,9 @@ class PostController extends Controller
             $new_post->descripcion = 'Sin descripción';
             $new_post->url_access = Str::slug($fields['title'].'-'.now());
             $new_post->content = $fields['content'];
-            $new_post->status = json_encode($fields['status']);
-            $new_post->tags = json_encode($fields['tags']);
-            $new_post->links = json_encode([]);
+            $new_post->status = $fields['status'] ?? [];
+            $new_post->tags = $fields['tags'] ?? [];
+            $new_post->links = $fields['links'] ?? [];
             $new_post->save();
 
             UserPost::create([
