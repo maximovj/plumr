@@ -151,6 +151,15 @@ class ArticleController extends Controller
 
         $article->save();
         toastr()->addSuccess('Artículo modificado correctamente');
+
+        sweetalert()
+        ->showConfirmButton(
+           true,
+            "Enterado",
+            "btn btn-success",
+            "Enterado"
+        )
+        ->addSuccess('Artículo modificado correctamente');
         return redirect()->route('articles.index', [$user]);
     }
 
