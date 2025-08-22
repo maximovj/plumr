@@ -83,7 +83,30 @@
                                 class="w-full rounded-md p-3 bg-gray-100 border border-gray-200 text-gray-700 shadow-sm" />
                         </div>
 
-                        {{-- Links y tags --}}
+                        {{-- Estados,  Enlaces y Etiquetas --}}
+                        {{-- @if(!empty($post->status))
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                @foreach($post->status as $emotion)
+                                    <span class="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium
+                                                hover:shadow hover:scale-105 transition cursor-default bg-gray-100 text-gray-800">
+                                        <i class="bi bi-emoji-neutral"></i>
+                                        {{ $emotion }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif --}}
+
+                        @if(!empty($post->status))
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                @foreach($post->status as $emotion)
+                                    <span class="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border-2 border-gradient-r from-indigo-400 via-pink-400 to-yellow-400 text-gray-700 bg-white/30 backdrop-blur-sm hover:scale-105 transition cursor-default">
+                                        <i class="bi bi-emoji-neutral"></i>
+                                        {{ $emotion }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
+
                         @if(!empty($post->links))
                             <div class="flex gap-3 mt-2">
                                 @foreach($post->links as $link)
