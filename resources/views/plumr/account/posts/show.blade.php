@@ -82,6 +82,32 @@
                                 class="w-full rounded-md p-3 bg-gray-100 border border-gray-200 text-gray-700 shadow-sm" />
                         </div>
 
+                        {{-- Links y tags --}}
+                        @if(!empty($post->links))
+                            <div class="flex gap-3 mt-2">
+                                @foreach($post->links as $link)
+                                    <a href="{{ $link }}" target="_blank"
+                                    class="relative group w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-full hover:border-indigo-500 text-gray-600 hover:text-indigo-600 transition text-xl"
+                                    title="{{ $link }}">
+                                        <i class="bi bi-link"></i>
+                                        <span class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                            {{ $link }}
+                                        </span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if(!empty($post->tags))
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($post->tags as $tag)
+                                <span class="flex items-center gap-1 bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium  hover:shadow hover:bg-gray-200 transition hover:scale-105 cursor-pointer">
+                                    <i class="bi bi-tag-fill"></i> {{ $tag }}
+                                </span>
+                            @endforeach
+                        </div>
+                        @endif
+
                         <div x-data="{ progress: 0 }" class="relative w-full">
 
                             {{-- Barra de progreso --}}
@@ -172,7 +198,6 @@
                     </div>
                 </div>
             </section>
-
 
             {{-- Columna derecha: botones de compartir --}}
             <aside class="space-y-6">
