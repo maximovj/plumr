@@ -73,7 +73,7 @@ Route::get('/{user:username}/followings', FollowingsController::class)
     ->name('account.followings');
 
 // Rutas para publicaciones
-Route::resource('/{user:username}/post', PostController::class)
+Route::resource('/{user:username}/posts', PostController::class)
     ->scoped([
         'user' => 'username',
         'post' => 'url_access',
@@ -82,8 +82,8 @@ Route::resource('/{user:username}/post', PostController::class)
     ->except(['show']);
 
 // Ruta pública para mostrar un post
-Route::get('/{user:username}/post/{post:url_access}', [PostController::class, 'show'])
-    ->name('post.show');
+Route::get('/{user:username}/posts/{post:url_access}', [PostController::class, 'show'])
+    ->name('posts.show');
 
 // Ruta para artículos
 Route::resource('{user:username}/articles', ArticleController::class)

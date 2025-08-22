@@ -51,7 +51,7 @@
                             </a>
                         @endif
 
-                        <a href="{{ route("post.show", [$post->author[0]->username, $post]) }}"><i class="bi bi-chat-square-quote"></i></a>
+                        <a href="{{ route("posts.show", [$post->author[0]->username, $post]) }}"><i class="bi bi-chat-square-quote"></i></a>
                     </section>
 
                     <h1 class="font-bold">{{ $post->title }}</h1>

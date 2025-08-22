@@ -65,7 +65,7 @@ class PostController extends Controller
                 'post_id' => $new_post->id,
             ]);
 
-            return redirect()->route('post.index', [
+            return redirect()->route('posts.index', [
                 'user' => $user,
             ])->with('success', 'Publicación creada con éxito.');
 
