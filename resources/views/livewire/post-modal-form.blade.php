@@ -74,9 +74,9 @@
                     <div x-data>
                         <button
                         type="button"
-                        class="bg-indigo-700 hover:bg-indigo-600 px-3 py-2 rounded text-white"
-                        x-on:click="Livewire.emit('updateQuillContent', 'Hola mi nombre es {{ Auth::user()->profile->fullname ?? '' }}, sabes estoy pensando en lo siguiente: ')">
-                            Di quien soy
+                        class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-2 rounded-lg shadow transition text-xs"
+                        x-on:click="Livewire.emit('updateQuillContent', 'Hola mi nombre es {{ Auth::user()->profile->fullname ?? '' }}, sabes estoy pensando en lo siguiente: <br/> <h1>Mi pensamiento</h1> ')">
+                            Estoy pensando
                         </button>
                     </div>
 
@@ -92,12 +92,18 @@
                     <!-- Enlaces externos -->
                     <x-input-social-links name="links" label="Enlaces externos" :networks="['Ingresa tu enlace externo', 'Ingresa tu enlace externo', 'Ingresa tu enlace externo']" />
 
-                    <!-- Botón submit -->
-                    <button type="submit"
-                        class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition flex items-center justify-center gap-2">
-                        <i class="bi bi-save"></i>
-                        {{ $mode === 'create' ? 'Crear publicación' : 'Actualizar publicación' }}
-                    </button>
+                    <div x-data="{ mode: '{{ $mode }}' }">
+                        <!-- Botón submit dinámico con Alpine -->
+                        <button type="submit"
+                            :class="{
+                                'w-full text-white font-semibold py-2 px-4 rounded-md transition flex items-center justify-center gap-2': true,
+                                'bg-green-500 hover:bg-green-600': mode === 'create',
+                                'bg-indigo-500 hover:bg-indigo-600': mode !== 'create'
+                            }">
+                            <i class="bi bi-save"></i>
+                            <span x-text="mode === 'create' ? 'Crear publicación' : 'Actualizar publicación'"></span>
+                        </button>
+                    </div>
                 </form>
             </div>
 
