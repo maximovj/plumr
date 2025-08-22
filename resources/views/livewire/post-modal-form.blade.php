@@ -81,16 +81,28 @@
                     </div>
 
                     <!-- Estados -->
-                    <x-input-array name="status" label="Estados de ánimo"
+                    <x-input-array wire:model="status" name="status" label="Estados de ánimo"
                         placeholder="Escribe un estado y presiona Enter" :suggestions="['Feliz', 'Triste', 'Emocionado']"
                         inputClass="w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2" />
 
                     <!-- Etiquetas -->
-                    <x-input-array name="tags" label="Etiquetas" placeholder="Escribe una etiqueta y presiona Enter"
+                    <x-input-array wire:model="tags" name="tags" label="Estados de ánimo"
+                        placeholder="Escribe un estado y presiona Enter"
                         inputClass="w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2" />
 
                     <!-- Enlaces externos -->
-                    <x-input-social-links name="links" label="Enlaces externos" :networks="['Ingresa tu enlace externo', 'Ingresa tu enlace externo', 'Ingresa tu enlace externo']" />
+                    <x-input-social-links
+                        wire:model="links"
+                        name="links"
+                        label="Enlaces externos"
+                        :networks="[
+                            'youtube' => 'Ingresa tu canal de YouTube',
+                            'linkedin' => 'Ingresa tu LinkedIn',
+                            'twitter-x' => 'Ingresa tu cuenta de X',
+                            'link' => 'Ingresa otro enlace externo'
+                        ]"
+                        :values="$links ?? []"
+                    />
 
                     <div x-data="{ mode: '{{ $mode }}' }">
                         <!-- Botón submit dinámico con Alpine -->

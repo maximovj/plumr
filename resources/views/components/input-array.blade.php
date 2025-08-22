@@ -3,44 +3,45 @@
     'label' => 'Estados emocionales',
     'placeholder' => 'Escribe y presiona Enter',
     'inputClass' => 'w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2',
-    'suggestions' => [], // NUEVO: sugerencias para datalist
+    'suggestions' => [],
 ])
 
 <div x-data="{
-        status: {{ json_encode(old($name, [])) }},
-        newState: '',
-        addState() {
-            let value = this.newState.trim();
-            if (value !== '' && !this.status.includes(value)) {
-                this.status.push(value);
+        items: @entangle($name).defer,
+        newItem: '',
+        addItem() {
+            let value = this.newItem.trim();
+            if (value !== '' && !this.items.includes(value)) {
+                this.items.push(value);
             }
-            this.newState = '';
+            this.newItem = '';
+        },
+        removeItem(index) {
+            this.items.splice(index, 1);
         }
     }" class="flex flex-col gap-2">
 
     <!-- Label -->
     <label class="text-sm font-medium text-gray-700" for="{{ $name }}">{{ $label }}</label>
 
-    <!-- Lista de estados -->
+    <!-- Lista de items -->
     <div class="flex flex-wrap gap-2 mb-2">
-        <template x-for="(s, index) in status" :key="index">
+        <template x-for="(item, index) in items" :key="index">
             <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs flex items-center gap-1">
-                <span x-text="s"></span>
+                <span x-text="item"></span>
                 <button type="button"
-                        @click="status.splice(index, 1)"
+                        @click="removeItem(index)"
                         class="text-red-500 font-bold hover:text-red-700 transition">×</button>
-                <!-- Hidden input para enviar el arreglo al backend -->
-                <input type="hidden" :name="'{{ $name }}[]'" :value="s">
             </span>
         </template>
     </div>
 
     <!-- Input con datalist de sugerencias -->
     <input type="text"
-           x-model="newState"
+           x-model="newItem"
            placeholder="{{ $placeholder }}"
            list="list-{{ $name }}"
-           @keydown.enter.prevent="addState()"
+           @keydown.enter.prevent="addItem()"
            class="{{ $inputClass }}">
 
     <datalist id="list-{{ $name }}">
