@@ -45,8 +45,9 @@
                     <div class="flex justify-between items-center">
                         <h2 class="text-lg font-bold text-gray-800">Mi publicación</h2>
                         <div class="flex gap-2 items-center">
-                            <a href="{{ route('main_account', ['user' => $user]) }}"
-                            class="text-sm text-indigo-600 hover:underline">← Volver</a>
+                            <a href="{{ route('posts.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
+                                ← Volver
+                            </a>
 
                             {{-- Acciones solo para el dueño --}}
                             @owner($user)
