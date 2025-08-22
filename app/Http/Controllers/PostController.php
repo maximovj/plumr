@@ -23,7 +23,7 @@ class PostController extends Controller
         return view("plumr.account.posts.index", [
             'user' => $user,
             'profile' => $user->profile,
-            'posts' => $user->posts,
+            'posts' => $user->posts()->latest()->get(),
         ]);
     }
 
