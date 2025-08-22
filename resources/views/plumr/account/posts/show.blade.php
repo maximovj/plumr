@@ -84,27 +84,25 @@
                         </div>
 
                         {{-- Estados,  Enlaces y Etiquetas --}}
-                        {{-- @if(!empty($post->status))
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                @foreach($post->status as $emotion)
-                                    <span class="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium
-                                                hover:shadow hover:scale-105 transition cursor-default bg-gray-100 text-gray-800">
-                                        <i class="bi bi-emoji-neutral"></i>
-                                        {{ $emotion }}
-                                    </span>
-                                @endforeach
-                            </div>
-                        @endif --}}
-
                         @if(!empty($post->status))
                             <div class="flex flex-wrap gap-2 mt-2">
                                 @foreach($post->status as $emotion)
-                                    <span class="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border-2 border-gradient-r from-indigo-400 via-pink-400 to-yellow-400 text-gray-700 bg-white/30 backdrop-blur-sm hover:scale-105 transition cursor-default">
-                                        <i class="bi bi-emoji-neutral"></i>
+                                    <span class="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border-2 border-gray-300 text-gray-700  transition transform cursor-default">
+                                        <i class="bi bi-emoji-smile-fill"></i>
                                         {{ $emotion }}
                                     </span>
                                 @endforeach
                             </div>
+                        @endif
+
+                        @if(!empty($post->tags))
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($post->tags as $tag)
+                                <span class="flex items-center gap-1 bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium  hover:shadow hover:bg-gray-200 transition hover:scale-105 cursor-pointer">
+                                    <i class="bi bi-tag-fill"></i> {{ $tag }}
+                                </span>
+                            @endforeach
+                        </div>
                         @endif
 
                         @if(!empty($post->links))
@@ -120,16 +118,6 @@
                                     </a>
                                 @endforeach
                             </div>
-                        @endif
-
-                        @if(!empty($post->tags))
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            @foreach($post->tags as $tag)
-                                <span class="flex items-center gap-1 bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium  hover:shadow hover:bg-gray-200 transition hover:scale-105 cursor-pointer">
-                                    <i class="bi bi-tag-fill"></i> {{ $tag }}
-                                </span>
-                            @endforeach
-                        </div>
                         @endif
 
                         <div x-data="{ progress: 0 }" class="relative w-full">
