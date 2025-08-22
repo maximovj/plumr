@@ -96,10 +96,9 @@
                         name="links"
                         label="Enlaces externos"
                         :networks="[
-                            'youtube' => 'Ingresa tu canal de YouTube',
-                            'linkedin' => 'Ingresa tu LinkedIn',
-                            'twitter-x' => 'Ingresa tu cuenta de X',
-                            'link' => 'Ingresa otro enlace externo'
+                            'Ingresa un enlace externo (opcional)',
+                            'Ingresa un enlace externo (opcional)',
+                            'Ingresa un enlace externo (opcional)',
                         ]"
                         :values="$links ?? []"
                     />
