@@ -1,5 +1,5 @@
 <section
-    class="scroll-plumr"
+    class="scroll-plumr relative"
     style="height: 100vh; max-height: 100vh; overflow: auto;"
     x-data="{
         isLoading: false,
@@ -20,8 +20,8 @@
     x-init="scrollObserver"
 >
     {{-- Cabecera --}}
-    <div class="flex flex-row justify-between px-2 mb-4">
-        <div class="px-2 rounded-full text-center flex justify-center">
+    <div class="sticky top-0 bg-gray-50 w-full flex flex-row justify-between items-center mb-4 p-2 z-10">
+        <div class="rounded-full text-center flex justify-center">
             <span class="text-xs">
                 <i class="bi bi-file-post-fill"></i>
                 <strong>{{ $posts->total() }}</strong>
@@ -36,32 +36,36 @@
         </div>
     @else
         {{-- Lista de posts --}}
-        @foreach ($posts as $article)
+        @foreach ($posts as $post)
             <div class="border-2 border-gray-100 rounded-lg mt-4">
                 <article class="p-4">
                     <section class="flex flex-row justify-start gap-2 py-2">
-                        @if($article->author[0]->profile->photo)
+                        @if($post->author[0]->profile->photo)
                         @else
-                            <a href="{{ route('main_account', ['user' => $article->author[0]->username]) }}">
+                            <a href="{{ route('main_account', ['user' => $post->author[0]->username]) }}">
                                 <div
                                 class="w-6 h-6 bg-white rounded-full text-center border-2 border-gray-400
                                         flex items-center justify-center">
-                                {{ strtoupper(mb_substr($article->author[0]->username, 0, 1)) }}
+                                {{ strtoupper(mb_substr($post->author[0]->username, 0, 1)) }}
                                 </div>
                             </a>
                         @endif
 
-                        <a href="{{ route("post.show", [$article->author[0]->username, $article]) }}"><i class="bi bi-chat-square-quote"></i></a>
+                        <a href="{{ route("post.show", [$post->author[0]->username, $post]) }}"><i class="bi bi-chat-square-quote"></i></a>
                     </section>
 
-                    <h1 class="font-bold">{{ $article->title }}</h1>
-                    <p>{{ $article->content }}</p>
+                    <h1 class="font-bold">{{ $post->title }}</h1>
+                    <div class="ql-snow">
+                        <div class="ql-editor" contenteditable="false">
+                            {!! $post->content !!}
+                        </div>
+                    </div>
 
                     <section class="flex flex-row gap-1 py-2">
                         <p class="text-xs">
                             Creado por
-                            {{ $user->username === $article->author[0]->username ? 'mí' : $article->author[0]->username }}
-                            {{ $article->created_at->diffForHumans() }}
+                            {{ $user->username === $post->author[0]->username ? 'mí' : $post->author[0]->username }}
+                            {{ $post->created_at->diffForHumans() }}
                         </p>
                     </section>
                 </article>
@@ -123,7 +127,7 @@
                         </section>
                     </article>
                 </div>
-                @foreach ([1,2,3,4,5,6,7,8,9,10] as $articles)
+                @foreach ([1,2,3,4,5,6,7,8,9,10] as $posts)
                 <div class="border-2 border-gray-100 rounded-md">
                     <article class="p-4">
                         {{-- Botones --}}

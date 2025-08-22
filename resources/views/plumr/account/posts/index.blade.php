@@ -85,7 +85,7 @@
                             </div>
 
                             <!-- Contenido con scroll si es largo -->
-                            <section class="prose prose-lg max-w-none bg-gray-50 text-gray-800 p-4 rounded-md overflow-auto max-h-48 mb-4">
+                            <section class="prose prose-lg max-w-none p-4 rounded-md overflow-auto max-h-48 mb-4">
                                 <div class="ql-snow">
                                     <div class="ql-editor" contenteditable="false">
                                         {!! $post->content !!}
