@@ -86,7 +86,7 @@
                         inputClass="w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2" />
 
                     <!-- Etiquetas -->
-                    <x-input-array wire:model="tags" name="tags" label="Estados de ánimo"
+                    <x-input-array wire:model="tags" name="tags" label="Etiquetas"
                         placeholder="Escribe un estado y presiona Enter"
                         inputClass="w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2" />
 
