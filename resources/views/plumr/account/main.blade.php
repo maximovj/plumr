@@ -36,7 +36,7 @@
                             class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
                             <ul class="flex flex-col py-2">
                                 <li>
-                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
+                                    <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
                                 </li>
                                 <li>
                                     <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>

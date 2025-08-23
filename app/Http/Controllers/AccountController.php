@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use RahulHaque\Filepond\Facades\Filepond;
 
@@ -96,6 +98,13 @@ class AccountController extends Controller
 
     public function update_photo(Request $request, User $user)
     {
+        $path = FilePond::field($request->input('file'))
+        ->moveTo('uploads/'.auth()->id().'/'.Str::slug(now()->format('d-m-Y H:s:m')));
+        dd($path);
+
+        return back()->with('success', count($path).' archivos subidos correctamente');
+
+        /*
         // Single and multiple file validation
         $this->validate($request, [
             'avatar' => Rule::filepond([
@@ -136,6 +145,7 @@ class AccountController extends Controller
         //     ->moveTo('galleries/' . $galleryName);
 
         return back()->with('success', 'Foto de perfil modificado exitosamente');
+        */
     }
 
 
