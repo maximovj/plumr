@@ -91,7 +91,7 @@
                     <p><i class="bi bi-people-fill"></i> <strong>{{ $user->followers->count() }}</strong> Seguidores</p>
                 </a>
 
-                <a href="{{ route('post.index', ['user' => $user]) }}">
+                <a href="{{ route('posts.index', ['user' => $user]) }}">
                     <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->posts->count() }}</strong> Publicaciones</p>
                 </a>
 

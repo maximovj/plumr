@@ -2,302 +2,233 @@
 
 @section('main')
     <x-main>
+        {{-- Banner de bienvenida (solo invitados) --}}
         @guest
-        <section class="bg-gray-600 h-100 my-4 py-4 rounded-sm shadow-sm flex gap-4 justify-around">
-            <div class="text-center">
-                <p class="text-white font-extrabold">
-                    Bienvenido al portal de PLUMR
-                </p>
-                <p class="text-gray-400 font-light">
-                    Ingresa al portal para poder compartir tus opiniones
-                </p>
-                <p class="text-gray-400 font-light">
-                    acerca de los acontencimientos del momento...
-                </p>
-                <p class="text-gray-300 font-light">
-                    Haz que tu voz sea escuchada !!!
-                </p>
+        <section class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-xl shadow-lg my-6 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <h1 class="text-2xl font-bold">Bienvenido a <span class="text-yellow-300">PLUMR</span></h1>
+                <p class="text-sm opacity-90">Comparte tus ideas, debates y opiniones sobre los acontecimientos actuales.</p>
+                <p class="text-sm opacity-75">Haz que tu voz sea escuchada 🚀</p>
             </div>
-            <div class="text-center">
-                <p class="text-white font-extrabold">
-                    Bienvenido al portal de PLUMR
-                </p>
-                <p class="text-gray-400 font-light">
-                    Ingresa al portal para poder compartir tus opiniones
-                </p>
-                <p class="text-gray-400 font-light">
-                    acerca de los acontencimientos del momento...
-                </p>
-                <p class="text-gray-300 font-light">
-                    Haz que tu voz sea escuchada !!!
-                </p>
+            <div>
+                <a href="{{ route('auth.login') }}"
+                   class="bg-white text-indigo-600 px-5 py-2 rounded-full font-semibold shadow hover:bg-gray-100 transition">
+                    Iniciar sesión
+                </a>
             </div>
         </section>
         @endguest
 
-        <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
-            <section class="#">
+
+        {{-- Layout principal --}}
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+
+            {{-- Columna izquierda: Publicación principal --}}
+            <section class="md:col-span-2 space-y-6">
+
                 @auth
+                    {{-- Mensajes de error o éxito --}}
                     @if(session('error'))
-                    <div class="text-center px-4 mb-4 bg-red-500 rounded-md text-white">
-                        <h4>{{ session('error') }}</h4>
-                    </div>
+                        <div class="bg-red-500 text-white px-4 py-2 rounded-lg shadow">
+                            {{ session('error') }}
+                        </div>
                     @endif
                     @if(session('success'))
-                    <div class="text-center px-4 mb-4 bg-green-500 rounded-md text-white">
-                        <h4>{{ session('success') }}</h4>
-                    </div>
+                        <div class="bg-green-500 text-white px-4 py-2 rounded-lg shadow">
+                            {{ session('success') }}
+                        </div>
                     @endif
-                    <div class="flex flex-row justify-between items-center px-2 mb-4">
-                        <h4>Mi publicación</h4>
-                        <a
-                        class="bg-gray-700 py-2 px-4 rounded-sm text-white text-sm"
-                        role="button"
-                        href="{{ route('main_account', ['user' => $user]) }}">
-                        Volver
-                        </a>
-                    </div>
                 @endauth
-                <div class="border-2 border-gray-100 rounded-md">
 
-                    {{-- Crear nueva publicación --}}
-                    <div class="p-4 bg-gray-100 shadow-md">
+                {{-- Publicación principal --}}
+                <div class="bg-white rounded-xl shadow p-6 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-gray-800">Mi publicación</h2>
+                        <div class="flex gap-2 items-center">
+                            <a href="{{ route('posts.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
+                                ← Volver
+                            </a>
 
-                            <section class="flex flex-col gap-2 mb-4">
-                                <label class="text-xs text-gray-700" for="title">Título</label>
-                                <input type="text" name="title" value="{{ old('title', $post->title) }}" id="title"
-                                    placeholder="Ingresa tu Título" autocomplete="off" readonly
-                                    class="rounded-md p-2 {{ e_class('title') }} bg-blue-50 shadow-sm" />
-                                @error('title')
-                                    <p class="text-xs text-red-400">{{ $message }}</p>
-                                @enderror
-                            </section>
+                            {{-- Acciones solo para el dueño --}}
+                            @owner($user)
+                                <button x-data
+                                    x-on:click="Livewire.emit('postModalForm', {
+                                        mode: 'edit',
+                                        postId: '{{ $post->id }}',
+                                        redirect: '{{ route('posts.index', [$user]) }}'
+                                    })"
+                                    class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-yellow-200 transition">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </button>
 
-                            <section class="flex flex-col gap-2 mb-4">
-                                <label class="text-xs text-gray-700" for="content">Contenido</label>
-                                <textarea name="content" id="content" placeholder="Ingresa tu contenido"
-                                    autocomplete="off" readonly
-                                    class="rounded-md p-2 {{ e_class('content') }} bg-blue-50 shadow-sm">{{ old('content', $post->content) }}</textarea>
-                                @error('content')
-                                    <p class="text-xs text-red-400">{{ $message }}</p>
-                                @enderror
-                            </section>
-
-                            <section x-data="{ status: {{ old('tags', $post->status) }} }"  class="flex flex-col gap-2 mb-4">
-                                <label class="text-xs text-gray-700">Estados emocionales</label>
-
-                                <!-- Estados -->
-                                <div class="flex flex-wrap gap-2">
-                                    <template x-for="(state, index) in status" :key="index">
-                                        <span class="bg-gray-200 px-2 py-1 rounded-full text-xs">
-                                            <span x-text="state"></span>
-                                        </span>
-                                    </template>
-                                </div>
-                            </section>
-
-                            <section x-data="{ tags: {{ old('tags', $post->tags) }} }" class="flex flex-col gap-2 mb-4">
-                                <label class="text-xs text-gray-700">Etiquetas</label>
-
-                                <!-- Etiquetas -->
-                                <div class="flex flex-wrap gap-2">
-                                    <template x-for="(tag, index) in tags" :key="index">
-                                        <span class="bg-gray-200 px-2 py-1 rounded-full text-xs">
-                                            <span x-text="tag"></span>
-                                        </span>
-                                    </template>
-                                </div>
-                            </section>
-                    </div>
-                </div>
-            </section>
-            <section style="height: 100vh; max-height: 100vh; overflow: auto;">
-                <div class="flex flex-row justify-between px-2 mb-6">
-                    <div
-                        class="px-2 rounded-full text-center
-                        flex  justify-center">
-                        <span class="text-xs">
-                            <i class="bi bi-file-post-fill"></i>
-                            <strong>{{ $discussions->count() }}</strong>
-                        </span>
-                    </div>
-                    <h4>Discusiones</h4>
-                </div>
-                <section class="grid grid-cols-1 gap-2 mx-2 scroll-plumr">
-                    @if($discussions->count() <= 0)
-                        <div class="border-2 border-gray-100 rounded-md">
-                            <article class="p-4">
-                                <p class="text-center">
-                                    No hay discusiones aún
-                                </p>
-                            </article>
+                                <button x-data
+                                    x-on:click="Livewire.emit('confirmDeleteModelClass',
+                                        'App\\Models\\Post', // Clase del modelo
+                                        {{ $post->id }},     // ID del registro
+                                        '{{ route('posts.index', $user) }}', // Redirect (opcional)
+                                        '¿Eliminar publicación?',  // Título (opcional)
+                                        'Esta publicación se eliminará permanentemente.' // Mensaje (opcional)
+                                    )"
+                                    class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-red-200 transition">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            @endowner
                         </div>
-                    @else
+                    </div>
 
-                    @guest
-                        <div class="border-2 border-gray-100 rounded-md">
-                            <article class="p-4">
-                                <p class="text-center">
-                                    Hay <span class="font-bold">({{$discussions->count()}})</span> discusiones
-                                    en marcha en está publicación...
-                                </p>
-                                <p class="text-center text-green-500 font-bold">
-                                    <a href="{{ route('auth.login') }}">
-                                        Agregar mi postura
-                                    </a>
-                                </p>
-                            </article>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs font-semibold text-gray-600">Título</label>
+                            <input type="text" readonly value="{{ old('title', $post->title) }}"
+                                class="w-full rounded-md p-3 bg-gray-100 border border-gray-200 text-gray-700 shadow-sm" />
                         </div>
-                    @endguest
 
-                    @auth
-                        @foreach ($discussions as $item)
-                        <div class="border-2 border-gray-100 rounded-md">
-                            <article class="p-4">
-                                {{-- Botones --}}
-                                <section class="flex flex-row justify-between gap-1 py-2">
-                                    <a href="{{ route("post.show", [$user, $item]) }}"><i class="bi bi-chat-square-quote"></i></a>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <a href="#" class="bg-yellow-100 p-2 rounded-md">
-                                            <i class="bi bi-pencil"></i> Editar
-                                        </a>
-                                        <a href="#" class="bg-red-100 p-2 rounded-md">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </a>
+                        {{-- Estados,  Enlaces y Etiquetas --}}
+                        <!-- Links -->
+                                @if (!empty($post->links))
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        @foreach ($post->links as $link)
+                                            @if (!empty($link))
+                                                <a href="{{ $link }}" target="_blank"
+                                                    class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition">
+                                                    <i class="bi bi-link-45deg"></i> {{ $link }}
+                                                </a>
+                                            @endif
+                                        @endforeach
                                     </div>
-                                </section>
+                                @endif
 
-                                <h1 class="font-bold">{{ $item->title }}</h1>
+                                <!-- Status -->
+                                @if (!empty($post->status))
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        @foreach ($post->status as $status)
+                                            <span
+                                                class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">{{ $status }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
 
-                                <p>
-                                    {{ $item->content }}
-                                </p>
+                                <!-- Tags -->
+                                @if (!empty($post->tags))
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        @foreach ($post->tags as $tag)
+                                            <span
+                                                class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">#{{ $tag }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
 
-                                {{-- Información de la publicación --}}
-                                <section class="flex flex-row gap-1 py-2">
-                                    <p class="text-xs">Creado {{ $item->created_at->diffForHumans() }}</p>
-                                </section>
+                        <div x-data="{ progress: 0 }" class="relative w-full">
 
-                                {{-- Estadísticas --}}
-                                <section class="flex flex-row gap-1 py-2">
-                                    <p class="text-sm"><i class="bi bi-wechat"></i>&nbsp;<strong>0</strong>&nbsp;Discusiones</p>
-                                    <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>0</strong>&nbsp;Apoyo</p>
-                                    <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>0</strong>&nbsp;Difiero</p>
-                                    <p class="text-sm"><i class="bi bi-1-square"></i></i>&nbsp;<strong>0</strong>&nbsp;Neutral</p>
-                                </section>
+                            {{-- Barra de progreso --}}
+                            <div class="h-1 bg-gray-200 rounded-full overflow-hidden mb-2">
+                                <div class="h-1 bg-indigo-600 transition-all"
+                                    :style="'width:' + progress + '%'">
+                                </div>
+                            </div>
 
-                                {{-- Botones --}}
-                                <section class="hidden">
-                                    <button class="bg-green-100 p-2 rounded-md">
-                                        <i class="bi bi-1-square"></i> Apoyo
-                                    </button>
-                                    <button class="bg-red-100 p-2 rounded-md">
-                                        <i class="bi bi-1-square"></i> Difiero
-                                    </button>
-                                    <button class="bg-blue-100 p-2 rounded-md">
-                                        <i class="bi bi-1-square"></i> Neutral
-                                    </button>
-                                </section>
-                            </article>
+                            {{-- Contenido con scroll --}}
+                            <section
+                                class="prose prose-lg max-w-none p-4 rounded-md overflow-auto max-h-64 bg-gray-50 border border-gray-200 shadow-sm"
+                                x-ref="content"
+                                x-on:scroll="
+                                    let el = $refs.content;
+                                    let scrollTop = el.scrollTop;
+                                    let scrollHeight = el.scrollHeight - el.clientHeight;
+                                    progress = Math.round((scrollTop / scrollHeight) * 100);
+                                ">
+                                <div class="ql-snow">
+                                    <div class="ql-editor" contenteditable="false">
+                                        {!! $post->content !!}
+                                    </div>
+                                </div>
+                            </section>
                         </div>
-                        @endforeach
-                    @endauth
-                    @endif
-                </section>
+
+                    </div>
+                </div>
+
+                {{-- Discusiones --}}
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <i class="bi bi-chat-dots"></i> Discusiones ({{ $discussions->count() }})
+                    </h3>
+
+                    <div class="mt-4 space-y-4">
+                        @if($discussions->count() <= 0)
+                            <p class="text-center text-gray-500">No hay discusiones aún</p>
+                        @else
+                            @guest
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                                    <p class="text-gray-700">
+                                        Hay <strong>{{ $discussions->count() }}</strong> discusiones en esta publicación
+                                    </p>
+                                    <a href="{{ route('auth.login') }}"
+                                       class="text-indigo-600 font-bold hover:underline">Inicia sesión para participar</a>
+                                </div>
+                            @endguest
+
+                            @auth
+                                @foreach ($discussions as $item)
+                                    <article class="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm space-y-3">
+                                        {{-- Encabezado --}}
+                                        <div class="flex justify-between items-center">
+                                            <a href="{{ route("posts.show", [$user, $item]) }}"
+                                               class="text-indigo-600 font-semibold hover:underline flex items-center gap-1">
+                                                <i class="bi bi-chat-square-quote"></i> {{ $item->title }}
+                                            </a>
+                                            <small class="text-gray-400">{{ $item->created_at->diffForHumans() }}</small>
+                                        </div>
+
+                                        {{-- Contenido --}}
+                                        <p class="text-gray-700">{{ $item->content }}</p>
+
+                                        {{-- Acciones --}}
+                                        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+                                            <div class="flex gap-3 text-sm text-gray-500">
+                                                <span><i class="bi bi-wechat"></i> 0 Discusiones</span>
+                                                <span><i class="bi bi-hand-thumbs-up"></i> 0 Apoyo</span>
+                                                <span><i class="bi bi-hand-thumbs-down"></i> 0 Difiero</span>
+                                                <span><i class="bi bi-circle"></i> 0 Neutral</span>
+                                            </div>
+
+                                            <div class="flex gap-2">
+                                                <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-sm">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </article>
+                                @endforeach
+                            @endauth
+                        @endif
+                    </div>
+                </div>
             </section>
+
+            {{-- Columna derecha: botones de compartir --}}
+            <aside class="space-y-6">
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold text-gray-800 mb-4">Compartir publicación</h3>
+                    <div x-data="shareButtons()" class="flex flex-col gap-3">
+                        <button @click="shareFacebook()" class="bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700">
+                            <i class="bi bi-facebook"></i> Facebook
+                        </button>
+                        <button @click="shareTwitter()" class="bg-gray-800 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-900">
+                            <i class="bi bi-twitter"></i> Twitter / X
+                        </button>
+                        <button @click="shareWhatsapp()" class="bg-green-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </button>
+                        <button @click="shareLinkedin()" class="bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-800">
+                            <i class="bi bi-linkedin"></i> LinkedIn
+                        </button>
+                    </div>
+                </div>
+            </aside>
         </section>
-
-        <section x-data="shareButtons()" class="mt-6 flex space-x-3">
-            <button
-                @click="shareFacebook()"
-                class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
-                title="Compartir en Facebook"
-            >
-                <i class="bi bi-facebook"></i> Facebook
-            </button>
-
-            <button
-                @click="shareTwitter()"
-                class="bg-blue-400 text-white px-3 py-2 rounded hover:bg-blue-500 transition"
-                title="Compartir en Twitter"
-            >
-                <i class="bi bi-twitter"></i> Twitter
-            </button>
-
-            <button
-                @click="shareWhatsapp()"
-                class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition"
-                title="Compartir en WhatsApp"
-            >
-                <i class="bi bi-whatsapp"></i> WhatsApp
-            </button>
-
-            <button
-                @click="shareLinkedin()"
-                class="bg-blue-700 text-white px-3 py-2 rounded hover:bg-blue-800 transition"
-                title="Compartir en LinkedIn"
-            >
-                <i class="bi bi-linkedin"></i> LinkedIn
-            </button>
-        </section>
-
-        <script>
-            function shareButtons() {
-                return {
-                    url: window.location.href, // toma la URL actual
-
-                    shareFacebook() {
-                        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.url)}`;
-                        window.open(fbUrl, 'fbShare', 'width=600,height=400');
-                    },
-                    shareTwitter() {
-                        const text = encodeURIComponent("¡Mira este post interesante!");
-                        const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(this.url)}&text=${text}`;
-                        window.open(twitterUrl, 'twShare', 'width=600,height=400');
-                    },
-                    shareWhatsapp() {
-                        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(this.url)}`;
-                        window.open(whatsappUrl, 'waShare');
-                    },
-                    shareLinkedin() {
-                        const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.url)}`;
-                        window.open(linkedinUrl, 'lnShare', 'width=600,height=400');
-                    }
-                }
-            }
-        </script>
-
-        @guest
-        <section class="bg-green-700 h-100 my-4 py-4 rounded-sm shadow-sm flex gap-4 justify-around">
-            <div class="text-center">
-                <p class="text-white font-extrabold">
-                    Bienvenido al portal de PLUMR
-                </p>
-                <p class="text-gray-400 font-light">
-                    Ingresa al portal para poder compartir tus opiniones
-                </p>
-                <p class="text-gray-400 font-light">
-                    acerca de los acontencimientos del momento...
-                </p>
-                <p class="text-gray-300 font-light">
-                    Haz que tu voz sea escuchada !!!
-                </p>
-            </div>
-            <div class="text-center">
-                <p class="text-white font-extrabold">
-                    Bienvenido al portal de PLUMR
-                </p>
-                <p class="text-gray-400 font-light">
-                    Ingresa al portal para poder compartir tus opiniones
-                </p>
-                <p class="text-gray-400 font-light">
-                    acerca de los acontencimientos del momento...
-                </p>
-                <p class="text-gray-300 font-light">
-                    Haz que tu voz sea escuchada !!!
-                </p>
-            </div>
-        </section>
-        @endguest
     </x-main>
 @endsection

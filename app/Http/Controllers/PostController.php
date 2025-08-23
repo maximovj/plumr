@@ -20,10 +20,16 @@ class PostController extends Controller
      */
     public function index(User $user)
     {
+        if($user->id == auth()->user()->id) {
+            $posts = $user->posts()->latest('updated_at')->take(10)->get();
+        }else {
+            $posts = $user->posts()->take(10)->get();
+        }
+
         return view("plumr.account.posts.index", [
             'user' => $user,
             'profile' => $user->profile,
-            'posts' => $user->posts()->latest()->get(),
+            'posts' => $posts,
         ]);
     }
 
@@ -65,7 +71,7 @@ class PostController extends Controller
                 'post_id' => $new_post->id,
             ]);
 
-            return redirect()->route('post.index', [
+            return redirect()->route('posts.index', [
                 'user' => $user,
             ])->with('success', 'Publicación creada con éxito.');
 

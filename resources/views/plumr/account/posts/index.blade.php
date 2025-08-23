@@ -16,7 +16,7 @@
                         <button x-data
                             x-on:click="Livewire.emit('postModalForm', {
                         mode: 'create',
-                        redirect: '{{ route('post.index', [$user]) }}'
+                        redirect: '{{ route('posts.index', [$user]) }}'
                     })"
                             class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition text-xs animate__animated animate__pulse animate__infinite">
                             <i class="bi bi-plus-circle"></i> Nueva publicación
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                     <div class="flex gap-2">
-                                        <a href="{{ route('post.show', [$user, $post]) }}"
+                                        <a href="{{ route('posts.show', [$user, $post]) }}"
                                             class="text-gray-500 hover:text-blue-500">
                                             <i class="bi bi-chat-square-quote text-lg"></i>
                                         </a>
@@ -74,7 +74,7 @@
                                                 x-on:click="Livewire.emit('postModalForm', {
                                             mode: 'edit',
                                             postId: '{{ $post->id }}',
-                                            redirect: '{{ route('post.index', [$user]) }}'
+                                            redirect: '{{ route('posts.index', [$user]) }}'
                                         })"
                                                 class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-yellow-200 transition">
                                                 <i class="bi bi-pencil"></i> Editar
@@ -84,7 +84,7 @@
                                                 x-on:click="Livewire.emit('confirmDeleteModelClass',
                                             'App\\Models\\Post', // Clase del modelo
                                             {{ $post->id }},     // ID del registro
-                                            '{{ route('post.index', $user) }}', // Redirect (opcional)
+                                            '{{ route('posts.index', $user) }}', // Redirect (opcional)
                                             '¿Eliminar publicación?',  // Título (opcional)
                                             'Esta publicación se eliminará permanentemente.' // Mensaje (opcional)
                                         )"
