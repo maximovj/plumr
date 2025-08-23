@@ -64,6 +64,14 @@ Route::post('/{user:username}/account', [AccountController::class, 'update'])
     ->middleware(['auth', 'owner'])
     ->name('account.update');
 
+Route::get('/{user:username}/edit/photo', [AccountController::class, 'edit_photo'])
+    ->middleware(['auth', 'owner'])
+    ->name('account.edit_photo');
+
+Route::put('/{user:username}/edit/photo', [AccountController::class, 'update_photo'])
+    ->middleware(['auth', 'owner'])
+    ->name('account.update_photo');
+
 Route::get('/{user:username}/followers', FollowersController::class)
     ->middleware(['auth'])
     ->name('account.followers');
