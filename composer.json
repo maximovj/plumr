@@ -14,7 +14,8 @@
         "livewire/livewire": "^2.12",
         "php-flasher/flasher-laravel": "^1.15",
         "php-flasher/flasher-sweetalert-laravel": "^1.15",
-        "php-flasher/flasher-toastr-laravel": "^1.15"
+        "php-flasher/flasher-toastr-laravel": "^1.15",
+        "rahulhaque/laravel-filepond": "^8.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
