@@ -72,14 +72,19 @@
 
     <!-- Botón de acción -->
     <div class="flex justify-start">
-        <button @click.prevent="cropImage" :disabled="savePhotoInProgress"
-            class="text-white font-semibold py-2 px-6 rounded">
-            :class="{
-                'bg-gray-500 cursor-not-allowed': savePhotoInProgress,
-                'bg-indigo-500 hover:bg-indigo-600': !savePhotoInProgress,
-            }"
-            Guardar foto
-        </button>
+            <div class="flex justify-start">
+            <button
+                @click.prevent="cropImage"
+                :disabled="savePhotoInProgress"
+                class="text-white font-semibold py-2 px-6 rounded transition-colors duration-200"
+                :class="{
+                    'bg-gray-500 cursor-not-allowed': savePhotoInProgress,
+                    'bg-indigo-500 hover:bg-indigo-600': !savePhotoInProgress
+                }"
+            >
+                Guardar foto
+            </button>
+        </div>
     </div>
 
     <input type="hidden" wire:model="croppedPhoto" x-model="croppedPhoto" x-ref="croppedPhoto">
@@ -166,6 +171,8 @@ function photoCropper() {
         },
 
         cropImage() {
+            if(this.canvas == null || this.image == null) return;
+
             if (this.savePhotoInProgress) return; // prevenir doble click
             this.savePhotoInProgress = true;
 
@@ -173,9 +180,11 @@ function photoCropper() {
             const tmpCanvas = document.createElement('canvas');
             tmpCanvas.width = w; tmpCanvas.height = h;
             tmpCanvas.getContext('2d').drawImage(this.canvas, x, y, w, h, 0, 0, w, h);
+
             this.croppedPhoto = tmpCanvas.toDataURL('image/png');
+
             @this.save().finally(() => {
-                this.savePhotoInProgress = false; // siempre reactivar el botón
+                this.savePhotoInProgress = false; // reactivar el botón cuando termine
             });
         }
     }
