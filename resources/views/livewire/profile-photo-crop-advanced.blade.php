@@ -3,13 +3,20 @@
     class="space-y-6 max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
 
     <!-- Header -->
-    <div class="flex items-center space-x-4">
-        <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
-            class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+    <div class="flex justify-between items-center space-x-4">
+        <div class="flex items-center space-x-4">
+            <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
+                class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+            <div>
+                <h2 class="text-xl font-bold">{{ $user->profile->fullname }}</h2>
+                <h4 class="text-xs">{{ '@'.$user->username }}</h4>
+                <p class="text-gray-500">Actualiza tu foto de perfil</p>
+            </div>
+        </div>
         <div>
-            <h2 class="text-xl font-bold">{{ $user->profile->fullname }}</h2>
-            <h4 class="text-xs">{{ '@'.$user->username }}</h4>
-            <p class="text-gray-500">Actualiza tu foto de perfil</p>
+            <a href="{{ route('posts.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
+            ← Volver
+            </a>
         </div>
     </div>
 
