@@ -45,103 +45,15 @@
             </div>
         </div>
 
-        <!-- Vista previa -->
-        {{-- <div class="flex flex-col items-center justify-start gap-4">
-            <div class="relative">
-                <span class="block font-semibold text-gray-700 mb-2">Vista previa</span>
-                <canvas id="preview" width="150" height="150" class="border rounded-xl shadow-md"></canvas>
-                <div class="absolute top-20 left-14 w-40">
-                    <label
-                        class="mt-2 cursor-pointer w-12 h-12 flex items-center justify-center bg-blue-500 rounded-full shadow-lg hover:bg-blue-600 transition transform hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4v16m8-8H4" />
-                        </svg>
-                        <input type="file" accept="image/*" @change="loadImage" class="hidden">
-                    </label>
-                </div>
-            </div>
-        </div> --}}
-
-        <!-- Vista previa -->
-        {{-- <div class="flex flex-col items-center gap-4 p-4 bg-white rounded-2xl shadow-lg w-64">
-            <span class="text-lg font-semibold text-gray-800">Vista previa</span>
-
-            <div class="relative w-40 h-40">
-                <!-- Canvas con borde redondeado y sombra -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full border-2 border-gray-200 rounded-xl shadow-inner"></canvas>
-
-                <!-- Botón flotante de subir imagen -->
-                <label
-                    class="absolute bottom-2 right-2 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full shadow-lg cursor-pointer hover:bg-blue-600 transition-transform transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <input type="file" accept="image/*" @change="loadImage" class="hidden">
-                </label>
-            </div>
-
-            <p class="text-sm text-gray-500 text-center mt-2">
-                Sube tu imagen para ver una vista previa en tiempo real.
-            </p>
-        </div> --}}
-
-        <!-- Vista previa -->
-        {{-- <div class="flex flex-col items-center gap-3 p-5 bg-gray-50 rounded-3xl shadow-xl w-64 hover:shadow-2xl transition-shadow duration-300">
-            <span class="text-lg font-medium text-gray-700">Vista previa</span>
-
-            <div class="relative w-40 h-40 group">
-                <!-- Canvas redondeado con borde sutil -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-2xl border border-gray-300 shadow-sm"></canvas>
-
-                <!-- Overlay que aparece al hacer hover -->
-                <div class="absolute inset-0 bg-black bg-opacity-30 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <label class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md cursor-pointer hover:bg-gray-100 transform hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <input type="file" accept="image/*" @change="loadImage" class="hidden">
-                    </label>
-                </div>
-            </div>
-
-            <p class="text-sm text-gray-500 text-center">
-            Selecciona una imagen para ver la vista previa.
-            </p>
-        </div> --}}
-
-        <!-- Vista previa estilo card moderna -->
-        {{-- <div class="flex flex-col items-center gap-3 w-64 p-5 bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-3xl shadow-lg border-2 border-transparent hover:border-purple-400 transition-all duration-300">
-            <span class="text-lg font-semibold text-gray-800">Vista previa</span>
-
-            <div class="relative w-40 h-40 rounded-xl overflow-hidden shadow-md group">
-                <!-- Canvas con animación de borde -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full border-4 border-transparent group-hover:border-purple-500 transition-all duration-300 rounded-xl"></canvas>
-
-                <!-- Botón flotante integrado al borde -->
-                <label class="absolute bottom-2 right-2 w-12 h-12 flex items-center justify-center bg-purple-500 rounded-full shadow-lg cursor-pointer hover:bg-purple-600 transform hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <input type="file" accept="image/*" @change="loadImage" class="hidden">
-                </label>
-            </div>
-
-            <p class="text-sm text-gray-700 text-center">
-                Haz hover sobre la tarjeta para activar el borde y subir tu imagen.
-            </p>
-        </div> --}}
-
         <!-- Vista previa estilo badge circular -->
-        <div class="flex flex-col items-center gap-2 w-32 p-3 bg-gray-100 rounded-full shadow-md hover:shadow-xl transition-shadow duration-300">
-            <span class="text-xs text-center p-2 font-medium text-gray-700">Vista previa</span>
+        <div class="flex flex-col items-center gap-3 w-40 p-4 bg-white rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300 group cursor-pointer border-2 border-transparent group-hover:border-blue-500">
+            <span class="text-sm font-semibold text-gray-800">Vista previa</span>
 
-            <div class="relative w-24 h-24 rounded-full overflow-hidden group">
+            <div class="relative w-28 h-28 rounded-full overflow-hidden group">
                 <!-- Canvas circular -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-300 shadow-inner"></canvas>
+                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-200 shadow-inner transition-all duration-300 group-hover:border-blue-400"></canvas>
 
-                <!-- Botón flotante central -->
+                <!-- Botón central flotante -->
                 <label class="absolute inset-0 flex items-center justify-center cursor-pointer">
                     <div class="w-10 h-10 bg-blue-500 rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transform hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -152,8 +64,8 @@
                 </label>
             </div>
 
-            <p class="text-xs text-gray-500 text-center mt-1">
-                Selecciona una imagen para previsualizarla
+            <p class="text-xs text-gray-500 text-center">
+                Haz click en el centro para subir tu imagen.
             </p>
         </div>
 
