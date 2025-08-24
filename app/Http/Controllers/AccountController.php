@@ -98,54 +98,20 @@ class AccountController extends Controller
 
     public function update_photo(Request $request, User $user)
     {
-        $path = FilePond::field($request->input('file'))
-        ->moveTo('uploads/'.auth()->id().'/'.Str::slug(now()->format('d-m-Y H:s:m')));
-        dd($path);
-
-        return back()->with('success', count($path).' archivos subidos correctamente');
-
-        /*
-        // Single and multiple file validation
-        $this->validate($request, [
-            'avatar' => Rule::filepond([
-                'required',
-                'image',
-                'max:2000'
-            ]),
-            'gallery.*' => Rule::filepond([
-                'required',
-                'image',
-                'max:2000'
-            ])
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,jpg,png|max:5120', // 5MB
         ]);
 
-        // Set filename
-        $avatarName = 'avatar-' . auth()->id();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/profile', $filename);
 
-        // Move the file to permanent storage
-        // Automatic file extension set
-        // $fileInfo = Filepond::field($request->avatar)
-        //     ->moveTo('avatars/' . $avatarName);
+            $user->profile_photo = $filename;
+            $user->save();
+        }
 
-        // dd($fileInfo);
-        // [
-        //     "id" => 1,
-        //     "dirname" => "avatars",
-        //     "basename" => "avatar-1.png",
-        //     "extension" => "png",
-        //     "mimetype" => "image/png",
-        //     "filename" => "avatar-1",
-        //     "location" => "avatars/avatar-1.png",
-        //     "url" => "http://localhost/storage/avatars/avatar-1.png",
-        // ];
-
-        $galleryName = 'gallery-' . auth()->id();
-
-        // $fileInfos = Filepond::field($request->gallery)
-        //     ->moveTo('galleries/' . $galleryName);
-
-        return back()->with('success', 'Foto de perfil modificado exitosamente');
-        */
+        return back()->with('success', 'Foto de perfil actualizada exitosamente');
     }
 
 
