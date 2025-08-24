@@ -1,16 +1,25 @@
 <div x-data="photoCropper()"
     x-init="$watch('croppedPhoto', value => @this.set('croppedPhoto', value))"
-    class="space-y-6 max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
+    class="max-w-3xl mx-auto p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100 rounded-3xl shadow-2xl space-y-6">
 
-    <!-- Header -->
+    <!-- Header con perfil -->
     <div class="flex justify-between items-center space-x-4">
         <div class="flex items-center space-x-4">
-            <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
-                class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+            <div class="relative">
+                <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
+                    class="w-24 h-24 rounded-full border-4 border-white shadow-xl cursor-pointer hover:scale-105 transition-transform">
+                <div class="absolute bottom-0 right-0 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-md hover:bg-blue-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+            </div>
             <div>
-                <h2 class="text-xl font-bold">{{ $user->profile->fullname }}</h2>
+                <h2 class="text-2xl font-bold text-gray-800">{{ $user->profile->fullname }}</h2>
                 <h4 class="text-xs">{{ '@'.$user->username }}</h4>
-                <p class="text-gray-500">Actualiza tu foto de perfil</p>
+                <p class="text-gray-500 text-xs">Actualiza tu foto de perfil</p>
             </div>
         </div>
         <div>
@@ -20,44 +29,43 @@
         </div>
     </div>
 
-    <!-- Carga de imagen -->
+    <!-- Canvas y controles -->
     <div class="flex flex-col md:flex-row gap-6">
-        <!-- Canvas principal -->
-        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50" style="width: 400px;height:400px;">
+        <!-- Canvas principal con overlay moderno -->
+        <div class="relative w-full rounded-2xl overflow-hidden shadow-lg bg-gray-50" style="width: 400px;height: 400px;">
             <canvas id="canvas" width="400" height="400"></canvas>
 
-            <!-- Caja azul -->
-            <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20 rounded"
-                x-show="image"
+            <div x-show="image"
+                class="absolute border-2 border-blue-400 bg-blue-300 bg-opacity-20 rounded-xl cursor-move"
                 :style="'left:' + cropBox.x + 'px; top:' + cropBox.y + 'px; width:' + cropBox.w + 'px; height:' + cropBox.h + 'px;'"
                 @mousedown="startDrag($event)">
-
-                <!-- Esquinas de redimensionamiento -->
                 <template x-for="dir in ['nw','ne','sw','se']">
                     <div :class="{
-                            'nw': 'absolute w-4 h-4 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
-                            'ne': 'absolute w-4 h-4 bg-blue-500 cursor-ne-resize -top-2 -right-2 rounded-full',
-                            'sw': 'absolute w-4 h-4 bg-blue-500 cursor-sw-resize -bottom-2 -left-2 rounded-full',
-                            'se': 'absolute w-4 h-4 bg-blue-500 cursor-se-resize -bottom-2 -right-2 rounded-full'
-                        }[dir]"
-                        @mousedown.stop="startResize($event, dir)"></div>
+                        'nw': 'absolute w-5 h-5 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
+                        'ne': 'absolute w-5 h-5 bg-blue-500 cursor-ne-resize -top-2 -right-2 rounded-full',
+                        'sw': 'absolute w-5 h-5 bg-blue-500 cursor-sw-resize -bottom-2 -left-2 rounded-full',
+                        'se': 'absolute w-5 h-5 bg-blue-500 cursor-se-resize -bottom-2 -right-2 rounded-full'
+                    }[dir]" @mousedown.stop="startResize($event, dir)"></div>
                 </template>
             </div>
         </div>
 
-        <!-- Vista previa -->
-        <div class="flex flex-col items-center justify-start gap-4">
-            <span class="font-semibold text-gray-700">Vista previa</span>
-            <canvas id="preview" width="150" height="150" class="border rounded-xl shadow-md"></canvas>
-            <input type="file" accept="image/*" @change="loadImage"
-                class="mt-2 p-2 border rounded-full cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
+        <!-- Vista previa + input -->
+        <div class="flex flex-col items-center gap-4">
+            <span class="text-gray-600 font-medium">Vista previa</span>
+            <canvas id="preview" width="150" height="150" class="border rounded-2xl shadow-md"></canvas>
+            <label
+                class="mt-2 cursor-pointer px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 text-white font-semibold rounded-full shadow hover:from-blue-500 hover:to-blue-600 transition">
+                Subir imagen
+                <input type="file" accept="image/*" @change="loadImage" class="hidden">
+            </label>
         </div>
     </div>
 
-    <!-- Botón de acción -->
-    <div class="flex justify-end">
+    <!-- Botón guardar -->
+    <div class="flex justify-start">
         <button @click.prevent="cropImage"
-            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition-all transform hover:scale-105">
+            class="px-6 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full font-semibold shadow-lg hover:from-green-500 hover:to-green-600 transition transform hover:scale-105">
             Guardar foto
         </button>
     </div>
