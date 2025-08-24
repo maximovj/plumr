@@ -86,4 +86,10 @@ class AccountController extends Controller
     {
         //
     }
+
+    public function edit_photo(User $user)
+    {
+        //
+        return view("plumr.account.edit_photo", compact('user'));
+    }
 }

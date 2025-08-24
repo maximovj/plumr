@@ -13,7 +13,7 @@
 
                 <!-- Foto de usuario -->
                 <div class="absolute -bottom-12 left-6">
-                    <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
+                    <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
                         class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
                 </div>
 
@@ -36,7 +36,7 @@
                             class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
                             <ul class="flex flex-col py-2">
                                 <li>
-                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
+                                    <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
                                 </li>
                                 <li>
                                     <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
