@@ -1,49 +1,62 @@
 <div x-data="photoCropper()"
     x-init="$watch('croppedPhoto', value => @this.set('croppedPhoto', value))"
-    class="space-y-4">
+    class="space-y-6 max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
 
-    <div>
-        <span class="block font-bold mb-2">Foto de perfil actual</span>
+    <!-- Header -->
+    <div class="flex items-center space-x-4">
         <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
-                        class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
+            class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+        <div>
+            <h2 class="text-xl font-bold">{{ $user->profile->fullname }}</h2>
+            <h4 class="text-xs">{{ '@'.$user->username }}</h4>
+            <p class="text-gray-500">Actualiza tu foto de perfil</p>
+        </div>
     </div>
 
-    <input type="file" accept="image/*" @change="loadImage" class="border p-2 rounded w-full">
-
-    <div class="flex gap-4">
+    <!-- Carga de imagen -->
+    <div class="flex flex-col md:flex-row gap-6">
         <!-- Canvas principal -->
-        <div class="relative border border-gray-300 w-[400px] h-[400px]">
-            <canvas id="canvas" width="400" height="400" class="bg-gray-100"></canvas>
+        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50" style="width: 400px;height:400px;">
+            <canvas id="canvas" width="400" height="400"></canvas>
 
             <!-- Caja azul -->
-            <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20"
+            <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20 rounded"
                 x-show="image"
                 :style="'left:' + cropBox.x + 'px; top:' + cropBox.y + 'px; width:' + cropBox.w + 'px; height:' + cropBox.h + 'px;'"
                 @mousedown="startDrag($event)">
 
                 <!-- Esquinas de redimensionamiento -->
-                <div class="absolute w-3 h-3 bg-blue-500 cursor-nw-resize -top-1 -left-1"
-                    @mousedown.stop="startResize($event, 'nw')"></div>
-                <div class="absolute w-3 h-3 bg-blue-500 cursor-ne-resize -top-1 -right-1"
-                    @mousedown.stop="startResize($event, 'ne')"></div>
-                <div class="absolute w-3 h-3 bg-blue-500 cursor-sw-resize -bottom-1 -left-1"
-                    @mousedown.stop="startResize($event, 'sw')"></div>
-                <div class="absolute w-3 h-3 bg-blue-500 cursor-se-resize -bottom-1 -right-1"
-                    @mousedown.stop="startResize($event, 'se')"></div>
+                <template x-for="dir in ['nw','ne','sw','se']">
+                    <div :class="{
+                            'nw': 'absolute w-4 h-4 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
+                            'ne': 'absolute w-4 h-4 bg-blue-500 cursor-ne-resize -top-2 -right-2 rounded-full',
+                            'sw': 'absolute w-4 h-4 bg-blue-500 cursor-sw-resize -bottom-2 -left-2 rounded-full',
+                            'se': 'absolute w-4 h-4 bg-blue-500 cursor-se-resize -bottom-2 -right-2 rounded-full'
+                        }[dir]"
+                        @mousedown.stop="startResize($event, dir)"></div>
+                </template>
             </div>
         </div>
 
-        <!-- Vista previa del recorte -->
-        <div>
-            <canvas id="preview" width="150" height="150" class="border"></canvas>
+        <!-- Vista previa -->
+        <div class="flex flex-col items-center justify-start gap-4">
+            <span class="font-semibold text-gray-700">Vista previa</span>
+            <canvas id="preview" width="150" height="150" class="border rounded-xl shadow-md"></canvas>
+            <input type="file" accept="image/*" @change="loadImage"
+                class="mt-2 p-2 border rounded-full cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
         </div>
+    </div>
+
+    <!-- Botón de acción -->
+    <div class="flex justify-end">
+        <button @click.prevent="cropImage"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition-all transform hover:scale-105">
+            Guardar foto
+        </button>
     </div>
 
     <input type="hidden" wire:model="croppedPhoto" x-model="croppedPhoto" x-ref="croppedPhoto">
 
-    <button @click.prevent="cropImage" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">
-        Actualizar foto de perfil
-    </button>
 </div>
 
 <script>
@@ -59,27 +72,24 @@ function photoCropper() {
         resizeDir: null,
         startX: 0,
         startY: 0,
-
         cropBox: { x: 50, y: 50, w: 150, h: 150 },
 
         loadImage(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = e => {
                 this.image = new Image();
                 this.image.onload = () => {
                     this.canvas = document.getElementById('canvas');
                     this.ctx = this.canvas.getContext('2d');
                     this.preview = document.getElementById('preview').getContext('2d');
                     this.draw();
-                }
+                };
                 this.image.src = e.target.result;
             };
             reader.readAsDataURL(file);
-
-            window.addEventListener('mousemove', (e) => this.onMove(e));
+            window.addEventListener('mousemove', e => this.onMove(e));
             window.addEventListener('mouseup', () => this.stopAction());
         },
 
@@ -90,90 +100,36 @@ function photoCropper() {
             this.updatePreview();
         },
 
-        startDrag(e) {
-            this.dragging = true;
-            this.startX = e.clientX;
-            this.startY = e.clientY;
-        },
-
-        startResize(e, dir) {
-            this.resizing = true;
-            this.resizeDir = dir;
-            this.startX = e.clientX;
-            this.startY = e.clientY;
-        },
+        startDrag(e) { this.dragging = true; this.startX = e.clientX; this.startY = e.clientY; },
+        startResize(e, dir) { this.resizing = true; this.resizeDir = dir; this.startX = e.clientX; this.startY = e.clientY; },
 
         onMove(e) {
             if (this.dragging) {
-                const dx = e.clientX - this.startX;
-                const dy = e.clientY - this.startY;
-
-                this.cropBox.x += dx;
-                this.cropBox.y += dy;
-
-                this.startX = e.clientX;
-                this.startY = e.clientY;
-
-                // límites
+                const dx = e.clientX - this.startX, dy = e.clientY - this.startY;
+                this.cropBox.x += dx; this.cropBox.y += dy;
+                this.startX = e.clientX; this.startY = e.clientY;
                 this.cropBox.x = Math.max(0, Math.min(this.cropBox.x, this.canvas.width - this.cropBox.w));
                 this.cropBox.y = Math.max(0, Math.min(this.cropBox.y, this.canvas.height - this.cropBox.h));
-
                 this.draw();
             }
-
             if (this.resizing) {
-                const dx = e.clientX - this.startX;
-                const dy = e.clientY - this.startY;
-
+                const dx = e.clientX - this.startX, dy = e.clientY - this.startY;
                 switch (this.resizeDir) {
-                    case 'nw':
-                        this.cropBox.x += dx;
-                        this.cropBox.y += dy;
-                        this.cropBox.w -= dx;
-                        this.cropBox.h -= dy;
-                        break;
-                    case 'ne':
-                        this.cropBox.y += dy;
-                        this.cropBox.w += dx;
-                        this.cropBox.h -= dy;
-                        break;
-                    case 'sw':
-                        this.cropBox.x += dx;
-                        this.cropBox.w -= dx;
-                        this.cropBox.h += dy;
-                        break;
-                    case 'se':
-                        this.cropBox.w += dx;
-                        this.cropBox.h += dy;
-                        break;
+                    case 'nw': this.cropBox.x += dx; this.cropBox.y += dy; this.cropBox.w -= dx; this.cropBox.h -= dy; break;
+                    case 'ne': this.cropBox.y += dy; this.cropBox.w += dx; this.cropBox.h -= dy; break;
+                    case 'sw': this.cropBox.x += dx; this.cropBox.w -= dx; this.cropBox.h += dy; break;
+                    case 'se': this.cropBox.w += dx; this.cropBox.h += dy; break;
                 }
-
-                // tamaño mínimo
-                this.cropBox.w = Math.max(50, this.cropBox.w);
-                this.cropBox.h = Math.max(50, this.cropBox.h);
-
-                // límites dentro del canvas
-                this.cropBox.x = Math.max(0, this.cropBox.x);
-                this.cropBox.y = Math.max(0, this.cropBox.y);
-                if (this.cropBox.x + this.cropBox.w > this.canvas.width) {
-                    this.cropBox.w = this.canvas.width - this.cropBox.x;
-                }
-                if (this.cropBox.y + this.cropBox.h > this.canvas.height) {
-                    this.cropBox.h = this.canvas.height - this.cropBox.y;
-                }
-
-                this.startX = e.clientX;
-                this.startY = e.clientY;
-
+                this.cropBox.w = Math.max(50, this.cropBox.w); this.cropBox.h = Math.max(50, this.cropBox.h);
+                this.cropBox.x = Math.max(0, this.cropBox.x); this.cropBox.y = Math.max(0, this.cropBox.y);
+                if (this.cropBox.x + this.cropBox.w > this.canvas.width) this.cropBox.w = this.canvas.width - this.cropBox.x;
+                if (this.cropBox.y + this.cropBox.h > this.canvas.height) this.cropBox.h = this.canvas.height - this.cropBox.y;
+                this.startX = e.clientX; this.startY = e.clientY;
                 this.draw();
             }
         },
 
-        stopAction() {
-            this.dragging = false;
-            this.resizing = false;
-        },
-
+        stopAction() { this.dragging = false; this.resizing = false; },
         updatePreview() {
             if (!this.preview) return;
             const { x, y, w, h } = this.cropBox;
@@ -184,20 +140,9 @@ function photoCropper() {
         cropImage() {
             const { x, y, w, h } = this.cropBox;
             const tmpCanvas = document.createElement('canvas');
-            tmpCanvas.width = w;
-            tmpCanvas.height = h;
-            const tmpCtx = tmpCanvas.getContext('2d');
-            tmpCtx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h);
-
+            tmpCanvas.width = w; tmpCanvas.height = h;
+            tmpCanvas.getContext('2d').drawImage(this.canvas, x, y, w, h, 0, 0, w, h);
             this.croppedPhoto = tmpCanvas.toDataURL('image/png');
-
-            /*
-            // Actualiza propiedad 'croppedPhoto' del componente Livewire
-            //@this.set('croppedPhoto', this.croppedPhoto);
-            //@this.croppedPhoto = this.croppedPhoto;
-            //Livewire.emit('updateCroppedPhoto', this.croppedPhoto);
-            */
-
             @this.save();
         }
     }
