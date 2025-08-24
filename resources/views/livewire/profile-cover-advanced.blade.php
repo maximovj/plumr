@@ -2,8 +2,10 @@
     x-init="
     $watch('croppedPhoto', value => @this.set('croppedPhoto', value));
     $watch('mode', () => { draw(); updatePreview(); });
+    window.addEventListener('resize', () => { resizeCanvas(); });
     "
-    class="space-y-6 max-w-full mx-auto p-6 bg-white rounded-2xl shadow-lg">
+    class="space-y-6 max-w-full mx-auto p-6 bg-white rounded-2xl shadow-lg"
+    x-cloak>
 
     <!-- Header -->
     <div class="flex justify-between items-center space-x-4">
@@ -43,31 +45,55 @@
         </p>
     </div>
 
-    <!-- Selector de modo -->
-    <div class="flex gap-4">
-        <button @click="mode = 'auto'"
-            :class="mode==='auto' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
-            class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
-            Ajustar automáticamente
-        </button>
-        <button @click="mode = 'crop'"
-            :class="mode==='crop' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
-            class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
-            Recortar manualmente
-        </button>
+    <!-- Vista previa final y Selector de modo  -->
+    <div
+    x-ref="actionsCover"
+    x-show="showActions"
+    class="flex flex-col items-center gap-6 w-full animate__animated animate__fast animate__zoomIn">
+        <!-- Vista previa final -->
+        <div class="flex flex-col items-center w-full lg:w-2/5 max-w-xl">
+            <span class="text-sm font-semibold text-gray-800">Vista previa final</span>
+            <div class="relative w-full" style="aspect-ratio: 628/160;">
+                <canvas id="preview" class="absolute inset-0 w-full h-full border rounded-lg shadow-inner"></canvas>
+            </div>
+        </div>
+
+        <!-- Selector de modo -->
+        <div class="flex gap-4">
+            <button @click="mode = 'auto'"
+                :class="mode==='auto' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
+                class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
+                Ajustar automáticamente
+            </button>
+            <button @click="mode = 'crop'"
+                :class="mode==='crop' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
+                class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
+                Recortar manualmente
+            </button>
+        </div>
     </div>
 
     <!-- Área principal -->
-    <div class="flex flex-col items-center gap-4">
-        <!-- Canvas -->
-        <div class="relative border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50"
-             style="width:1256px; height:640px;">
-            <canvas id="canvas" width="1256" height="640"></canvas>
+    <div
+    x-ref="mainCover"
+    x-show="showActions"
+    class="flex flex-col items-center gap-6 w-full animate__animated animate__fast animate__fadeIn">
+
+        <!-- Canvas responsive -->
+        <div class="relative w-full max-w-5xl border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50"
+            x-ref="canvasWrapper"
+            style="aspect-ratio: 1256/640;">
+            <canvas id="canvas" class="absolute inset-0 w-full h-full"></canvas>
 
             <!-- Caja de recorte solo en modo crop -->
             <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20 rounded"
                 x-show="image && mode==='crop'"
-                :style="'left:' + cropBox.x + 'px; top:' + cropBox.y + 'px; width:' + cropBox.w + 'px; height:' + cropBox.h + 'px;'"
+                :style="`
+                    left:${cropBox.x * scale}px;
+                    top:${cropBox.y * scale}px;
+                    width:${cropBox.w * scale}px;
+                    height:${cropBox.h * scale}px;
+                `"
                 @mousedown="startDrag($event)">
 
                 <template x-for="dir in ['nw','ne','sw','se']">
@@ -80,15 +106,9 @@
                         @mousedown.stop="startResize($event, dir)"></div>
                 </template>
             </div>
-
         </div>
 
-        <!-- Vista previa final (628x160) -->
-        <div class="flex flex-col items-center">
-            <span class="text-sm font-semibold text-gray-800">Vista previa final</span>
-            <canvas id="preview" width="628" height="160"
-                class="mt-2 border rounded-lg shadow-inner"></canvas>
-        </div>
+
     </div>
 
     <!-- Botón guardar -->
@@ -109,21 +129,36 @@ function coverEditor() {
         canvas: null, ctx: null, preview: null,
         image: null, croppedPhoto: @entangle('croppedPhoto'),
         mode: 'auto',
+        scale: 1,
+        showActions: false,
 
         dragging: false, resizing: false, resizeDir: null,
         startX: 0, startY: 0,
         cropBox: { x: 50, y: 50, w: 628, h: 160 },
 
         loadImage(event) {
+            this.showActions = false; // Ocultar acciones y pantalla principal
+
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = e => {
                 this.image = new Image();
+                this.showActions = true; // Mostrar acciones y pantalla principal
+
                 this.image.onload = () => {
                     this.canvas = document.getElementById('canvas');
                     this.ctx = this.canvas.getContext('2d');
                     this.preview = document.getElementById('preview').getContext('2d');
+
+                    // Escalar al wrapper
+                    const wrapper = this.$refs.canvasWrapper;
+                    this.canvas.width = wrapper.clientWidth;
+                    this.canvas.height = wrapper.clientHeight;
+
+                    // Escala respecto a tamaño base
+                    this.scale = this.canvas.width / 1256;
+
                     this.draw();
                 };
                 this.image.src = e.target.result;
@@ -149,8 +184,8 @@ function coverEditor() {
                 const dx = e.clientX - this.startX, dy = e.clientY - this.startY;
                 this.cropBox.x += dx; this.cropBox.y += dy;
                 this.startX = e.clientX; this.startY = e.clientY;
-                this.cropBox.x = Math.max(0, Math.min(this.cropBox.x, this.canvas.width - this.cropBox.w));
-                this.cropBox.y = Math.max(0, Math.min(this.cropBox.y, this.canvas.height - this.cropBox.h));
+                this.cropBox.x = Math.max(0, Math.min(this.cropBox.x, 1256 - this.cropBox.w));
+                this.cropBox.y = Math.max(0, Math.min(this.cropBox.y, 640 - this.cropBox.h));
                 this.draw();
             }
             if (this.resizing) {
@@ -172,10 +207,24 @@ function coverEditor() {
             if (!this.preview) return;
             const { x, y, w, h } = this.mode === 'crop'
                 ? this.cropBox
-                : { x:0, y:0, w:this.canvas.width, h:this.canvas.height };
+                : { x:0, y:0, w:1256, h:640 };
 
-            this.preview.clearRect(0, 0, 628, 160);
-            this.preview.drawImage(this.canvas, x, y, w, h, 0, 0, 628, 160);
+            this.preview.clearRect(0, 0, this.preview.canvas.width, this.preview.canvas.height);
+            this.preview.drawImage(
+                this.canvas,
+                x * this.scale, y * this.scale, w * this.scale, h * this.scale,
+                0, 0, this.preview.canvas.width, this.preview.canvas.height
+            );
+        },
+
+        resizeCanvas() {
+            const wrapper = this.$refs.canvasWrapper;
+            if(this.canvas && this.mode == 'crop') {
+                this.canvas.width = wrapper.clientWidth;
+                this.canvas.height = wrapper.clientHeight;
+                this.scale = this.canvas.width / 1256;
+                this.draw();
+            }
         },
 
         saveCover() {
