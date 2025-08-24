@@ -45,15 +45,15 @@
             </div>
         </div>
 
-        <!-- Vista previa estilo badge circular -->
-        <div class="flex flex-col items-center gap-3 w-40 p-4 bg-white rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300 group cursor-pointer border-2 border-transparent group-hover:border-blue-500">
+        <!-- Vista previa circular con glow -->
+        <div class="flex flex-col items-center gap-3 w-40 p-4 cursor-pointer">
             <span class="text-sm font-semibold text-gray-800">Vista previa</span>
 
-            <div class="relative w-28 h-28 rounded-full overflow-hidden group">
-                <!-- Canvas circular -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-200 shadow-inner transition-all duration-300 group-hover:border-blue-400"></canvas>
+            <div class="relative w-36 h-36 rounded-full overflow-hidden shadow-lg transition-shadow duration-300 group hover:shadow-[0_0_20px_5px_rgba(59,130,246,0.5)]">
+                <!-- Canvas circular actualizado -->
+                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-300 shadow-inner"></canvas>
 
-                <!-- Botón central flotante -->
+                <!-- Botón flotante central -->
                 <label class="absolute inset-0 flex items-center justify-center cursor-pointer">
                     <div class="w-10 h-10 bg-blue-500 rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transform hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,11 +64,10 @@
                 </label>
             </div>
 
-            <p class="text-xs text-gray-500 text-center">
+            <p class="text-xs text-gray-500 text-center mt-1">
                 Haz click en el centro para subir tu imagen.
             </p>
         </div>
-
     </div>
 
     <!-- Botón de acción -->
