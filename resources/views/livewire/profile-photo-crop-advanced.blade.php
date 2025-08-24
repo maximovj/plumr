@@ -1,25 +1,16 @@
 <div x-data="photoCropper()"
     x-init="$watch('croppedPhoto', value => @this.set('croppedPhoto', value))"
-    class="max-w-3xl mx-auto p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100 rounded-3xl shadow-2xl space-y-6">
+    class="space-y-6 max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
 
-    <!-- Header con perfil -->
+    <!-- Header -->
     <div class="flex justify-between items-center space-x-4">
         <div class="flex items-center space-x-4">
-            <div class="relative">
-                <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
-                    class="w-24 h-24 rounded-full border-4 border-white shadow-xl cursor-pointer hover:scale-105 transition-transform">
-                <div class="absolute bottom-0 right-0 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-md hover:bg-blue-600 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 4v16m8-8H4" />
-                    </svg>
-                </div>
-            </div>
+            <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
+                class="w-20 h-20 rounded-full border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform cursor-pointer">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">{{ $user->profile->fullname }}</h2>
+                <h2 class="text-xl font-bold">{{ $user->profile->fullname }}</h2>
                 <h4 class="text-xs">{{ '@'.$user->username }}</h4>
-                <p class="text-gray-500 text-xs">Actualiza tu foto de perfil</p>
+                <p class="text-gray-500">Actualiza tu foto de perfil</p>
             </div>
         </div>
         <div>
@@ -29,43 +20,149 @@
         </div>
     </div>
 
-    <!-- Canvas y controles -->
-    <div class="flex flex-col md:flex-row gap-6">
-        <!-- Canvas principal con overlay moderno -->
-        <div class="relative w-full rounded-2xl overflow-hidden shadow-lg bg-gray-50" style="width: 400px;height: 400px;">
+    <!-- Carga de imagen -->
+    <div class="flex flex-col md:flex-row gap-6 ">
+        <!-- Canvas principal -->
+        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50" style="width: 400px;height:400px;">
             <canvas id="canvas" width="400" height="400"></canvas>
 
-            <div x-show="image"
-                class="absolute border-2 border-blue-400 bg-blue-300 bg-opacity-20 rounded-xl cursor-move"
+            <!-- Caja azul -->
+            <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20 rounded"
+                x-show="image"
                 :style="'left:' + cropBox.x + 'px; top:' + cropBox.y + 'px; width:' + cropBox.w + 'px; height:' + cropBox.h + 'px;'"
                 @mousedown="startDrag($event)">
+
+                <!-- Esquinas de redimensionamiento -->
                 <template x-for="dir in ['nw','ne','sw','se']">
                     <div :class="{
-                        'nw': 'absolute w-5 h-5 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
-                        'ne': 'absolute w-5 h-5 bg-blue-500 cursor-ne-resize -top-2 -right-2 rounded-full',
-                        'sw': 'absolute w-5 h-5 bg-blue-500 cursor-sw-resize -bottom-2 -left-2 rounded-full',
-                        'se': 'absolute w-5 h-5 bg-blue-500 cursor-se-resize -bottom-2 -right-2 rounded-full'
-                    }[dir]" @mousedown.stop="startResize($event, dir)"></div>
+                            'nw': 'absolute w-4 h-4 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
+                            'ne': 'absolute w-4 h-4 bg-blue-500 cursor-ne-resize -top-2 -right-2 rounded-full',
+                            'sw': 'absolute w-4 h-4 bg-blue-500 cursor-sw-resize -bottom-2 -left-2 rounded-full',
+                            'se': 'absolute w-4 h-4 bg-blue-500 cursor-se-resize -bottom-2 -right-2 rounded-full'
+                        }[dir]"
+                        @mousedown.stop="startResize($event, dir)"></div>
                 </template>
             </div>
         </div>
 
-        <!-- Vista previa + input -->
-        <div class="flex flex-col items-center gap-4">
-            <span class="text-gray-600 font-medium">Vista previa</span>
-            <canvas id="preview" width="150" height="150" class="border rounded-2xl shadow-md"></canvas>
-            <label
-                class="mt-2 cursor-pointer px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 text-white font-semibold rounded-full shadow hover:from-blue-500 hover:to-blue-600 transition">
-                Subir imagen
-                <input type="file" accept="image/*" @change="loadImage" class="hidden">
-            </label>
+        <!-- Vista previa -->
+        {{-- <div class="flex flex-col items-center justify-start gap-4">
+            <div class="relative">
+                <span class="block font-semibold text-gray-700 mb-2">Vista previa</span>
+                <canvas id="preview" width="150" height="150" class="border rounded-xl shadow-md"></canvas>
+                <div class="absolute top-20 left-14 w-40">
+                    <label
+                        class="mt-2 cursor-pointer w-12 h-12 flex items-center justify-center bg-blue-500 rounded-full shadow-lg hover:bg-blue-600 transition transform hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4v16m8-8H4" />
+                        </svg>
+                        <input type="file" accept="image/*" @change="loadImage" class="hidden">
+                    </label>
+                </div>
+            </div>
+        </div> --}}
+
+        <!-- Vista previa -->
+        {{-- <div class="flex flex-col items-center gap-4 p-4 bg-white rounded-2xl shadow-lg w-64">
+            <span class="text-lg font-semibold text-gray-800">Vista previa</span>
+
+            <div class="relative w-40 h-40">
+                <!-- Canvas con borde redondeado y sombra -->
+                <canvas id="preview" width="150" height="150" class="w-full h-full border-2 border-gray-200 rounded-xl shadow-inner"></canvas>
+
+                <!-- Botón flotante de subir imagen -->
+                <label
+                    class="absolute bottom-2 right-2 w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full shadow-lg cursor-pointer hover:bg-blue-600 transition-transform transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <input type="file" accept="image/*" @change="loadImage" class="hidden">
+                </label>
+            </div>
+
+            <p class="text-sm text-gray-500 text-center mt-2">
+                Sube tu imagen para ver una vista previa en tiempo real.
+            </p>
+        </div> --}}
+
+        <!-- Vista previa -->
+        {{-- <div class="flex flex-col items-center gap-3 p-5 bg-gray-50 rounded-3xl shadow-xl w-64 hover:shadow-2xl transition-shadow duration-300">
+            <span class="text-lg font-medium text-gray-700">Vista previa</span>
+
+            <div class="relative w-40 h-40 group">
+                <!-- Canvas redondeado con borde sutil -->
+                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-2xl border border-gray-300 shadow-sm"></canvas>
+
+                <!-- Overlay que aparece al hacer hover -->
+                <div class="absolute inset-0 bg-black bg-opacity-30 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <label class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md cursor-pointer hover:bg-gray-100 transform hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        <input type="file" accept="image/*" @change="loadImage" class="hidden">
+                    </label>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-500 text-center">
+            Selecciona una imagen para ver la vista previa.
+            </p>
+        </div> --}}
+
+        <!-- Vista previa estilo card moderna -->
+        {{-- <div class="flex flex-col items-center gap-3 w-64 p-5 bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 rounded-3xl shadow-lg border-2 border-transparent hover:border-purple-400 transition-all duration-300">
+            <span class="text-lg font-semibold text-gray-800">Vista previa</span>
+
+            <div class="relative w-40 h-40 rounded-xl overflow-hidden shadow-md group">
+                <!-- Canvas con animación de borde -->
+                <canvas id="preview" width="150" height="150" class="w-full h-full border-4 border-transparent group-hover:border-purple-500 transition-all duration-300 rounded-xl"></canvas>
+
+                <!-- Botón flotante integrado al borde -->
+                <label class="absolute bottom-2 right-2 w-12 h-12 flex items-center justify-center bg-purple-500 rounded-full shadow-lg cursor-pointer hover:bg-purple-600 transform hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <input type="file" accept="image/*" @change="loadImage" class="hidden">
+                </label>
+            </div>
+
+            <p class="text-sm text-gray-700 text-center">
+                Haz hover sobre la tarjeta para activar el borde y subir tu imagen.
+            </p>
+        </div> --}}
+
+        <!-- Vista previa estilo badge circular -->
+        <div class="flex flex-col items-center gap-2 w-32 p-3 bg-gray-100 rounded-full shadow-md hover:shadow-xl transition-shadow duration-300">
+            <span class="text-xs text-center p-2 font-medium text-gray-700">Vista previa</span>
+
+            <div class="relative w-24 h-24 rounded-full overflow-hidden group">
+                <!-- Canvas circular -->
+                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-300 shadow-inner"></canvas>
+
+                <!-- Botón flotante central -->
+                <label class="absolute inset-0 flex items-center justify-center cursor-pointer">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transform hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <input type="file" accept="image/*" @change="loadImage" class="hidden">
+                </label>
+            </div>
+
+            <p class="text-xs text-gray-500 text-center mt-1">
+                Selecciona una imagen para previsualizarla
+            </p>
         </div>
+
     </div>
 
-    <!-- Botón guardar -->
-    <div class="flex justify-start">
+    <!-- Botón de acción -->
+    <div class="flex justify-end">
         <button @click.prevent="cropImage"
-            class="px-6 py-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full font-semibold shadow-lg hover:from-green-500 hover:to-green-600 transition transform hover:scale-105">
+            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition-all transform hover:scale-105">
             Guardar foto
         </button>
     </div>
