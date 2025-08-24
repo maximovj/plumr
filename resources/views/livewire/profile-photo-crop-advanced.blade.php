@@ -21,9 +21,9 @@
     </div>
 
     <!-- Carga de imagen -->
-    <div class="flex flex-col md:flex-row gap-6 ">
+    <div class="flex flex-col md:flex-row justify-center items-center content-center gap-6 ">
         <!-- Canvas principal -->
-        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50" style="width: 400px;height:400px;">
+        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50 order-last md:order-first " style="width: 400px;height:400px;">
             <canvas id="canvas" width="400" height="400"></canvas>
 
             <!-- Caja azul -->
@@ -71,9 +71,9 @@
     </div>
 
     <!-- Botón de acción -->
-    <div class="flex justify-end">
+    <div class="flex justify-start">
         <button @click.prevent="cropImage"
-            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition-all transform hover:scale-105">
+            class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded">
             Guardar foto
         </button>
     </div>
