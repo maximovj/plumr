@@ -114,8 +114,15 @@
 
     <!-- Botón guardar -->
     <div class="flex justify-start">
-        <button @click.prevent="saveCover"
-            class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded">
+        <button
+            @click.prevent="saveCover"
+            :disabled="saveCoverInProgress"
+            class="text-white font-semibold py-2 px-6 rounded transition-colors duration-200"
+            :class="{
+                'bg-gray-500 cursor-not-allowed': saveCoverInProgress,
+                'bg-indigo-500 hover:bg-indigo-600': !saveCoverInProgress
+            }"
+        >
             Guardar portada
         </button>
     </div>
@@ -132,6 +139,7 @@ function coverEditor() {
         mode: 'auto',
         scale: 1,
         showActions: false,
+        saveCoverInProgress: false,
 
         dragging: false, resizing: false, resizeDir: null,
         startX: 0, startY: 0,
@@ -228,9 +236,37 @@ function coverEditor() {
             }
         },
 
+        getCroppedCanvas(finalSize = { width: 669, height: 160 }) {
+            if (!this.canvas) return null;
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = finalSize.width;
+            tempCanvas.height = finalSize.height;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            const { x, y, w, h } = this.mode === 'crop' ? this.cropBox : { x:0, y:0, w:1256, h:640 };
+
+            tempCtx.drawImage(
+                this.canvas,
+                x * this.scale, y * this.scale, w * this.scale, h * this.scale,
+                0, 0, finalSize.width, finalSize.height
+            );
+
+            return tempCanvas;
+        },
+
         saveCover() {
-            this.croppedPhoto = document.getElementById('preview').toDataURL('image/png');
-            @this.save();
+            if (this.saveCoverInProgress) return; // prevenir doble click
+            this.saveCoverInProgress = true;
+
+            const croppedCanvas = this.getCroppedCanvas({width: 669, height: 160 });
+            if (!croppedCanvas) return;
+
+            // Guardar
+            this.croppedPhoto = croppedCanvas.toDataURL('image/png');
+            @this.save().finally(() => {
+                this.saveCoverInProgress = false; // siempre reactivar el botón
+            });
         }
     }
 }
