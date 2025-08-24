@@ -9,7 +9,7 @@
 
             <!-- Imagen de portada -->
             <div class="relative h-40">
-                <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ asset('img/fondo.jpg') }}')"></div>
+                <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ $user->profile->cover_url }}')"></div>
 
                 <!-- Foto de usuario -->
                 <div class="absolute -bottom-12 left-6">
@@ -39,7 +39,7 @@
                                     <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar foto de perfil</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
+                                    <a href="{{ route('account.edit_cover', [$user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Cambiar portada</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-gray-700 hover:bg-green-100 rounded">Modificar información</a>
