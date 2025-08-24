@@ -4022,6 +4022,3482 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"axios","version":"0.21.4","de
 
 /***/ }),
 
+/***/ "./node_modules/cropperjs/dist/cropper.css":
+/*!*************************************************!*\
+  !*** ./node_modules/cropperjs/dist/cropper.css ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./node_modules/cropperjs/dist/cropper.js":
+/*!************************************************!*\
+  !*** ./node_modules/cropperjs/dist/cropper.js ***!
+  \************************************************/
+/***/ (function(module) {
+
+/*!
+ * Cropper.js v1.6.2
+ * https://fengyuanchen.github.io/cropperjs
+ *
+ * Copyright 2015-present Chen Fengyuan
+ * Released under the MIT license
+ *
+ * Date: 2024-04-21T07:43:05.335Z
+ */
+
+(function (global, factory) {
+   true ? module.exports = factory() :
+  0;
+})(this, (function () { 'use strict';
+
+  function ownKeys(e, r) {
+    var t = Object.keys(e);
+    if (Object.getOwnPropertySymbols) {
+      var o = Object.getOwnPropertySymbols(e);
+      r && (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })), t.push.apply(t, o);
+    }
+    return t;
+  }
+  function _objectSpread2(e) {
+    for (var r = 1; r < arguments.length; r++) {
+      var t = null != arguments[r] ? arguments[r] : {};
+      r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+        _defineProperty(e, r, t[r]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+        Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+      });
+    }
+    return e;
+  }
+  function _toPrimitive(t, r) {
+    if ("object" != typeof t || !t) return t;
+    var e = t[Symbol.toPrimitive];
+    if (void 0 !== e) {
+      var i = e.call(t, r || "default");
+      if ("object" != typeof i) return i;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return ("string" === r ? String : Number)(t);
+  }
+  function _toPropertyKey(t) {
+    var i = _toPrimitive(t, "string");
+    return "symbol" == typeof i ? i : i + "";
+  }
+  function _typeof(o) {
+    "@babel/helpers - typeof";
+
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+      return typeof o;
+    } : function (o) {
+      return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+    }, _typeof(o);
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+    }
+  }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
+    return Constructor;
+  }
+  function _defineProperty(obj, key, value) {
+    key = _toPropertyKey(key);
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  }
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+    return arr2;
+  }
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  var WINDOW = IS_BROWSER ? window : {};
+  var IS_TOUCH_DEVICE = IS_BROWSER && WINDOW.document.documentElement ? 'ontouchstart' in WINDOW.document.documentElement : false;
+  var HAS_POINTER_EVENT = IS_BROWSER ? 'PointerEvent' in WINDOW : false;
+  var NAMESPACE = 'cropper';
+
+  // Actions
+  var ACTION_ALL = 'all';
+  var ACTION_CROP = 'crop';
+  var ACTION_MOVE = 'move';
+  var ACTION_ZOOM = 'zoom';
+  var ACTION_EAST = 'e';
+  var ACTION_WEST = 'w';
+  var ACTION_SOUTH = 's';
+  var ACTION_NORTH = 'n';
+  var ACTION_NORTH_EAST = 'ne';
+  var ACTION_NORTH_WEST = 'nw';
+  var ACTION_SOUTH_EAST = 'se';
+  var ACTION_SOUTH_WEST = 'sw';
+
+  // Classes
+  var CLASS_CROP = "".concat(NAMESPACE, "-crop");
+  var CLASS_DISABLED = "".concat(NAMESPACE, "-disabled");
+  var CLASS_HIDDEN = "".concat(NAMESPACE, "-hidden");
+  var CLASS_HIDE = "".concat(NAMESPACE, "-hide");
+  var CLASS_INVISIBLE = "".concat(NAMESPACE, "-invisible");
+  var CLASS_MODAL = "".concat(NAMESPACE, "-modal");
+  var CLASS_MOVE = "".concat(NAMESPACE, "-move");
+
+  // Data keys
+  var DATA_ACTION = "".concat(NAMESPACE, "Action");
+  var DATA_PREVIEW = "".concat(NAMESPACE, "Preview");
+
+  // Drag modes
+  var DRAG_MODE_CROP = 'crop';
+  var DRAG_MODE_MOVE = 'move';
+  var DRAG_MODE_NONE = 'none';
+
+  // Events
+  var EVENT_CROP = 'crop';
+  var EVENT_CROP_END = 'cropend';
+  var EVENT_CROP_MOVE = 'cropmove';
+  var EVENT_CROP_START = 'cropstart';
+  var EVENT_DBLCLICK = 'dblclick';
+  var EVENT_TOUCH_START = IS_TOUCH_DEVICE ? 'touchstart' : 'mousedown';
+  var EVENT_TOUCH_MOVE = IS_TOUCH_DEVICE ? 'touchmove' : 'mousemove';
+  var EVENT_TOUCH_END = IS_TOUCH_DEVICE ? 'touchend touchcancel' : 'mouseup';
+  var EVENT_POINTER_DOWN = HAS_POINTER_EVENT ? 'pointerdown' : EVENT_TOUCH_START;
+  var EVENT_POINTER_MOVE = HAS_POINTER_EVENT ? 'pointermove' : EVENT_TOUCH_MOVE;
+  var EVENT_POINTER_UP = HAS_POINTER_EVENT ? 'pointerup pointercancel' : EVENT_TOUCH_END;
+  var EVENT_READY = 'ready';
+  var EVENT_RESIZE = 'resize';
+  var EVENT_WHEEL = 'wheel';
+  var EVENT_ZOOM = 'zoom';
+
+  // Mime types
+  var MIME_TYPE_JPEG = 'image/jpeg';
+
+  // RegExps
+  var REGEXP_ACTIONS = /^e|w|s|n|se|sw|ne|nw|all|crop|move|zoom$/;
+  var REGEXP_DATA_URL = /^data:/;
+  var REGEXP_DATA_URL_JPEG = /^data:image\/jpeg;base64,/;
+  var REGEXP_TAG_NAME = /^img|canvas$/i;
+
+  // Misc
+  // Inspired by the default width and height of a canvas element.
+  var MIN_CONTAINER_WIDTH = 200;
+  var MIN_CONTAINER_HEIGHT = 100;
+
+  var DEFAULTS = {
+    // Define the view mode of the cropper
+    viewMode: 0,
+    // 0, 1, 2, 3
+
+    // Define the dragging mode of the cropper
+    dragMode: DRAG_MODE_CROP,
+    // 'crop', 'move' or 'none'
+
+    // Define the initial aspect ratio of the crop box
+    initialAspectRatio: NaN,
+    // Define the aspect ratio of the crop box
+    aspectRatio: NaN,
+    // An object with the previous cropping result data
+    data: null,
+    // A selector for adding extra containers to preview
+    preview: '',
+    // Re-render the cropper when resize the window
+    responsive: true,
+    // Restore the cropped area after resize the window
+    restore: true,
+    // Check if the current image is a cross-origin image
+    checkCrossOrigin: true,
+    // Check the current image's Exif Orientation information
+    checkOrientation: true,
+    // Show the black modal
+    modal: true,
+    // Show the dashed lines for guiding
+    guides: true,
+    // Show the center indicator for guiding
+    center: true,
+    // Show the white modal to highlight the crop box
+    highlight: true,
+    // Show the grid background
+    background: true,
+    // Enable to crop the image automatically when initialize
+    autoCrop: true,
+    // Define the percentage of automatic cropping area when initializes
+    autoCropArea: 0.8,
+    // Enable to move the image
+    movable: true,
+    // Enable to rotate the image
+    rotatable: true,
+    // Enable to scale the image
+    scalable: true,
+    // Enable to zoom the image
+    zoomable: true,
+    // Enable to zoom the image by dragging touch
+    zoomOnTouch: true,
+    // Enable to zoom the image by wheeling mouse
+    zoomOnWheel: true,
+    // Define zoom ratio when zoom the image by wheeling mouse
+    wheelZoomRatio: 0.1,
+    // Enable to move the crop box
+    cropBoxMovable: true,
+    // Enable to resize the crop box
+    cropBoxResizable: true,
+    // Toggle drag mode between "crop" and "move" when click twice on the cropper
+    toggleDragModeOnDblclick: true,
+    // Size limitation
+    minCanvasWidth: 0,
+    minCanvasHeight: 0,
+    minCropBoxWidth: 0,
+    minCropBoxHeight: 0,
+    minContainerWidth: MIN_CONTAINER_WIDTH,
+    minContainerHeight: MIN_CONTAINER_HEIGHT,
+    // Shortcuts of events
+    ready: null,
+    cropstart: null,
+    cropmove: null,
+    cropend: null,
+    crop: null,
+    zoom: null
+  };
+
+  var TEMPLATE = '<div class="cropper-container" touch-action="none">' + '<div class="cropper-wrap-box">' + '<div class="cropper-canvas"></div>' + '</div>' + '<div class="cropper-drag-box"></div>' + '<div class="cropper-crop-box">' + '<span class="cropper-view-box"></span>' + '<span class="cropper-dashed dashed-h"></span>' + '<span class="cropper-dashed dashed-v"></span>' + '<span class="cropper-center"></span>' + '<span class="cropper-face"></span>' + '<span class="cropper-line line-e" data-cropper-action="e"></span>' + '<span class="cropper-line line-n" data-cropper-action="n"></span>' + '<span class="cropper-line line-w" data-cropper-action="w"></span>' + '<span class="cropper-line line-s" data-cropper-action="s"></span>' + '<span class="cropper-point point-e" data-cropper-action="e"></span>' + '<span class="cropper-point point-n" data-cropper-action="n"></span>' + '<span class="cropper-point point-w" data-cropper-action="w"></span>' + '<span class="cropper-point point-s" data-cropper-action="s"></span>' + '<span class="cropper-point point-ne" data-cropper-action="ne"></span>' + '<span class="cropper-point point-nw" data-cropper-action="nw"></span>' + '<span class="cropper-point point-sw" data-cropper-action="sw"></span>' + '<span class="cropper-point point-se" data-cropper-action="se"></span>' + '</div>' + '</div>';
+
+  /**
+   * Check if the given value is not a number.
+   */
+  var isNaN = Number.isNaN || WINDOW.isNaN;
+
+  /**
+   * Check if the given value is a number.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is a number, else `false`.
+   */
+  function isNumber(value) {
+    return typeof value === 'number' && !isNaN(value);
+  }
+
+  /**
+   * Check if the given value is a positive number.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is a positive number, else `false`.
+   */
+  var isPositiveNumber = function isPositiveNumber(value) {
+    return value > 0 && value < Infinity;
+  };
+
+  /**
+   * Check if the given value is undefined.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is undefined, else `false`.
+   */
+  function isUndefined(value) {
+    return typeof value === 'undefined';
+  }
+
+  /**
+   * Check if the given value is an object.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is an object, else `false`.
+   */
+  function isObject(value) {
+    return _typeof(value) === 'object' && value !== null;
+  }
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+  /**
+   * Check if the given value is a plain object.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is a plain object, else `false`.
+   */
+  function isPlainObject(value) {
+    if (!isObject(value)) {
+      return false;
+    }
+    try {
+      var _constructor = value.constructor;
+      var prototype = _constructor.prototype;
+      return _constructor && prototype && hasOwnProperty.call(prototype, 'isPrototypeOf');
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Check if the given value is a function.
+   * @param {*} value - The value to check.
+   * @returns {boolean} Returns `true` if the given value is a function, else `false`.
+   */
+  function isFunction(value) {
+    return typeof value === 'function';
+  }
+  var slice = Array.prototype.slice;
+
+  /**
+   * Convert array-like or iterable object to an array.
+   * @param {*} value - The value to convert.
+   * @returns {Array} Returns a new array.
+   */
+  function toArray(value) {
+    return Array.from ? Array.from(value) : slice.call(value);
+  }
+
+  /**
+   * Iterate the given data.
+   * @param {*} data - The data to iterate.
+   * @param {Function} callback - The process function for each element.
+   * @returns {*} The original data.
+   */
+  function forEach(data, callback) {
+    if (data && isFunction(callback)) {
+      if (Array.isArray(data) || isNumber(data.length) /* array-like */) {
+        toArray(data).forEach(function (value, key) {
+          callback.call(data, value, key, data);
+        });
+      } else if (isObject(data)) {
+        Object.keys(data).forEach(function (key) {
+          callback.call(data, data[key], key, data);
+        });
+      }
+    }
+    return data;
+  }
+
+  /**
+   * Extend the given object.
+   * @param {*} target - The target object to extend.
+   * @param {*} args - The rest objects for merging to the target object.
+   * @returns {Object} The extended object.
+   */
+  var assign = Object.assign || function assign(target) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+    if (isObject(target) && args.length > 0) {
+      args.forEach(function (arg) {
+        if (isObject(arg)) {
+          Object.keys(arg).forEach(function (key) {
+            target[key] = arg[key];
+          });
+        }
+      });
+    }
+    return target;
+  };
+  var REGEXP_DECIMALS = /\.\d*(?:0|9){12}\d*$/;
+
+  /**
+   * Normalize decimal number.
+   * Check out {@link https://0.30000000000000004.com/}
+   * @param {number} value - The value to normalize.
+   * @param {number} [times=100000000000] - The times for normalizing.
+   * @returns {number} Returns the normalized number.
+   */
+  function normalizeDecimalNumber(value) {
+    var times = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100000000000;
+    return REGEXP_DECIMALS.test(value) ? Math.round(value * times) / times : value;
+  }
+  var REGEXP_SUFFIX = /^width|height|left|top|marginLeft|marginTop$/;
+
+  /**
+   * Apply styles to the given element.
+   * @param {Element} element - The target element.
+   * @param {Object} styles - The styles for applying.
+   */
+  function setStyle(element, styles) {
+    var style = element.style;
+    forEach(styles, function (value, property) {
+      if (REGEXP_SUFFIX.test(property) && isNumber(value)) {
+        value = "".concat(value, "px");
+      }
+      style[property] = value;
+    });
+  }
+
+  /**
+   * Check if the given element has a special class.
+   * @param {Element} element - The element to check.
+   * @param {string} value - The class to search.
+   * @returns {boolean} Returns `true` if the special class was found.
+   */
+  function hasClass(element, value) {
+    return element.classList ? element.classList.contains(value) : element.className.indexOf(value) > -1;
+  }
+
+  /**
+   * Add classes to the given element.
+   * @param {Element} element - The target element.
+   * @param {string} value - The classes to be added.
+   */
+  function addClass(element, value) {
+    if (!value) {
+      return;
+    }
+    if (isNumber(element.length)) {
+      forEach(element, function (elem) {
+        addClass(elem, value);
+      });
+      return;
+    }
+    if (element.classList) {
+      element.classList.add(value);
+      return;
+    }
+    var className = element.className.trim();
+    if (!className) {
+      element.className = value;
+    } else if (className.indexOf(value) < 0) {
+      element.className = "".concat(className, " ").concat(value);
+    }
+  }
+
+  /**
+   * Remove classes from the given element.
+   * @param {Element} element - The target element.
+   * @param {string} value - The classes to be removed.
+   */
+  function removeClass(element, value) {
+    if (!value) {
+      return;
+    }
+    if (isNumber(element.length)) {
+      forEach(element, function (elem) {
+        removeClass(elem, value);
+      });
+      return;
+    }
+    if (element.classList) {
+      element.classList.remove(value);
+      return;
+    }
+    if (element.className.indexOf(value) >= 0) {
+      element.className = element.className.replace(value, '');
+    }
+  }
+
+  /**
+   * Add or remove classes from the given element.
+   * @param {Element} element - The target element.
+   * @param {string} value - The classes to be toggled.
+   * @param {boolean} added - Add only.
+   */
+  function toggleClass(element, value, added) {
+    if (!value) {
+      return;
+    }
+    if (isNumber(element.length)) {
+      forEach(element, function (elem) {
+        toggleClass(elem, value, added);
+      });
+      return;
+    }
+
+    // IE10-11 doesn't support the second parameter of `classList.toggle`
+    if (added) {
+      addClass(element, value);
+    } else {
+      removeClass(element, value);
+    }
+  }
+  var REGEXP_CAMEL_CASE = /([a-z\d])([A-Z])/g;
+
+  /**
+   * Transform the given string from camelCase to kebab-case
+   * @param {string} value - The value to transform.
+   * @returns {string} The transformed value.
+   */
+  function toParamCase(value) {
+    return value.replace(REGEXP_CAMEL_CASE, '$1-$2').toLowerCase();
+  }
+
+  /**
+   * Get data from the given element.
+   * @param {Element} element - The target element.
+   * @param {string} name - The data key to get.
+   * @returns {string} The data value.
+   */
+  function getData(element, name) {
+    if (isObject(element[name])) {
+      return element[name];
+    }
+    if (element.dataset) {
+      return element.dataset[name];
+    }
+    return element.getAttribute("data-".concat(toParamCase(name)));
+  }
+
+  /**
+   * Set data to the given element.
+   * @param {Element} element - The target element.
+   * @param {string} name - The data key to set.
+   * @param {string} data - The data value.
+   */
+  function setData(element, name, data) {
+    if (isObject(data)) {
+      element[name] = data;
+    } else if (element.dataset) {
+      element.dataset[name] = data;
+    } else {
+      element.setAttribute("data-".concat(toParamCase(name)), data);
+    }
+  }
+
+  /**
+   * Remove data from the given element.
+   * @param {Element} element - The target element.
+   * @param {string} name - The data key to remove.
+   */
+  function removeData(element, name) {
+    if (isObject(element[name])) {
+      try {
+        delete element[name];
+      } catch (error) {
+        element[name] = undefined;
+      }
+    } else if (element.dataset) {
+      // #128 Safari not allows to delete dataset property
+      try {
+        delete element.dataset[name];
+      } catch (error) {
+        element.dataset[name] = undefined;
+      }
+    } else {
+      element.removeAttribute("data-".concat(toParamCase(name)));
+    }
+  }
+  var REGEXP_SPACES = /\s\s*/;
+  var onceSupported = function () {
+    var supported = false;
+    if (IS_BROWSER) {
+      var once = false;
+      var listener = function listener() {};
+      var options = Object.defineProperty({}, 'once', {
+        get: function get() {
+          supported = true;
+          return once;
+        },
+        /**
+         * This setter can fix a `TypeError` in strict mode
+         * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only}
+         * @param {boolean} value - The value to set
+         */
+        set: function set(value) {
+          once = value;
+        }
+      });
+      WINDOW.addEventListener('test', listener, options);
+      WINDOW.removeEventListener('test', listener, options);
+    }
+    return supported;
+  }();
+
+  /**
+   * Remove event listener from the target element.
+   * @param {Element} element - The event target.
+   * @param {string} type - The event type(s).
+   * @param {Function} listener - The event listener.
+   * @param {Object} options - The event options.
+   */
+  function removeListener(element, type, listener) {
+    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var handler = listener;
+    type.trim().split(REGEXP_SPACES).forEach(function (event) {
+      if (!onceSupported) {
+        var listeners = element.listeners;
+        if (listeners && listeners[event] && listeners[event][listener]) {
+          handler = listeners[event][listener];
+          delete listeners[event][listener];
+          if (Object.keys(listeners[event]).length === 0) {
+            delete listeners[event];
+          }
+          if (Object.keys(listeners).length === 0) {
+            delete element.listeners;
+          }
+        }
+      }
+      element.removeEventListener(event, handler, options);
+    });
+  }
+
+  /**
+   * Add event listener to the target element.
+   * @param {Element} element - The event target.
+   * @param {string} type - The event type(s).
+   * @param {Function} listener - The event listener.
+   * @param {Object} options - The event options.
+   */
+  function addListener(element, type, listener) {
+    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var _handler = listener;
+    type.trim().split(REGEXP_SPACES).forEach(function (event) {
+      if (options.once && !onceSupported) {
+        var _element$listeners = element.listeners,
+          listeners = _element$listeners === void 0 ? {} : _element$listeners;
+        _handler = function handler() {
+          delete listeners[event][listener];
+          element.removeEventListener(event, _handler, options);
+          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            args[_key2] = arguments[_key2];
+          }
+          listener.apply(element, args);
+        };
+        if (!listeners[event]) {
+          listeners[event] = {};
+        }
+        if (listeners[event][listener]) {
+          element.removeEventListener(event, listeners[event][listener], options);
+        }
+        listeners[event][listener] = _handler;
+        element.listeners = listeners;
+      }
+      element.addEventListener(event, _handler, options);
+    });
+  }
+
+  /**
+   * Dispatch event on the target element.
+   * @param {Element} element - The event target.
+   * @param {string} type - The event type(s).
+   * @param {Object} data - The additional event data.
+   * @returns {boolean} Indicate if the event is default prevented or not.
+   */
+  function dispatchEvent(element, type, data) {
+    var event;
+
+    // Event and CustomEvent on IE9-11 are global objects, not constructors
+    if (isFunction(Event) && isFunction(CustomEvent)) {
+      event = new CustomEvent(type, {
+        detail: data,
+        bubbles: true,
+        cancelable: true
+      });
+    } else {
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(type, true, true, data);
+    }
+    return element.dispatchEvent(event);
+  }
+
+  /**
+   * Get the offset base on the document.
+   * @param {Element} element - The target element.
+   * @returns {Object} The offset data.
+   */
+  function getOffset(element) {
+    var box = element.getBoundingClientRect();
+    return {
+      left: box.left + (window.pageXOffset - document.documentElement.clientLeft),
+      top: box.top + (window.pageYOffset - document.documentElement.clientTop)
+    };
+  }
+  var location = WINDOW.location;
+  var REGEXP_ORIGINS = /^(\w+:)\/\/([^:/?#]*):?(\d*)/i;
+
+  /**
+   * Check if the given URL is a cross origin URL.
+   * @param {string} url - The target URL.
+   * @returns {boolean} Returns `true` if the given URL is a cross origin URL, else `false`.
+   */
+  function isCrossOriginURL(url) {
+    var parts = url.match(REGEXP_ORIGINS);
+    return parts !== null && (parts[1] !== location.protocol || parts[2] !== location.hostname || parts[3] !== location.port);
+  }
+
+  /**
+   * Add timestamp to the given URL.
+   * @param {string} url - The target URL.
+   * @returns {string} The result URL.
+   */
+  function addTimestamp(url) {
+    var timestamp = "timestamp=".concat(new Date().getTime());
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + timestamp;
+  }
+
+  /**
+   * Get transforms base on the given object.
+   * @param {Object} obj - The target object.
+   * @returns {string} A string contains transform values.
+   */
+  function getTransforms(_ref) {
+    var rotate = _ref.rotate,
+      scaleX = _ref.scaleX,
+      scaleY = _ref.scaleY,
+      translateX = _ref.translateX,
+      translateY = _ref.translateY;
+    var values = [];
+    if (isNumber(translateX) && translateX !== 0) {
+      values.push("translateX(".concat(translateX, "px)"));
+    }
+    if (isNumber(translateY) && translateY !== 0) {
+      values.push("translateY(".concat(translateY, "px)"));
+    }
+
+    // Rotate should come first before scale to match orientation transform
+    if (isNumber(rotate) && rotate !== 0) {
+      values.push("rotate(".concat(rotate, "deg)"));
+    }
+    if (isNumber(scaleX) && scaleX !== 1) {
+      values.push("scaleX(".concat(scaleX, ")"));
+    }
+    if (isNumber(scaleY) && scaleY !== 1) {
+      values.push("scaleY(".concat(scaleY, ")"));
+    }
+    var transform = values.length ? values.join(' ') : 'none';
+    return {
+      WebkitTransform: transform,
+      msTransform: transform,
+      transform: transform
+    };
+  }
+
+  /**
+   * Get the max ratio of a group of pointers.
+   * @param {string} pointers - The target pointers.
+   * @returns {number} The result ratio.
+   */
+  function getMaxZoomRatio(pointers) {
+    var pointers2 = _objectSpread2({}, pointers);
+    var maxRatio = 0;
+    forEach(pointers, function (pointer, pointerId) {
+      delete pointers2[pointerId];
+      forEach(pointers2, function (pointer2) {
+        var x1 = Math.abs(pointer.startX - pointer2.startX);
+        var y1 = Math.abs(pointer.startY - pointer2.startY);
+        var x2 = Math.abs(pointer.endX - pointer2.endX);
+        var y2 = Math.abs(pointer.endY - pointer2.endY);
+        var z1 = Math.sqrt(x1 * x1 + y1 * y1);
+        var z2 = Math.sqrt(x2 * x2 + y2 * y2);
+        var ratio = (z2 - z1) / z1;
+        if (Math.abs(ratio) > Math.abs(maxRatio)) {
+          maxRatio = ratio;
+        }
+      });
+    });
+    return maxRatio;
+  }
+
+  /**
+   * Get a pointer from an event object.
+   * @param {Object} event - The target event object.
+   * @param {boolean} endOnly - Indicates if only returns the end point coordinate or not.
+   * @returns {Object} The result pointer contains start and/or end point coordinates.
+   */
+  function getPointer(_ref2, endOnly) {
+    var pageX = _ref2.pageX,
+      pageY = _ref2.pageY;
+    var end = {
+      endX: pageX,
+      endY: pageY
+    };
+    return endOnly ? end : _objectSpread2({
+      startX: pageX,
+      startY: pageY
+    }, end);
+  }
+
+  /**
+   * Get the center point coordinate of a group of pointers.
+   * @param {Object} pointers - The target pointers.
+   * @returns {Object} The center point coordinate.
+   */
+  function getPointersCenter(pointers) {
+    var pageX = 0;
+    var pageY = 0;
+    var count = 0;
+    forEach(pointers, function (_ref3) {
+      var startX = _ref3.startX,
+        startY = _ref3.startY;
+      pageX += startX;
+      pageY += startY;
+      count += 1;
+    });
+    pageX /= count;
+    pageY /= count;
+    return {
+      pageX: pageX,
+      pageY: pageY
+    };
+  }
+
+  /**
+   * Get the max sizes in a rectangle under the given aspect ratio.
+   * @param {Object} data - The original sizes.
+   * @param {string} [type='contain'] - The adjust type.
+   * @returns {Object} The result sizes.
+   */
+  function getAdjustedSizes(_ref4) {
+    var aspectRatio = _ref4.aspectRatio,
+      height = _ref4.height,
+      width = _ref4.width;
+    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'contain';
+    var isValidWidth = isPositiveNumber(width);
+    var isValidHeight = isPositiveNumber(height);
+    if (isValidWidth && isValidHeight) {
+      var adjustedWidth = height * aspectRatio;
+      if (type === 'contain' && adjustedWidth > width || type === 'cover' && adjustedWidth < width) {
+        height = width / aspectRatio;
+      } else {
+        width = height * aspectRatio;
+      }
+    } else if (isValidWidth) {
+      height = width / aspectRatio;
+    } else if (isValidHeight) {
+      width = height * aspectRatio;
+    }
+    return {
+      width: width,
+      height: height
+    };
+  }
+
+  /**
+   * Get the new sizes of a rectangle after rotated.
+   * @param {Object} data - The original sizes.
+   * @returns {Object} The result sizes.
+   */
+  function getRotatedSizes(_ref5) {
+    var width = _ref5.width,
+      height = _ref5.height,
+      degree = _ref5.degree;
+    degree = Math.abs(degree) % 180;
+    if (degree === 90) {
+      return {
+        width: height,
+        height: width
+      };
+    }
+    var arc = degree % 90 * Math.PI / 180;
+    var sinArc = Math.sin(arc);
+    var cosArc = Math.cos(arc);
+    var newWidth = width * cosArc + height * sinArc;
+    var newHeight = width * sinArc + height * cosArc;
+    return degree > 90 ? {
+      width: newHeight,
+      height: newWidth
+    } : {
+      width: newWidth,
+      height: newHeight
+    };
+  }
+
+  /**
+   * Get a canvas which drew the given image.
+   * @param {HTMLImageElement} image - The image for drawing.
+   * @param {Object} imageData - The image data.
+   * @param {Object} canvasData - The canvas data.
+   * @param {Object} options - The options.
+   * @returns {HTMLCanvasElement} The result canvas.
+   */
+  function getSourceCanvas(image, _ref6, _ref7, _ref8) {
+    var imageAspectRatio = _ref6.aspectRatio,
+      imageNaturalWidth = _ref6.naturalWidth,
+      imageNaturalHeight = _ref6.naturalHeight,
+      _ref6$rotate = _ref6.rotate,
+      rotate = _ref6$rotate === void 0 ? 0 : _ref6$rotate,
+      _ref6$scaleX = _ref6.scaleX,
+      scaleX = _ref6$scaleX === void 0 ? 1 : _ref6$scaleX,
+      _ref6$scaleY = _ref6.scaleY,
+      scaleY = _ref6$scaleY === void 0 ? 1 : _ref6$scaleY;
+    var aspectRatio = _ref7.aspectRatio,
+      naturalWidth = _ref7.naturalWidth,
+      naturalHeight = _ref7.naturalHeight;
+    var _ref8$fillColor = _ref8.fillColor,
+      fillColor = _ref8$fillColor === void 0 ? 'transparent' : _ref8$fillColor,
+      _ref8$imageSmoothingE = _ref8.imageSmoothingEnabled,
+      imageSmoothingEnabled = _ref8$imageSmoothingE === void 0 ? true : _ref8$imageSmoothingE,
+      _ref8$imageSmoothingQ = _ref8.imageSmoothingQuality,
+      imageSmoothingQuality = _ref8$imageSmoothingQ === void 0 ? 'low' : _ref8$imageSmoothingQ,
+      _ref8$maxWidth = _ref8.maxWidth,
+      maxWidth = _ref8$maxWidth === void 0 ? Infinity : _ref8$maxWidth,
+      _ref8$maxHeight = _ref8.maxHeight,
+      maxHeight = _ref8$maxHeight === void 0 ? Infinity : _ref8$maxHeight,
+      _ref8$minWidth = _ref8.minWidth,
+      minWidth = _ref8$minWidth === void 0 ? 0 : _ref8$minWidth,
+      _ref8$minHeight = _ref8.minHeight,
+      minHeight = _ref8$minHeight === void 0 ? 0 : _ref8$minHeight;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var maxSizes = getAdjustedSizes({
+      aspectRatio: aspectRatio,
+      width: maxWidth,
+      height: maxHeight
+    });
+    var minSizes = getAdjustedSizes({
+      aspectRatio: aspectRatio,
+      width: minWidth,
+      height: minHeight
+    }, 'cover');
+    var width = Math.min(maxSizes.width, Math.max(minSizes.width, naturalWidth));
+    var height = Math.min(maxSizes.height, Math.max(minSizes.height, naturalHeight));
+
+    // Note: should always use image's natural sizes for drawing as
+    // imageData.naturalWidth === canvasData.naturalHeight when rotate % 180 === 90
+    var destMaxSizes = getAdjustedSizes({
+      aspectRatio: imageAspectRatio,
+      width: maxWidth,
+      height: maxHeight
+    });
+    var destMinSizes = getAdjustedSizes({
+      aspectRatio: imageAspectRatio,
+      width: minWidth,
+      height: minHeight
+    }, 'cover');
+    var destWidth = Math.min(destMaxSizes.width, Math.max(destMinSizes.width, imageNaturalWidth));
+    var destHeight = Math.min(destMaxSizes.height, Math.max(destMinSizes.height, imageNaturalHeight));
+    var params = [-destWidth / 2, -destHeight / 2, destWidth, destHeight];
+    canvas.width = normalizeDecimalNumber(width);
+    canvas.height = normalizeDecimalNumber(height);
+    context.fillStyle = fillColor;
+    context.fillRect(0, 0, width, height);
+    context.save();
+    context.translate(width / 2, height / 2);
+    context.rotate(rotate * Math.PI / 180);
+    context.scale(scaleX, scaleY);
+    context.imageSmoothingEnabled = imageSmoothingEnabled;
+    context.imageSmoothingQuality = imageSmoothingQuality;
+    context.drawImage.apply(context, [image].concat(_toConsumableArray(params.map(function (param) {
+      return Math.floor(normalizeDecimalNumber(param));
+    }))));
+    context.restore();
+    return canvas;
+  }
+  var fromCharCode = String.fromCharCode;
+
+  /**
+   * Get string from char code in data view.
+   * @param {DataView} dataView - The data view for read.
+   * @param {number} start - The start index.
+   * @param {number} length - The read length.
+   * @returns {string} The read result.
+   */
+  function getStringFromCharCode(dataView, start, length) {
+    var str = '';
+    length += start;
+    for (var i = start; i < length; i += 1) {
+      str += fromCharCode(dataView.getUint8(i));
+    }
+    return str;
+  }
+  var REGEXP_DATA_URL_HEAD = /^data:.*,/;
+
+  /**
+   * Transform Data URL to array buffer.
+   * @param {string} dataURL - The Data URL to transform.
+   * @returns {ArrayBuffer} The result array buffer.
+   */
+  function dataURLToArrayBuffer(dataURL) {
+    var base64 = dataURL.replace(REGEXP_DATA_URL_HEAD, '');
+    var binary = atob(base64);
+    var arrayBuffer = new ArrayBuffer(binary.length);
+    var uint8 = new Uint8Array(arrayBuffer);
+    forEach(uint8, function (value, i) {
+      uint8[i] = binary.charCodeAt(i);
+    });
+    return arrayBuffer;
+  }
+
+  /**
+   * Transform array buffer to Data URL.
+   * @param {ArrayBuffer} arrayBuffer - The array buffer to transform.
+   * @param {string} mimeType - The mime type of the Data URL.
+   * @returns {string} The result Data URL.
+   */
+  function arrayBufferToDataURL(arrayBuffer, mimeType) {
+    var chunks = [];
+
+    // Chunk Typed Array for better performance (#435)
+    var chunkSize = 8192;
+    var uint8 = new Uint8Array(arrayBuffer);
+    while (uint8.length > 0) {
+      // XXX: Babel's `toConsumableArray` helper will throw error in IE or Safari 9
+      // eslint-disable-next-line prefer-spread
+      chunks.push(fromCharCode.apply(null, toArray(uint8.subarray(0, chunkSize))));
+      uint8 = uint8.subarray(chunkSize);
+    }
+    return "data:".concat(mimeType, ";base64,").concat(btoa(chunks.join('')));
+  }
+
+  /**
+   * Get orientation value from given array buffer.
+   * @param {ArrayBuffer} arrayBuffer - The array buffer to read.
+   * @returns {number} The read orientation value.
+   */
+  function resetAndGetOrientation(arrayBuffer) {
+    var dataView = new DataView(arrayBuffer);
+    var orientation;
+
+    // Ignores range error when the image does not have correct Exif information
+    try {
+      var littleEndian;
+      var app1Start;
+      var ifdStart;
+
+      // Only handle JPEG image (start by 0xFFD8)
+      if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
+        var length = dataView.byteLength;
+        var offset = 2;
+        while (offset + 1 < length) {
+          if (dataView.getUint8(offset) === 0xFF && dataView.getUint8(offset + 1) === 0xE1) {
+            app1Start = offset;
+            break;
+          }
+          offset += 1;
+        }
+      }
+      if (app1Start) {
+        var exifIDCode = app1Start + 4;
+        var tiffOffset = app1Start + 10;
+        if (getStringFromCharCode(dataView, exifIDCode, 4) === 'Exif') {
+          var endianness = dataView.getUint16(tiffOffset);
+          littleEndian = endianness === 0x4949;
+          if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
+            if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
+              var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+              if (firstIFDOffset >= 0x00000008) {
+                ifdStart = tiffOffset + firstIFDOffset;
+              }
+            }
+          }
+        }
+      }
+      if (ifdStart) {
+        var _length = dataView.getUint16(ifdStart, littleEndian);
+        var _offset;
+        var i;
+        for (i = 0; i < _length; i += 1) {
+          _offset = ifdStart + i * 12 + 2;
+          if (dataView.getUint16(_offset, littleEndian) === 0x0112 /* Orientation */) {
+            // 8 is the offset of the current tag's value
+            _offset += 8;
+
+            // Get the original orientation value
+            orientation = dataView.getUint16(_offset, littleEndian);
+
+            // Override the orientation with its default value
+            dataView.setUint16(_offset, 1, littleEndian);
+            break;
+          }
+        }
+      }
+    } catch (error) {
+      orientation = 1;
+    }
+    return orientation;
+  }
+
+  /**
+   * Parse Exif Orientation value.
+   * @param {number} orientation - The orientation to parse.
+   * @returns {Object} The parsed result.
+   */
+  function parseOrientation(orientation) {
+    var rotate = 0;
+    var scaleX = 1;
+    var scaleY = 1;
+    switch (orientation) {
+      // Flip horizontal
+      case 2:
+        scaleX = -1;
+        break;
+
+      // Rotate left 180°
+      case 3:
+        rotate = -180;
+        break;
+
+      // Flip vertical
+      case 4:
+        scaleY = -1;
+        break;
+
+      // Flip vertical and rotate right 90°
+      case 5:
+        rotate = 90;
+        scaleY = -1;
+        break;
+
+      // Rotate right 90°
+      case 6:
+        rotate = 90;
+        break;
+
+      // Flip horizontal and rotate right 90°
+      case 7:
+        rotate = 90;
+        scaleX = -1;
+        break;
+
+      // Rotate left 90°
+      case 8:
+        rotate = -90;
+        break;
+    }
+    return {
+      rotate: rotate,
+      scaleX: scaleX,
+      scaleY: scaleY
+    };
+  }
+
+  var render = {
+    render: function render() {
+      this.initContainer();
+      this.initCanvas();
+      this.initCropBox();
+      this.renderCanvas();
+      if (this.cropped) {
+        this.renderCropBox();
+      }
+    },
+    initContainer: function initContainer() {
+      var element = this.element,
+        options = this.options,
+        container = this.container,
+        cropper = this.cropper;
+      var minWidth = Number(options.minContainerWidth);
+      var minHeight = Number(options.minContainerHeight);
+      addClass(cropper, CLASS_HIDDEN);
+      removeClass(element, CLASS_HIDDEN);
+      var containerData = {
+        width: Math.max(container.offsetWidth, minWidth >= 0 ? minWidth : MIN_CONTAINER_WIDTH),
+        height: Math.max(container.offsetHeight, minHeight >= 0 ? minHeight : MIN_CONTAINER_HEIGHT)
+      };
+      this.containerData = containerData;
+      setStyle(cropper, {
+        width: containerData.width,
+        height: containerData.height
+      });
+      addClass(element, CLASS_HIDDEN);
+      removeClass(cropper, CLASS_HIDDEN);
+    },
+    // Canvas (image wrapper)
+    initCanvas: function initCanvas() {
+      var containerData = this.containerData,
+        imageData = this.imageData;
+      var viewMode = this.options.viewMode;
+      var rotated = Math.abs(imageData.rotate) % 180 === 90;
+      var naturalWidth = rotated ? imageData.naturalHeight : imageData.naturalWidth;
+      var naturalHeight = rotated ? imageData.naturalWidth : imageData.naturalHeight;
+      var aspectRatio = naturalWidth / naturalHeight;
+      var canvasWidth = containerData.width;
+      var canvasHeight = containerData.height;
+      if (containerData.height * aspectRatio > containerData.width) {
+        if (viewMode === 3) {
+          canvasWidth = containerData.height * aspectRatio;
+        } else {
+          canvasHeight = containerData.width / aspectRatio;
+        }
+      } else if (viewMode === 3) {
+        canvasHeight = containerData.width / aspectRatio;
+      } else {
+        canvasWidth = containerData.height * aspectRatio;
+      }
+      var canvasData = {
+        aspectRatio: aspectRatio,
+        naturalWidth: naturalWidth,
+        naturalHeight: naturalHeight,
+        width: canvasWidth,
+        height: canvasHeight
+      };
+      this.canvasData = canvasData;
+      this.limited = viewMode === 1 || viewMode === 2;
+      this.limitCanvas(true, true);
+      canvasData.width = Math.min(Math.max(canvasData.width, canvasData.minWidth), canvasData.maxWidth);
+      canvasData.height = Math.min(Math.max(canvasData.height, canvasData.minHeight), canvasData.maxHeight);
+      canvasData.left = (containerData.width - canvasData.width) / 2;
+      canvasData.top = (containerData.height - canvasData.height) / 2;
+      canvasData.oldLeft = canvasData.left;
+      canvasData.oldTop = canvasData.top;
+      this.initialCanvasData = assign({}, canvasData);
+    },
+    limitCanvas: function limitCanvas(sizeLimited, positionLimited) {
+      var options = this.options,
+        containerData = this.containerData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
+      var viewMode = options.viewMode;
+      var aspectRatio = canvasData.aspectRatio;
+      var cropped = this.cropped && cropBoxData;
+      if (sizeLimited) {
+        var minCanvasWidth = Number(options.minCanvasWidth) || 0;
+        var minCanvasHeight = Number(options.minCanvasHeight) || 0;
+        if (viewMode > 1) {
+          minCanvasWidth = Math.max(minCanvasWidth, containerData.width);
+          minCanvasHeight = Math.max(minCanvasHeight, containerData.height);
+          if (viewMode === 3) {
+            if (minCanvasHeight * aspectRatio > minCanvasWidth) {
+              minCanvasWidth = minCanvasHeight * aspectRatio;
+            } else {
+              minCanvasHeight = minCanvasWidth / aspectRatio;
+            }
+          }
+        } else if (viewMode > 0) {
+          if (minCanvasWidth) {
+            minCanvasWidth = Math.max(minCanvasWidth, cropped ? cropBoxData.width : 0);
+          } else if (minCanvasHeight) {
+            minCanvasHeight = Math.max(minCanvasHeight, cropped ? cropBoxData.height : 0);
+          } else if (cropped) {
+            minCanvasWidth = cropBoxData.width;
+            minCanvasHeight = cropBoxData.height;
+            if (minCanvasHeight * aspectRatio > minCanvasWidth) {
+              minCanvasWidth = minCanvasHeight * aspectRatio;
+            } else {
+              minCanvasHeight = minCanvasWidth / aspectRatio;
+            }
+          }
+        }
+        var _getAdjustedSizes = getAdjustedSizes({
+          aspectRatio: aspectRatio,
+          width: minCanvasWidth,
+          height: minCanvasHeight
+        });
+        minCanvasWidth = _getAdjustedSizes.width;
+        minCanvasHeight = _getAdjustedSizes.height;
+        canvasData.minWidth = minCanvasWidth;
+        canvasData.minHeight = minCanvasHeight;
+        canvasData.maxWidth = Infinity;
+        canvasData.maxHeight = Infinity;
+      }
+      if (positionLimited) {
+        if (viewMode > (cropped ? 0 : 1)) {
+          var newCanvasLeft = containerData.width - canvasData.width;
+          var newCanvasTop = containerData.height - canvasData.height;
+          canvasData.minLeft = Math.min(0, newCanvasLeft);
+          canvasData.minTop = Math.min(0, newCanvasTop);
+          canvasData.maxLeft = Math.max(0, newCanvasLeft);
+          canvasData.maxTop = Math.max(0, newCanvasTop);
+          if (cropped && this.limited) {
+            canvasData.minLeft = Math.min(cropBoxData.left, cropBoxData.left + (cropBoxData.width - canvasData.width));
+            canvasData.minTop = Math.min(cropBoxData.top, cropBoxData.top + (cropBoxData.height - canvasData.height));
+            canvasData.maxLeft = cropBoxData.left;
+            canvasData.maxTop = cropBoxData.top;
+            if (viewMode === 2) {
+              if (canvasData.width >= containerData.width) {
+                canvasData.minLeft = Math.min(0, newCanvasLeft);
+                canvasData.maxLeft = Math.max(0, newCanvasLeft);
+              }
+              if (canvasData.height >= containerData.height) {
+                canvasData.minTop = Math.min(0, newCanvasTop);
+                canvasData.maxTop = Math.max(0, newCanvasTop);
+              }
+            }
+          }
+        } else {
+          canvasData.minLeft = -canvasData.width;
+          canvasData.minTop = -canvasData.height;
+          canvasData.maxLeft = containerData.width;
+          canvasData.maxTop = containerData.height;
+        }
+      }
+    },
+    renderCanvas: function renderCanvas(changed, transformed) {
+      var canvasData = this.canvasData,
+        imageData = this.imageData;
+      if (transformed) {
+        var _getRotatedSizes = getRotatedSizes({
+            width: imageData.naturalWidth * Math.abs(imageData.scaleX || 1),
+            height: imageData.naturalHeight * Math.abs(imageData.scaleY || 1),
+            degree: imageData.rotate || 0
+          }),
+          naturalWidth = _getRotatedSizes.width,
+          naturalHeight = _getRotatedSizes.height;
+        var width = canvasData.width * (naturalWidth / canvasData.naturalWidth);
+        var height = canvasData.height * (naturalHeight / canvasData.naturalHeight);
+        canvasData.left -= (width - canvasData.width) / 2;
+        canvasData.top -= (height - canvasData.height) / 2;
+        canvasData.width = width;
+        canvasData.height = height;
+        canvasData.aspectRatio = naturalWidth / naturalHeight;
+        canvasData.naturalWidth = naturalWidth;
+        canvasData.naturalHeight = naturalHeight;
+        this.limitCanvas(true, false);
+      }
+      if (canvasData.width > canvasData.maxWidth || canvasData.width < canvasData.minWidth) {
+        canvasData.left = canvasData.oldLeft;
+      }
+      if (canvasData.height > canvasData.maxHeight || canvasData.height < canvasData.minHeight) {
+        canvasData.top = canvasData.oldTop;
+      }
+      canvasData.width = Math.min(Math.max(canvasData.width, canvasData.minWidth), canvasData.maxWidth);
+      canvasData.height = Math.min(Math.max(canvasData.height, canvasData.minHeight), canvasData.maxHeight);
+      this.limitCanvas(false, true);
+      canvasData.left = Math.min(Math.max(canvasData.left, canvasData.minLeft), canvasData.maxLeft);
+      canvasData.top = Math.min(Math.max(canvasData.top, canvasData.minTop), canvasData.maxTop);
+      canvasData.oldLeft = canvasData.left;
+      canvasData.oldTop = canvasData.top;
+      setStyle(this.canvas, assign({
+        width: canvasData.width,
+        height: canvasData.height
+      }, getTransforms({
+        translateX: canvasData.left,
+        translateY: canvasData.top
+      })));
+      this.renderImage(changed);
+      if (this.cropped && this.limited) {
+        this.limitCropBox(true, true);
+      }
+    },
+    renderImage: function renderImage(changed) {
+      var canvasData = this.canvasData,
+        imageData = this.imageData;
+      var width = imageData.naturalWidth * (canvasData.width / canvasData.naturalWidth);
+      var height = imageData.naturalHeight * (canvasData.height / canvasData.naturalHeight);
+      assign(imageData, {
+        width: width,
+        height: height,
+        left: (canvasData.width - width) / 2,
+        top: (canvasData.height - height) / 2
+      });
+      setStyle(this.image, assign({
+        width: imageData.width,
+        height: imageData.height
+      }, getTransforms(assign({
+        translateX: imageData.left,
+        translateY: imageData.top
+      }, imageData))));
+      if (changed) {
+        this.output();
+      }
+    },
+    initCropBox: function initCropBox() {
+      var options = this.options,
+        canvasData = this.canvasData;
+      var aspectRatio = options.aspectRatio || options.initialAspectRatio;
+      var autoCropArea = Number(options.autoCropArea) || 0.8;
+      var cropBoxData = {
+        width: canvasData.width,
+        height: canvasData.height
+      };
+      if (aspectRatio) {
+        if (canvasData.height * aspectRatio > canvasData.width) {
+          cropBoxData.height = cropBoxData.width / aspectRatio;
+        } else {
+          cropBoxData.width = cropBoxData.height * aspectRatio;
+        }
+      }
+      this.cropBoxData = cropBoxData;
+      this.limitCropBox(true, true);
+
+      // Initialize auto crop area
+      cropBoxData.width = Math.min(Math.max(cropBoxData.width, cropBoxData.minWidth), cropBoxData.maxWidth);
+      cropBoxData.height = Math.min(Math.max(cropBoxData.height, cropBoxData.minHeight), cropBoxData.maxHeight);
+
+      // The width/height of auto crop area must large than "minWidth/Height"
+      cropBoxData.width = Math.max(cropBoxData.minWidth, cropBoxData.width * autoCropArea);
+      cropBoxData.height = Math.max(cropBoxData.minHeight, cropBoxData.height * autoCropArea);
+      cropBoxData.left = canvasData.left + (canvasData.width - cropBoxData.width) / 2;
+      cropBoxData.top = canvasData.top + (canvasData.height - cropBoxData.height) / 2;
+      cropBoxData.oldLeft = cropBoxData.left;
+      cropBoxData.oldTop = cropBoxData.top;
+      this.initialCropBoxData = assign({}, cropBoxData);
+    },
+    limitCropBox: function limitCropBox(sizeLimited, positionLimited) {
+      var options = this.options,
+        containerData = this.containerData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData,
+        limited = this.limited;
+      var aspectRatio = options.aspectRatio;
+      if (sizeLimited) {
+        var minCropBoxWidth = Number(options.minCropBoxWidth) || 0;
+        var minCropBoxHeight = Number(options.minCropBoxHeight) || 0;
+        var maxCropBoxWidth = limited ? Math.min(containerData.width, canvasData.width, canvasData.width + canvasData.left, containerData.width - canvasData.left) : containerData.width;
+        var maxCropBoxHeight = limited ? Math.min(containerData.height, canvasData.height, canvasData.height + canvasData.top, containerData.height - canvasData.top) : containerData.height;
+
+        // The min/maxCropBoxWidth/Height must be less than container's width/height
+        minCropBoxWidth = Math.min(minCropBoxWidth, containerData.width);
+        minCropBoxHeight = Math.min(minCropBoxHeight, containerData.height);
+        if (aspectRatio) {
+          if (minCropBoxWidth && minCropBoxHeight) {
+            if (minCropBoxHeight * aspectRatio > minCropBoxWidth) {
+              minCropBoxHeight = minCropBoxWidth / aspectRatio;
+            } else {
+              minCropBoxWidth = minCropBoxHeight * aspectRatio;
+            }
+          } else if (minCropBoxWidth) {
+            minCropBoxHeight = minCropBoxWidth / aspectRatio;
+          } else if (minCropBoxHeight) {
+            minCropBoxWidth = minCropBoxHeight * aspectRatio;
+          }
+          if (maxCropBoxHeight * aspectRatio > maxCropBoxWidth) {
+            maxCropBoxHeight = maxCropBoxWidth / aspectRatio;
+          } else {
+            maxCropBoxWidth = maxCropBoxHeight * aspectRatio;
+          }
+        }
+
+        // The minWidth/Height must be less than maxWidth/Height
+        cropBoxData.minWidth = Math.min(minCropBoxWidth, maxCropBoxWidth);
+        cropBoxData.minHeight = Math.min(minCropBoxHeight, maxCropBoxHeight);
+        cropBoxData.maxWidth = maxCropBoxWidth;
+        cropBoxData.maxHeight = maxCropBoxHeight;
+      }
+      if (positionLimited) {
+        if (limited) {
+          cropBoxData.minLeft = Math.max(0, canvasData.left);
+          cropBoxData.minTop = Math.max(0, canvasData.top);
+          cropBoxData.maxLeft = Math.min(containerData.width, canvasData.left + canvasData.width) - cropBoxData.width;
+          cropBoxData.maxTop = Math.min(containerData.height, canvasData.top + canvasData.height) - cropBoxData.height;
+        } else {
+          cropBoxData.minLeft = 0;
+          cropBoxData.minTop = 0;
+          cropBoxData.maxLeft = containerData.width - cropBoxData.width;
+          cropBoxData.maxTop = containerData.height - cropBoxData.height;
+        }
+      }
+    },
+    renderCropBox: function renderCropBox() {
+      var options = this.options,
+        containerData = this.containerData,
+        cropBoxData = this.cropBoxData;
+      if (cropBoxData.width > cropBoxData.maxWidth || cropBoxData.width < cropBoxData.minWidth) {
+        cropBoxData.left = cropBoxData.oldLeft;
+      }
+      if (cropBoxData.height > cropBoxData.maxHeight || cropBoxData.height < cropBoxData.minHeight) {
+        cropBoxData.top = cropBoxData.oldTop;
+      }
+      cropBoxData.width = Math.min(Math.max(cropBoxData.width, cropBoxData.minWidth), cropBoxData.maxWidth);
+      cropBoxData.height = Math.min(Math.max(cropBoxData.height, cropBoxData.minHeight), cropBoxData.maxHeight);
+      this.limitCropBox(false, true);
+      cropBoxData.left = Math.min(Math.max(cropBoxData.left, cropBoxData.minLeft), cropBoxData.maxLeft);
+      cropBoxData.top = Math.min(Math.max(cropBoxData.top, cropBoxData.minTop), cropBoxData.maxTop);
+      cropBoxData.oldLeft = cropBoxData.left;
+      cropBoxData.oldTop = cropBoxData.top;
+      if (options.movable && options.cropBoxMovable) {
+        // Turn to move the canvas when the crop box is equal to the container
+        setData(this.face, DATA_ACTION, cropBoxData.width >= containerData.width && cropBoxData.height >= containerData.height ? ACTION_MOVE : ACTION_ALL);
+      }
+      setStyle(this.cropBox, assign({
+        width: cropBoxData.width,
+        height: cropBoxData.height
+      }, getTransforms({
+        translateX: cropBoxData.left,
+        translateY: cropBoxData.top
+      })));
+      if (this.cropped && this.limited) {
+        this.limitCanvas(true, true);
+      }
+      if (!this.disabled) {
+        this.output();
+      }
+    },
+    output: function output() {
+      this.preview();
+      dispatchEvent(this.element, EVENT_CROP, this.getData());
+    }
+  };
+
+  var preview = {
+    initPreview: function initPreview() {
+      var element = this.element,
+        crossOrigin = this.crossOrigin;
+      var preview = this.options.preview;
+      var url = crossOrigin ? this.crossOriginUrl : this.url;
+      var alt = element.alt || 'The image to preview';
+      var image = document.createElement('img');
+      if (crossOrigin) {
+        image.crossOrigin = crossOrigin;
+      }
+      image.src = url;
+      image.alt = alt;
+      this.viewBox.appendChild(image);
+      this.viewBoxImage = image;
+      if (!preview) {
+        return;
+      }
+      var previews = preview;
+      if (typeof preview === 'string') {
+        previews = element.ownerDocument.querySelectorAll(preview);
+      } else if (preview.querySelector) {
+        previews = [preview];
+      }
+      this.previews = previews;
+      forEach(previews, function (el) {
+        var img = document.createElement('img');
+
+        // Save the original size for recover
+        setData(el, DATA_PREVIEW, {
+          width: el.offsetWidth,
+          height: el.offsetHeight,
+          html: el.innerHTML
+        });
+        if (crossOrigin) {
+          img.crossOrigin = crossOrigin;
+        }
+        img.src = url;
+        img.alt = alt;
+
+        /**
+         * Override img element styles
+         * Add `display:block` to avoid margin top issue
+         * Add `height:auto` to override `height` attribute on IE8
+         * (Occur only when margin-top <= -height)
+         */
+        img.style.cssText = 'display:block;' + 'width:100%;' + 'height:auto;' + 'min-width:0!important;' + 'min-height:0!important;' + 'max-width:none!important;' + 'max-height:none!important;' + 'image-orientation:0deg!important;"';
+        el.innerHTML = '';
+        el.appendChild(img);
+      });
+    },
+    resetPreview: function resetPreview() {
+      forEach(this.previews, function (element) {
+        var data = getData(element, DATA_PREVIEW);
+        setStyle(element, {
+          width: data.width,
+          height: data.height
+        });
+        element.innerHTML = data.html;
+        removeData(element, DATA_PREVIEW);
+      });
+    },
+    preview: function preview() {
+      var imageData = this.imageData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
+      var cropBoxWidth = cropBoxData.width,
+        cropBoxHeight = cropBoxData.height;
+      var width = imageData.width,
+        height = imageData.height;
+      var left = cropBoxData.left - canvasData.left - imageData.left;
+      var top = cropBoxData.top - canvasData.top - imageData.top;
+      if (!this.cropped || this.disabled) {
+        return;
+      }
+      setStyle(this.viewBoxImage, assign({
+        width: width,
+        height: height
+      }, getTransforms(assign({
+        translateX: -left,
+        translateY: -top
+      }, imageData))));
+      forEach(this.previews, function (element) {
+        var data = getData(element, DATA_PREVIEW);
+        var originalWidth = data.width;
+        var originalHeight = data.height;
+        var newWidth = originalWidth;
+        var newHeight = originalHeight;
+        var ratio = 1;
+        if (cropBoxWidth) {
+          ratio = originalWidth / cropBoxWidth;
+          newHeight = cropBoxHeight * ratio;
+        }
+        if (cropBoxHeight && newHeight > originalHeight) {
+          ratio = originalHeight / cropBoxHeight;
+          newWidth = cropBoxWidth * ratio;
+          newHeight = originalHeight;
+        }
+        setStyle(element, {
+          width: newWidth,
+          height: newHeight
+        });
+        setStyle(element.getElementsByTagName('img')[0], assign({
+          width: width * ratio,
+          height: height * ratio
+        }, getTransforms(assign({
+          translateX: -left * ratio,
+          translateY: -top * ratio
+        }, imageData))));
+      });
+    }
+  };
+
+  var events = {
+    bind: function bind() {
+      var element = this.element,
+        options = this.options,
+        cropper = this.cropper;
+      if (isFunction(options.cropstart)) {
+        addListener(element, EVENT_CROP_START, options.cropstart);
+      }
+      if (isFunction(options.cropmove)) {
+        addListener(element, EVENT_CROP_MOVE, options.cropmove);
+      }
+      if (isFunction(options.cropend)) {
+        addListener(element, EVENT_CROP_END, options.cropend);
+      }
+      if (isFunction(options.crop)) {
+        addListener(element, EVENT_CROP, options.crop);
+      }
+      if (isFunction(options.zoom)) {
+        addListener(element, EVENT_ZOOM, options.zoom);
+      }
+      addListener(cropper, EVENT_POINTER_DOWN, this.onCropStart = this.cropStart.bind(this));
+      if (options.zoomable && options.zoomOnWheel) {
+        addListener(cropper, EVENT_WHEEL, this.onWheel = this.wheel.bind(this), {
+          passive: false,
+          capture: true
+        });
+      }
+      if (options.toggleDragModeOnDblclick) {
+        addListener(cropper, EVENT_DBLCLICK, this.onDblclick = this.dblclick.bind(this));
+      }
+      addListener(element.ownerDocument, EVENT_POINTER_MOVE, this.onCropMove = this.cropMove.bind(this));
+      addListener(element.ownerDocument, EVENT_POINTER_UP, this.onCropEnd = this.cropEnd.bind(this));
+      if (options.responsive) {
+        addListener(window, EVENT_RESIZE, this.onResize = this.resize.bind(this));
+      }
+    },
+    unbind: function unbind() {
+      var element = this.element,
+        options = this.options,
+        cropper = this.cropper;
+      if (isFunction(options.cropstart)) {
+        removeListener(element, EVENT_CROP_START, options.cropstart);
+      }
+      if (isFunction(options.cropmove)) {
+        removeListener(element, EVENT_CROP_MOVE, options.cropmove);
+      }
+      if (isFunction(options.cropend)) {
+        removeListener(element, EVENT_CROP_END, options.cropend);
+      }
+      if (isFunction(options.crop)) {
+        removeListener(element, EVENT_CROP, options.crop);
+      }
+      if (isFunction(options.zoom)) {
+        removeListener(element, EVENT_ZOOM, options.zoom);
+      }
+      removeListener(cropper, EVENT_POINTER_DOWN, this.onCropStart);
+      if (options.zoomable && options.zoomOnWheel) {
+        removeListener(cropper, EVENT_WHEEL, this.onWheel, {
+          passive: false,
+          capture: true
+        });
+      }
+      if (options.toggleDragModeOnDblclick) {
+        removeListener(cropper, EVENT_DBLCLICK, this.onDblclick);
+      }
+      removeListener(element.ownerDocument, EVENT_POINTER_MOVE, this.onCropMove);
+      removeListener(element.ownerDocument, EVENT_POINTER_UP, this.onCropEnd);
+      if (options.responsive) {
+        removeListener(window, EVENT_RESIZE, this.onResize);
+      }
+    }
+  };
+
+  var handlers = {
+    resize: function resize() {
+      if (this.disabled) {
+        return;
+      }
+      var options = this.options,
+        container = this.container,
+        containerData = this.containerData;
+      var ratioX = container.offsetWidth / containerData.width;
+      var ratioY = container.offsetHeight / containerData.height;
+      var ratio = Math.abs(ratioX - 1) > Math.abs(ratioY - 1) ? ratioX : ratioY;
+
+      // Resize when width changed or height changed
+      if (ratio !== 1) {
+        var canvasData;
+        var cropBoxData;
+        if (options.restore) {
+          canvasData = this.getCanvasData();
+          cropBoxData = this.getCropBoxData();
+        }
+        this.render();
+        if (options.restore) {
+          this.setCanvasData(forEach(canvasData, function (n, i) {
+            canvasData[i] = n * ratio;
+          }));
+          this.setCropBoxData(forEach(cropBoxData, function (n, i) {
+            cropBoxData[i] = n * ratio;
+          }));
+        }
+      }
+    },
+    dblclick: function dblclick() {
+      if (this.disabled || this.options.dragMode === DRAG_MODE_NONE) {
+        return;
+      }
+      this.setDragMode(hasClass(this.dragBox, CLASS_CROP) ? DRAG_MODE_MOVE : DRAG_MODE_CROP);
+    },
+    wheel: function wheel(event) {
+      var _this = this;
+      var ratio = Number(this.options.wheelZoomRatio) || 0.1;
+      var delta = 1;
+      if (this.disabled) {
+        return;
+      }
+      event.preventDefault();
+
+      // Limit wheel speed to prevent zoom too fast (#21)
+      if (this.wheeling) {
+        return;
+      }
+      this.wheeling = true;
+      setTimeout(function () {
+        _this.wheeling = false;
+      }, 50);
+      if (event.deltaY) {
+        delta = event.deltaY > 0 ? 1 : -1;
+      } else if (event.wheelDelta) {
+        delta = -event.wheelDelta / 120;
+      } else if (event.detail) {
+        delta = event.detail > 0 ? 1 : -1;
+      }
+      this.zoom(-delta * ratio, event);
+    },
+    cropStart: function cropStart(event) {
+      var buttons = event.buttons,
+        button = event.button;
+      if (this.disabled
+
+      // Handle mouse event and pointer event and ignore touch event
+      || (event.type === 'mousedown' || event.type === 'pointerdown' && event.pointerType === 'mouse') && (
+      // No primary button (Usually the left button)
+      isNumber(buttons) && buttons !== 1 || isNumber(button) && button !== 0
+
+      // Open context menu
+      || event.ctrlKey)) {
+        return;
+      }
+      var options = this.options,
+        pointers = this.pointers;
+      var action;
+      if (event.changedTouches) {
+        // Handle touch event
+        forEach(event.changedTouches, function (touch) {
+          pointers[touch.identifier] = getPointer(touch);
+        });
+      } else {
+        // Handle mouse event and pointer event
+        pointers[event.pointerId || 0] = getPointer(event);
+      }
+      if (Object.keys(pointers).length > 1 && options.zoomable && options.zoomOnTouch) {
+        action = ACTION_ZOOM;
+      } else {
+        action = getData(event.target, DATA_ACTION);
+      }
+      if (!REGEXP_ACTIONS.test(action)) {
+        return;
+      }
+      if (dispatchEvent(this.element, EVENT_CROP_START, {
+        originalEvent: event,
+        action: action
+      }) === false) {
+        return;
+      }
+
+      // This line is required for preventing page zooming in iOS browsers
+      event.preventDefault();
+      this.action = action;
+      this.cropping = false;
+      if (action === ACTION_CROP) {
+        this.cropping = true;
+        addClass(this.dragBox, CLASS_MODAL);
+      }
+    },
+    cropMove: function cropMove(event) {
+      var action = this.action;
+      if (this.disabled || !action) {
+        return;
+      }
+      var pointers = this.pointers;
+      event.preventDefault();
+      if (dispatchEvent(this.element, EVENT_CROP_MOVE, {
+        originalEvent: event,
+        action: action
+      }) === false) {
+        return;
+      }
+      if (event.changedTouches) {
+        forEach(event.changedTouches, function (touch) {
+          // The first parameter should not be undefined (#432)
+          assign(pointers[touch.identifier] || {}, getPointer(touch, true));
+        });
+      } else {
+        assign(pointers[event.pointerId || 0] || {}, getPointer(event, true));
+      }
+      this.change(event);
+    },
+    cropEnd: function cropEnd(event) {
+      if (this.disabled) {
+        return;
+      }
+      var action = this.action,
+        pointers = this.pointers;
+      if (event.changedTouches) {
+        forEach(event.changedTouches, function (touch) {
+          delete pointers[touch.identifier];
+        });
+      } else {
+        delete pointers[event.pointerId || 0];
+      }
+      if (!action) {
+        return;
+      }
+      event.preventDefault();
+      if (!Object.keys(pointers).length) {
+        this.action = '';
+      }
+      if (this.cropping) {
+        this.cropping = false;
+        toggleClass(this.dragBox, CLASS_MODAL, this.cropped && this.options.modal);
+      }
+      dispatchEvent(this.element, EVENT_CROP_END, {
+        originalEvent: event,
+        action: action
+      });
+    }
+  };
+
+  var change = {
+    change: function change(event) {
+      var options = this.options,
+        canvasData = this.canvasData,
+        containerData = this.containerData,
+        cropBoxData = this.cropBoxData,
+        pointers = this.pointers;
+      var action = this.action;
+      var aspectRatio = options.aspectRatio;
+      var left = cropBoxData.left,
+        top = cropBoxData.top,
+        width = cropBoxData.width,
+        height = cropBoxData.height;
+      var right = left + width;
+      var bottom = top + height;
+      var minLeft = 0;
+      var minTop = 0;
+      var maxWidth = containerData.width;
+      var maxHeight = containerData.height;
+      var renderable = true;
+      var offset;
+
+      // Locking aspect ratio in "free mode" by holding shift key
+      if (!aspectRatio && event.shiftKey) {
+        aspectRatio = width && height ? width / height : 1;
+      }
+      if (this.limited) {
+        minLeft = cropBoxData.minLeft;
+        minTop = cropBoxData.minTop;
+        maxWidth = minLeft + Math.min(containerData.width, canvasData.width, canvasData.left + canvasData.width);
+        maxHeight = minTop + Math.min(containerData.height, canvasData.height, canvasData.top + canvasData.height);
+      }
+      var pointer = pointers[Object.keys(pointers)[0]];
+      var range = {
+        x: pointer.endX - pointer.startX,
+        y: pointer.endY - pointer.startY
+      };
+      var check = function check(side) {
+        switch (side) {
+          case ACTION_EAST:
+            if (right + range.x > maxWidth) {
+              range.x = maxWidth - right;
+            }
+            break;
+          case ACTION_WEST:
+            if (left + range.x < minLeft) {
+              range.x = minLeft - left;
+            }
+            break;
+          case ACTION_NORTH:
+            if (top + range.y < minTop) {
+              range.y = minTop - top;
+            }
+            break;
+          case ACTION_SOUTH:
+            if (bottom + range.y > maxHeight) {
+              range.y = maxHeight - bottom;
+            }
+            break;
+        }
+      };
+      switch (action) {
+        // Move crop box
+        case ACTION_ALL:
+          left += range.x;
+          top += range.y;
+          break;
+
+        // Resize crop box
+        case ACTION_EAST:
+          if (range.x >= 0 && (right >= maxWidth || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+            renderable = false;
+            break;
+          }
+          check(ACTION_EAST);
+          width += range.x;
+          if (width < 0) {
+            action = ACTION_WEST;
+            width = -width;
+            left -= width;
+          }
+          if (aspectRatio) {
+            height = width / aspectRatio;
+            top += (cropBoxData.height - height) / 2;
+          }
+          break;
+        case ACTION_NORTH:
+          if (range.y <= 0 && (top <= minTop || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+            renderable = false;
+            break;
+          }
+          check(ACTION_NORTH);
+          height -= range.y;
+          top += range.y;
+          if (height < 0) {
+            action = ACTION_SOUTH;
+            height = -height;
+            top -= height;
+          }
+          if (aspectRatio) {
+            width = height * aspectRatio;
+            left += (cropBoxData.width - width) / 2;
+          }
+          break;
+        case ACTION_WEST:
+          if (range.x <= 0 && (left <= minLeft || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+            renderable = false;
+            break;
+          }
+          check(ACTION_WEST);
+          width -= range.x;
+          left += range.x;
+          if (width < 0) {
+            action = ACTION_EAST;
+            width = -width;
+            left -= width;
+          }
+          if (aspectRatio) {
+            height = width / aspectRatio;
+            top += (cropBoxData.height - height) / 2;
+          }
+          break;
+        case ACTION_SOUTH:
+          if (range.y >= 0 && (bottom >= maxHeight || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+            renderable = false;
+            break;
+          }
+          check(ACTION_SOUTH);
+          height += range.y;
+          if (height < 0) {
+            action = ACTION_NORTH;
+            height = -height;
+            top -= height;
+          }
+          if (aspectRatio) {
+            width = height * aspectRatio;
+            left += (cropBoxData.width - width) / 2;
+          }
+          break;
+        case ACTION_NORTH_EAST:
+          if (aspectRatio) {
+            if (range.y <= 0 && (top <= minTop || right >= maxWidth)) {
+              renderable = false;
+              break;
+            }
+            check(ACTION_NORTH);
+            height -= range.y;
+            top += range.y;
+            width = height * aspectRatio;
+          } else {
+            check(ACTION_NORTH);
+            check(ACTION_EAST);
+            if (range.x >= 0) {
+              if (right < maxWidth) {
+                width += range.x;
+              } else if (range.y <= 0 && top <= minTop) {
+                renderable = false;
+              }
+            } else {
+              width += range.x;
+            }
+            if (range.y <= 0) {
+              if (top > minTop) {
+                height -= range.y;
+                top += range.y;
+              }
+            } else {
+              height -= range.y;
+              top += range.y;
+            }
+          }
+          if (width < 0 && height < 0) {
+            action = ACTION_SOUTH_WEST;
+            height = -height;
+            width = -width;
+            top -= height;
+            left -= width;
+          } else if (width < 0) {
+            action = ACTION_NORTH_WEST;
+            width = -width;
+            left -= width;
+          } else if (height < 0) {
+            action = ACTION_SOUTH_EAST;
+            height = -height;
+            top -= height;
+          }
+          break;
+        case ACTION_NORTH_WEST:
+          if (aspectRatio) {
+            if (range.y <= 0 && (top <= minTop || left <= minLeft)) {
+              renderable = false;
+              break;
+            }
+            check(ACTION_NORTH);
+            height -= range.y;
+            top += range.y;
+            width = height * aspectRatio;
+            left += cropBoxData.width - width;
+          } else {
+            check(ACTION_NORTH);
+            check(ACTION_WEST);
+            if (range.x <= 0) {
+              if (left > minLeft) {
+                width -= range.x;
+                left += range.x;
+              } else if (range.y <= 0 && top <= minTop) {
+                renderable = false;
+              }
+            } else {
+              width -= range.x;
+              left += range.x;
+            }
+            if (range.y <= 0) {
+              if (top > minTop) {
+                height -= range.y;
+                top += range.y;
+              }
+            } else {
+              height -= range.y;
+              top += range.y;
+            }
+          }
+          if (width < 0 && height < 0) {
+            action = ACTION_SOUTH_EAST;
+            height = -height;
+            width = -width;
+            top -= height;
+            left -= width;
+          } else if (width < 0) {
+            action = ACTION_NORTH_EAST;
+            width = -width;
+            left -= width;
+          } else if (height < 0) {
+            action = ACTION_SOUTH_WEST;
+            height = -height;
+            top -= height;
+          }
+          break;
+        case ACTION_SOUTH_WEST:
+          if (aspectRatio) {
+            if (range.x <= 0 && (left <= minLeft || bottom >= maxHeight)) {
+              renderable = false;
+              break;
+            }
+            check(ACTION_WEST);
+            width -= range.x;
+            left += range.x;
+            height = width / aspectRatio;
+          } else {
+            check(ACTION_SOUTH);
+            check(ACTION_WEST);
+            if (range.x <= 0) {
+              if (left > minLeft) {
+                width -= range.x;
+                left += range.x;
+              } else if (range.y >= 0 && bottom >= maxHeight) {
+                renderable = false;
+              }
+            } else {
+              width -= range.x;
+              left += range.x;
+            }
+            if (range.y >= 0) {
+              if (bottom < maxHeight) {
+                height += range.y;
+              }
+            } else {
+              height += range.y;
+            }
+          }
+          if (width < 0 && height < 0) {
+            action = ACTION_NORTH_EAST;
+            height = -height;
+            width = -width;
+            top -= height;
+            left -= width;
+          } else if (width < 0) {
+            action = ACTION_SOUTH_EAST;
+            width = -width;
+            left -= width;
+          } else if (height < 0) {
+            action = ACTION_NORTH_WEST;
+            height = -height;
+            top -= height;
+          }
+          break;
+        case ACTION_SOUTH_EAST:
+          if (aspectRatio) {
+            if (range.x >= 0 && (right >= maxWidth || bottom >= maxHeight)) {
+              renderable = false;
+              break;
+            }
+            check(ACTION_EAST);
+            width += range.x;
+            height = width / aspectRatio;
+          } else {
+            check(ACTION_SOUTH);
+            check(ACTION_EAST);
+            if (range.x >= 0) {
+              if (right < maxWidth) {
+                width += range.x;
+              } else if (range.y >= 0 && bottom >= maxHeight) {
+                renderable = false;
+              }
+            } else {
+              width += range.x;
+            }
+            if (range.y >= 0) {
+              if (bottom < maxHeight) {
+                height += range.y;
+              }
+            } else {
+              height += range.y;
+            }
+          }
+          if (width < 0 && height < 0) {
+            action = ACTION_NORTH_WEST;
+            height = -height;
+            width = -width;
+            top -= height;
+            left -= width;
+          } else if (width < 0) {
+            action = ACTION_SOUTH_WEST;
+            width = -width;
+            left -= width;
+          } else if (height < 0) {
+            action = ACTION_NORTH_EAST;
+            height = -height;
+            top -= height;
+          }
+          break;
+
+        // Move canvas
+        case ACTION_MOVE:
+          this.move(range.x, range.y);
+          renderable = false;
+          break;
+
+        // Zoom canvas
+        case ACTION_ZOOM:
+          this.zoom(getMaxZoomRatio(pointers), event);
+          renderable = false;
+          break;
+
+        // Create crop box
+        case ACTION_CROP:
+          if (!range.x || !range.y) {
+            renderable = false;
+            break;
+          }
+          offset = getOffset(this.cropper);
+          left = pointer.startX - offset.left;
+          top = pointer.startY - offset.top;
+          width = cropBoxData.minWidth;
+          height = cropBoxData.minHeight;
+          if (range.x > 0) {
+            action = range.y > 0 ? ACTION_SOUTH_EAST : ACTION_NORTH_EAST;
+          } else if (range.x < 0) {
+            left -= width;
+            action = range.y > 0 ? ACTION_SOUTH_WEST : ACTION_NORTH_WEST;
+          }
+          if (range.y < 0) {
+            top -= height;
+          }
+
+          // Show the crop box if is hidden
+          if (!this.cropped) {
+            removeClass(this.cropBox, CLASS_HIDDEN);
+            this.cropped = true;
+            if (this.limited) {
+              this.limitCropBox(true, true);
+            }
+          }
+          break;
+      }
+      if (renderable) {
+        cropBoxData.width = width;
+        cropBoxData.height = height;
+        cropBoxData.left = left;
+        cropBoxData.top = top;
+        this.action = action;
+        this.renderCropBox();
+      }
+
+      // Override
+      forEach(pointers, function (p) {
+        p.startX = p.endX;
+        p.startY = p.endY;
+      });
+    }
+  };
+
+  var methods = {
+    // Show the crop box manually
+    crop: function crop() {
+      if (this.ready && !this.cropped && !this.disabled) {
+        this.cropped = true;
+        this.limitCropBox(true, true);
+        if (this.options.modal) {
+          addClass(this.dragBox, CLASS_MODAL);
+        }
+        removeClass(this.cropBox, CLASS_HIDDEN);
+        this.setCropBoxData(this.initialCropBoxData);
+      }
+      return this;
+    },
+    // Reset the image and crop box to their initial states
+    reset: function reset() {
+      if (this.ready && !this.disabled) {
+        this.imageData = assign({}, this.initialImageData);
+        this.canvasData = assign({}, this.initialCanvasData);
+        this.cropBoxData = assign({}, this.initialCropBoxData);
+        this.renderCanvas();
+        if (this.cropped) {
+          this.renderCropBox();
+        }
+      }
+      return this;
+    },
+    // Clear the crop box
+    clear: function clear() {
+      if (this.cropped && !this.disabled) {
+        assign(this.cropBoxData, {
+          left: 0,
+          top: 0,
+          width: 0,
+          height: 0
+        });
+        this.cropped = false;
+        this.renderCropBox();
+        this.limitCanvas(true, true);
+
+        // Render canvas after crop box rendered
+        this.renderCanvas();
+        removeClass(this.dragBox, CLASS_MODAL);
+        addClass(this.cropBox, CLASS_HIDDEN);
+      }
+      return this;
+    },
+    /**
+     * Replace the image's src and rebuild the cropper
+     * @param {string} url - The new URL.
+     * @param {boolean} [hasSameSize] - Indicate if the new image has the same size as the old one.
+     * @returns {Cropper} this
+     */
+    replace: function replace(url) {
+      var hasSameSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!this.disabled && url) {
+        if (this.isImg) {
+          this.element.src = url;
+        }
+        if (hasSameSize) {
+          this.url = url;
+          this.image.src = url;
+          if (this.ready) {
+            this.viewBoxImage.src = url;
+            forEach(this.previews, function (element) {
+              element.getElementsByTagName('img')[0].src = url;
+            });
+          }
+        } else {
+          if (this.isImg) {
+            this.replaced = true;
+          }
+          this.options.data = null;
+          this.uncreate();
+          this.load(url);
+        }
+      }
+      return this;
+    },
+    // Enable (unfreeze) the cropper
+    enable: function enable() {
+      if (this.ready && this.disabled) {
+        this.disabled = false;
+        removeClass(this.cropper, CLASS_DISABLED);
+      }
+      return this;
+    },
+    // Disable (freeze) the cropper
+    disable: function disable() {
+      if (this.ready && !this.disabled) {
+        this.disabled = true;
+        addClass(this.cropper, CLASS_DISABLED);
+      }
+      return this;
+    },
+    /**
+     * Destroy the cropper and remove the instance from the image
+     * @returns {Cropper} this
+     */
+    destroy: function destroy() {
+      var element = this.element;
+      if (!element[NAMESPACE]) {
+        return this;
+      }
+      element[NAMESPACE] = undefined;
+      if (this.isImg && this.replaced) {
+        element.src = this.originalUrl;
+      }
+      this.uncreate();
+      return this;
+    },
+    /**
+     * Move the canvas with relative offsets
+     * @param {number} offsetX - The relative offset distance on the x-axis.
+     * @param {number} [offsetY=offsetX] - The relative offset distance on the y-axis.
+     * @returns {Cropper} this
+     */
+    move: function move(offsetX) {
+      var offsetY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : offsetX;
+      var _this$canvasData = this.canvasData,
+        left = _this$canvasData.left,
+        top = _this$canvasData.top;
+      return this.moveTo(isUndefined(offsetX) ? offsetX : left + Number(offsetX), isUndefined(offsetY) ? offsetY : top + Number(offsetY));
+    },
+    /**
+     * Move the canvas to an absolute point
+     * @param {number} x - The x-axis coordinate.
+     * @param {number} [y=x] - The y-axis coordinate.
+     * @returns {Cropper} this
+     */
+    moveTo: function moveTo(x) {
+      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : x;
+      var canvasData = this.canvasData;
+      var changed = false;
+      x = Number(x);
+      y = Number(y);
+      if (this.ready && !this.disabled && this.options.movable) {
+        if (isNumber(x)) {
+          canvasData.left = x;
+          changed = true;
+        }
+        if (isNumber(y)) {
+          canvasData.top = y;
+          changed = true;
+        }
+        if (changed) {
+          this.renderCanvas(true);
+        }
+      }
+      return this;
+    },
+    /**
+     * Zoom the canvas with a relative ratio
+     * @param {number} ratio - The target ratio.
+     * @param {Event} _originalEvent - The original event if any.
+     * @returns {Cropper} this
+     */
+    zoom: function zoom(ratio, _originalEvent) {
+      var canvasData = this.canvasData;
+      ratio = Number(ratio);
+      if (ratio < 0) {
+        ratio = 1 / (1 - ratio);
+      } else {
+        ratio = 1 + ratio;
+      }
+      return this.zoomTo(canvasData.width * ratio / canvasData.naturalWidth, null, _originalEvent);
+    },
+    /**
+     * Zoom the canvas to an absolute ratio
+     * @param {number} ratio - The target ratio.
+     * @param {Object} pivot - The zoom pivot point coordinate.
+     * @param {Event} _originalEvent - The original event if any.
+     * @returns {Cropper} this
+     */
+    zoomTo: function zoomTo(ratio, pivot, _originalEvent) {
+      var options = this.options,
+        canvasData = this.canvasData;
+      var width = canvasData.width,
+        height = canvasData.height,
+        naturalWidth = canvasData.naturalWidth,
+        naturalHeight = canvasData.naturalHeight;
+      ratio = Number(ratio);
+      if (ratio >= 0 && this.ready && !this.disabled && options.zoomable) {
+        var newWidth = naturalWidth * ratio;
+        var newHeight = naturalHeight * ratio;
+        if (dispatchEvent(this.element, EVENT_ZOOM, {
+          ratio: ratio,
+          oldRatio: width / naturalWidth,
+          originalEvent: _originalEvent
+        }) === false) {
+          return this;
+        }
+        if (_originalEvent) {
+          var pointers = this.pointers;
+          var offset = getOffset(this.cropper);
+          var center = pointers && Object.keys(pointers).length ? getPointersCenter(pointers) : {
+            pageX: _originalEvent.pageX,
+            pageY: _originalEvent.pageY
+          };
+
+          // Zoom from the triggering point of the event
+          canvasData.left -= (newWidth - width) * ((center.pageX - offset.left - canvasData.left) / width);
+          canvasData.top -= (newHeight - height) * ((center.pageY - offset.top - canvasData.top) / height);
+        } else if (isPlainObject(pivot) && isNumber(pivot.x) && isNumber(pivot.y)) {
+          canvasData.left -= (newWidth - width) * ((pivot.x - canvasData.left) / width);
+          canvasData.top -= (newHeight - height) * ((pivot.y - canvasData.top) / height);
+        } else {
+          // Zoom from the center of the canvas
+          canvasData.left -= (newWidth - width) / 2;
+          canvasData.top -= (newHeight - height) / 2;
+        }
+        canvasData.width = newWidth;
+        canvasData.height = newHeight;
+        this.renderCanvas(true);
+      }
+      return this;
+    },
+    /**
+     * Rotate the canvas with a relative degree
+     * @param {number} degree - The rotate degree.
+     * @returns {Cropper} this
+     */
+    rotate: function rotate(degree) {
+      return this.rotateTo((this.imageData.rotate || 0) + Number(degree));
+    },
+    /**
+     * Rotate the canvas to an absolute degree
+     * @param {number} degree - The rotate degree.
+     * @returns {Cropper} this
+     */
+    rotateTo: function rotateTo(degree) {
+      degree = Number(degree);
+      if (isNumber(degree) && this.ready && !this.disabled && this.options.rotatable) {
+        this.imageData.rotate = degree % 360;
+        this.renderCanvas(true, true);
+      }
+      return this;
+    },
+    /**
+     * Scale the image on the x-axis.
+     * @param {number} scaleX - The scale ratio on the x-axis.
+     * @returns {Cropper} this
+     */
+    scaleX: function scaleX(_scaleX) {
+      var scaleY = this.imageData.scaleY;
+      return this.scale(_scaleX, isNumber(scaleY) ? scaleY : 1);
+    },
+    /**
+     * Scale the image on the y-axis.
+     * @param {number} scaleY - The scale ratio on the y-axis.
+     * @returns {Cropper} this
+     */
+    scaleY: function scaleY(_scaleY) {
+      var scaleX = this.imageData.scaleX;
+      return this.scale(isNumber(scaleX) ? scaleX : 1, _scaleY);
+    },
+    /**
+     * Scale the image
+     * @param {number} scaleX - The scale ratio on the x-axis.
+     * @param {number} [scaleY=scaleX] - The scale ratio on the y-axis.
+     * @returns {Cropper} this
+     */
+    scale: function scale(scaleX) {
+      var scaleY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : scaleX;
+      var imageData = this.imageData;
+      var transformed = false;
+      scaleX = Number(scaleX);
+      scaleY = Number(scaleY);
+      if (this.ready && !this.disabled && this.options.scalable) {
+        if (isNumber(scaleX)) {
+          imageData.scaleX = scaleX;
+          transformed = true;
+        }
+        if (isNumber(scaleY)) {
+          imageData.scaleY = scaleY;
+          transformed = true;
+        }
+        if (transformed) {
+          this.renderCanvas(true, true);
+        }
+      }
+      return this;
+    },
+    /**
+     * Get the cropped area position and size data (base on the original image)
+     * @param {boolean} [rounded=false] - Indicate if round the data values or not.
+     * @returns {Object} The result cropped data.
+     */
+    getData: function getData() {
+      var rounded = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var options = this.options,
+        imageData = this.imageData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
+      var data;
+      if (this.ready && this.cropped) {
+        data = {
+          x: cropBoxData.left - canvasData.left,
+          y: cropBoxData.top - canvasData.top,
+          width: cropBoxData.width,
+          height: cropBoxData.height
+        };
+        var ratio = imageData.width / imageData.naturalWidth;
+        forEach(data, function (n, i) {
+          data[i] = n / ratio;
+        });
+        if (rounded) {
+          // In case rounding off leads to extra 1px in right or bottom border
+          // we should round the top-left corner and the dimension (#343).
+          var bottom = Math.round(data.y + data.height);
+          var right = Math.round(data.x + data.width);
+          data.x = Math.round(data.x);
+          data.y = Math.round(data.y);
+          data.width = right - data.x;
+          data.height = bottom - data.y;
+        }
+      } else {
+        data = {
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0
+        };
+      }
+      if (options.rotatable) {
+        data.rotate = imageData.rotate || 0;
+      }
+      if (options.scalable) {
+        data.scaleX = imageData.scaleX || 1;
+        data.scaleY = imageData.scaleY || 1;
+      }
+      return data;
+    },
+    /**
+     * Set the cropped area position and size with new data
+     * @param {Object} data - The new data.
+     * @returns {Cropper} this
+     */
+    setData: function setData(data) {
+      var options = this.options,
+        imageData = this.imageData,
+        canvasData = this.canvasData;
+      var cropBoxData = {};
+      if (this.ready && !this.disabled && isPlainObject(data)) {
+        var transformed = false;
+        if (options.rotatable) {
+          if (isNumber(data.rotate) && data.rotate !== imageData.rotate) {
+            imageData.rotate = data.rotate;
+            transformed = true;
+          }
+        }
+        if (options.scalable) {
+          if (isNumber(data.scaleX) && data.scaleX !== imageData.scaleX) {
+            imageData.scaleX = data.scaleX;
+            transformed = true;
+          }
+          if (isNumber(data.scaleY) && data.scaleY !== imageData.scaleY) {
+            imageData.scaleY = data.scaleY;
+            transformed = true;
+          }
+        }
+        if (transformed) {
+          this.renderCanvas(true, true);
+        }
+        var ratio = imageData.width / imageData.naturalWidth;
+        if (isNumber(data.x)) {
+          cropBoxData.left = data.x * ratio + canvasData.left;
+        }
+        if (isNumber(data.y)) {
+          cropBoxData.top = data.y * ratio + canvasData.top;
+        }
+        if (isNumber(data.width)) {
+          cropBoxData.width = data.width * ratio;
+        }
+        if (isNumber(data.height)) {
+          cropBoxData.height = data.height * ratio;
+        }
+        this.setCropBoxData(cropBoxData);
+      }
+      return this;
+    },
+    /**
+     * Get the container size data.
+     * @returns {Object} The result container data.
+     */
+    getContainerData: function getContainerData() {
+      return this.ready ? assign({}, this.containerData) : {};
+    },
+    /**
+     * Get the image position and size data.
+     * @returns {Object} The result image data.
+     */
+    getImageData: function getImageData() {
+      return this.sized ? assign({}, this.imageData) : {};
+    },
+    /**
+     * Get the canvas position and size data.
+     * @returns {Object} The result canvas data.
+     */
+    getCanvasData: function getCanvasData() {
+      var canvasData = this.canvasData;
+      var data = {};
+      if (this.ready) {
+        forEach(['left', 'top', 'width', 'height', 'naturalWidth', 'naturalHeight'], function (n) {
+          data[n] = canvasData[n];
+        });
+      }
+      return data;
+    },
+    /**
+     * Set the canvas position and size with new data.
+     * @param {Object} data - The new canvas data.
+     * @returns {Cropper} this
+     */
+    setCanvasData: function setCanvasData(data) {
+      var canvasData = this.canvasData;
+      var aspectRatio = canvasData.aspectRatio;
+      if (this.ready && !this.disabled && isPlainObject(data)) {
+        if (isNumber(data.left)) {
+          canvasData.left = data.left;
+        }
+        if (isNumber(data.top)) {
+          canvasData.top = data.top;
+        }
+        if (isNumber(data.width)) {
+          canvasData.width = data.width;
+          canvasData.height = data.width / aspectRatio;
+        } else if (isNumber(data.height)) {
+          canvasData.height = data.height;
+          canvasData.width = data.height * aspectRatio;
+        }
+        this.renderCanvas(true);
+      }
+      return this;
+    },
+    /**
+     * Get the crop box position and size data.
+     * @returns {Object} The result crop box data.
+     */
+    getCropBoxData: function getCropBoxData() {
+      var cropBoxData = this.cropBoxData;
+      var data;
+      if (this.ready && this.cropped) {
+        data = {
+          left: cropBoxData.left,
+          top: cropBoxData.top,
+          width: cropBoxData.width,
+          height: cropBoxData.height
+        };
+      }
+      return data || {};
+    },
+    /**
+     * Set the crop box position and size with new data.
+     * @param {Object} data - The new crop box data.
+     * @returns {Cropper} this
+     */
+    setCropBoxData: function setCropBoxData(data) {
+      var cropBoxData = this.cropBoxData;
+      var aspectRatio = this.options.aspectRatio;
+      var widthChanged;
+      var heightChanged;
+      if (this.ready && this.cropped && !this.disabled && isPlainObject(data)) {
+        if (isNumber(data.left)) {
+          cropBoxData.left = data.left;
+        }
+        if (isNumber(data.top)) {
+          cropBoxData.top = data.top;
+        }
+        if (isNumber(data.width) && data.width !== cropBoxData.width) {
+          widthChanged = true;
+          cropBoxData.width = data.width;
+        }
+        if (isNumber(data.height) && data.height !== cropBoxData.height) {
+          heightChanged = true;
+          cropBoxData.height = data.height;
+        }
+        if (aspectRatio) {
+          if (widthChanged) {
+            cropBoxData.height = cropBoxData.width / aspectRatio;
+          } else if (heightChanged) {
+            cropBoxData.width = cropBoxData.height * aspectRatio;
+          }
+        }
+        this.renderCropBox();
+      }
+      return this;
+    },
+    /**
+     * Get a canvas drawn the cropped image.
+     * @param {Object} [options={}] - The config options.
+     * @returns {HTMLCanvasElement} - The result canvas.
+     */
+    getCroppedCanvas: function getCroppedCanvas() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      if (!this.ready || !window.HTMLCanvasElement) {
+        return null;
+      }
+      var canvasData = this.canvasData;
+      var source = getSourceCanvas(this.image, this.imageData, canvasData, options);
+
+      // Returns the source canvas if it is not cropped.
+      if (!this.cropped) {
+        return source;
+      }
+      var _this$getData = this.getData(options.rounded),
+        initialX = _this$getData.x,
+        initialY = _this$getData.y,
+        initialWidth = _this$getData.width,
+        initialHeight = _this$getData.height;
+      var ratio = source.width / Math.floor(canvasData.naturalWidth);
+      if (ratio !== 1) {
+        initialX *= ratio;
+        initialY *= ratio;
+        initialWidth *= ratio;
+        initialHeight *= ratio;
+      }
+      var aspectRatio = initialWidth / initialHeight;
+      var maxSizes = getAdjustedSizes({
+        aspectRatio: aspectRatio,
+        width: options.maxWidth || Infinity,
+        height: options.maxHeight || Infinity
+      });
+      var minSizes = getAdjustedSizes({
+        aspectRatio: aspectRatio,
+        width: options.minWidth || 0,
+        height: options.minHeight || 0
+      }, 'cover');
+      var _getAdjustedSizes = getAdjustedSizes({
+          aspectRatio: aspectRatio,
+          width: options.width || (ratio !== 1 ? source.width : initialWidth),
+          height: options.height || (ratio !== 1 ? source.height : initialHeight)
+        }),
+        width = _getAdjustedSizes.width,
+        height = _getAdjustedSizes.height;
+      width = Math.min(maxSizes.width, Math.max(minSizes.width, width));
+      height = Math.min(maxSizes.height, Math.max(minSizes.height, height));
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('2d');
+      canvas.width = normalizeDecimalNumber(width);
+      canvas.height = normalizeDecimalNumber(height);
+      context.fillStyle = options.fillColor || 'transparent';
+      context.fillRect(0, 0, width, height);
+      var _options$imageSmoothi = options.imageSmoothingEnabled,
+        imageSmoothingEnabled = _options$imageSmoothi === void 0 ? true : _options$imageSmoothi,
+        imageSmoothingQuality = options.imageSmoothingQuality;
+      context.imageSmoothingEnabled = imageSmoothingEnabled;
+      if (imageSmoothingQuality) {
+        context.imageSmoothingQuality = imageSmoothingQuality;
+      }
+
+      // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.drawImage
+      var sourceWidth = source.width;
+      var sourceHeight = source.height;
+
+      // Source canvas parameters
+      var srcX = initialX;
+      var srcY = initialY;
+      var srcWidth;
+      var srcHeight;
+
+      // Destination canvas parameters
+      var dstX;
+      var dstY;
+      var dstWidth;
+      var dstHeight;
+      if (srcX <= -initialWidth || srcX > sourceWidth) {
+        srcX = 0;
+        srcWidth = 0;
+        dstX = 0;
+        dstWidth = 0;
+      } else if (srcX <= 0) {
+        dstX = -srcX;
+        srcX = 0;
+        srcWidth = Math.min(sourceWidth, initialWidth + srcX);
+        dstWidth = srcWidth;
+      } else if (srcX <= sourceWidth) {
+        dstX = 0;
+        srcWidth = Math.min(initialWidth, sourceWidth - srcX);
+        dstWidth = srcWidth;
+      }
+      if (srcWidth <= 0 || srcY <= -initialHeight || srcY > sourceHeight) {
+        srcY = 0;
+        srcHeight = 0;
+        dstY = 0;
+        dstHeight = 0;
+      } else if (srcY <= 0) {
+        dstY = -srcY;
+        srcY = 0;
+        srcHeight = Math.min(sourceHeight, initialHeight + srcY);
+        dstHeight = srcHeight;
+      } else if (srcY <= sourceHeight) {
+        dstY = 0;
+        srcHeight = Math.min(initialHeight, sourceHeight - srcY);
+        dstHeight = srcHeight;
+      }
+      var params = [srcX, srcY, srcWidth, srcHeight];
+
+      // Avoid "IndexSizeError"
+      if (dstWidth > 0 && dstHeight > 0) {
+        var scale = width / initialWidth;
+        params.push(dstX * scale, dstY * scale, dstWidth * scale, dstHeight * scale);
+      }
+
+      // All the numerical parameters should be integer for `drawImage`
+      // https://github.com/fengyuanchen/cropper/issues/476
+      context.drawImage.apply(context, [source].concat(_toConsumableArray(params.map(function (param) {
+        return Math.floor(normalizeDecimalNumber(param));
+      }))));
+      return canvas;
+    },
+    /**
+     * Change the aspect ratio of the crop box.
+     * @param {number} aspectRatio - The new aspect ratio.
+     * @returns {Cropper} this
+     */
+    setAspectRatio: function setAspectRatio(aspectRatio) {
+      var options = this.options;
+      if (!this.disabled && !isUndefined(aspectRatio)) {
+        // 0 -> NaN
+        options.aspectRatio = Math.max(0, aspectRatio) || NaN;
+        if (this.ready) {
+          this.initCropBox();
+          if (this.cropped) {
+            this.renderCropBox();
+          }
+        }
+      }
+      return this;
+    },
+    /**
+     * Change the drag mode.
+     * @param {string} mode - The new drag mode.
+     * @returns {Cropper} this
+     */
+    setDragMode: function setDragMode(mode) {
+      var options = this.options,
+        dragBox = this.dragBox,
+        face = this.face;
+      if (this.ready && !this.disabled) {
+        var croppable = mode === DRAG_MODE_CROP;
+        var movable = options.movable && mode === DRAG_MODE_MOVE;
+        mode = croppable || movable ? mode : DRAG_MODE_NONE;
+        options.dragMode = mode;
+        setData(dragBox, DATA_ACTION, mode);
+        toggleClass(dragBox, CLASS_CROP, croppable);
+        toggleClass(dragBox, CLASS_MOVE, movable);
+        if (!options.cropBoxMovable) {
+          // Sync drag mode to crop box when it is not movable
+          setData(face, DATA_ACTION, mode);
+          toggleClass(face, CLASS_CROP, croppable);
+          toggleClass(face, CLASS_MOVE, movable);
+        }
+      }
+      return this;
+    }
+  };
+
+  var AnotherCropper = WINDOW.Cropper;
+  var Cropper = /*#__PURE__*/function () {
+    /**
+     * Create a new Cropper.
+     * @param {Element} element - The target element for cropping.
+     * @param {Object} [options={}] - The configuration options.
+     */
+    function Cropper(element) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      _classCallCheck(this, Cropper);
+      if (!element || !REGEXP_TAG_NAME.test(element.tagName)) {
+        throw new Error('The first argument is required and must be an <img> or <canvas> element.');
+      }
+      this.element = element;
+      this.options = assign({}, DEFAULTS, isPlainObject(options) && options);
+      this.cropped = false;
+      this.disabled = false;
+      this.pointers = {};
+      this.ready = false;
+      this.reloading = false;
+      this.replaced = false;
+      this.sized = false;
+      this.sizing = false;
+      this.init();
+    }
+    return _createClass(Cropper, [{
+      key: "init",
+      value: function init() {
+        var element = this.element;
+        var tagName = element.tagName.toLowerCase();
+        var url;
+        if (element[NAMESPACE]) {
+          return;
+        }
+        element[NAMESPACE] = this;
+        if (tagName === 'img') {
+          this.isImg = true;
+
+          // e.g.: "img/picture.jpg"
+          url = element.getAttribute('src') || '';
+          this.originalUrl = url;
+
+          // Stop when it's a blank image
+          if (!url) {
+            return;
+          }
+
+          // e.g.: "https://example.com/img/picture.jpg"
+          url = element.src;
+        } else if (tagName === 'canvas' && window.HTMLCanvasElement) {
+          url = element.toDataURL();
+        }
+        this.load(url);
+      }
+    }, {
+      key: "load",
+      value: function load(url) {
+        var _this = this;
+        if (!url) {
+          return;
+        }
+        this.url = url;
+        this.imageData = {};
+        var element = this.element,
+          options = this.options;
+        if (!options.rotatable && !options.scalable) {
+          options.checkOrientation = false;
+        }
+
+        // Only IE10+ supports Typed Arrays
+        if (!options.checkOrientation || !window.ArrayBuffer) {
+          this.clone();
+          return;
+        }
+
+        // Detect the mime type of the image directly if it is a Data URL
+        if (REGEXP_DATA_URL.test(url)) {
+          // Read ArrayBuffer from Data URL of JPEG images directly for better performance
+          if (REGEXP_DATA_URL_JPEG.test(url)) {
+            this.read(dataURLToArrayBuffer(url));
+          } else {
+            // Only a JPEG image may contains Exif Orientation information,
+            // the rest types of Data URLs are not necessary to check orientation at all.
+            this.clone();
+          }
+          return;
+        }
+
+        // 1. Detect the mime type of the image by a XMLHttpRequest.
+        // 2. Load the image as ArrayBuffer for reading orientation if its a JPEG image.
+        var xhr = new XMLHttpRequest();
+        var clone = this.clone.bind(this);
+        this.reloading = true;
+        this.xhr = xhr;
+
+        // 1. Cross origin requests are only supported for protocol schemes:
+        // http, https, data, chrome, chrome-extension.
+        // 2. Access to XMLHttpRequest from a Data URL will be blocked by CORS policy
+        // in some browsers as IE11 and Safari.
+        xhr.onabort = clone;
+        xhr.onerror = clone;
+        xhr.ontimeout = clone;
+        xhr.onprogress = function () {
+          // Abort the request directly if it not a JPEG image for better performance
+          if (xhr.getResponseHeader('content-type') !== MIME_TYPE_JPEG) {
+            xhr.abort();
+          }
+        };
+        xhr.onload = function () {
+          _this.read(xhr.response);
+        };
+        xhr.onloadend = function () {
+          _this.reloading = false;
+          _this.xhr = null;
+        };
+
+        // Bust cache when there is a "crossOrigin" property to avoid browser cache error
+        if (options.checkCrossOrigin && isCrossOriginURL(url) && element.crossOrigin) {
+          url = addTimestamp(url);
+        }
+
+        // The third parameter is required for avoiding side-effect (#682)
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.withCredentials = element.crossOrigin === 'use-credentials';
+        xhr.send();
+      }
+    }, {
+      key: "read",
+      value: function read(arrayBuffer) {
+        var options = this.options,
+          imageData = this.imageData;
+
+        // Reset the orientation value to its default value 1
+        // as some iOS browsers will render image with its orientation
+        var orientation = resetAndGetOrientation(arrayBuffer);
+        var rotate = 0;
+        var scaleX = 1;
+        var scaleY = 1;
+        if (orientation > 1) {
+          // Generate a new URL which has the default orientation value
+          this.url = arrayBufferToDataURL(arrayBuffer, MIME_TYPE_JPEG);
+          var _parseOrientation = parseOrientation(orientation);
+          rotate = _parseOrientation.rotate;
+          scaleX = _parseOrientation.scaleX;
+          scaleY = _parseOrientation.scaleY;
+        }
+        if (options.rotatable) {
+          imageData.rotate = rotate;
+        }
+        if (options.scalable) {
+          imageData.scaleX = scaleX;
+          imageData.scaleY = scaleY;
+        }
+        this.clone();
+      }
+    }, {
+      key: "clone",
+      value: function clone() {
+        var element = this.element,
+          url = this.url;
+        var crossOrigin = element.crossOrigin;
+        var crossOriginUrl = url;
+        if (this.options.checkCrossOrigin && isCrossOriginURL(url)) {
+          if (!crossOrigin) {
+            crossOrigin = 'anonymous';
+          }
+
+          // Bust cache when there is not a "crossOrigin" property (#519)
+          crossOriginUrl = addTimestamp(url);
+        }
+        this.crossOrigin = crossOrigin;
+        this.crossOriginUrl = crossOriginUrl;
+        var image = document.createElement('img');
+        if (crossOrigin) {
+          image.crossOrigin = crossOrigin;
+        }
+        image.src = crossOriginUrl || url;
+        image.alt = element.alt || 'The image to crop';
+        this.image = image;
+        image.onload = this.start.bind(this);
+        image.onerror = this.stop.bind(this);
+        addClass(image, CLASS_HIDE);
+        element.parentNode.insertBefore(image, element.nextSibling);
+      }
+    }, {
+      key: "start",
+      value: function start() {
+        var _this2 = this;
+        var image = this.image;
+        image.onload = null;
+        image.onerror = null;
+        this.sizing = true;
+
+        // Match all browsers that use WebKit as the layout engine in iOS devices,
+        // such as Safari for iOS, Chrome for iOS, and in-app browsers.
+        var isIOSWebKit = WINDOW.navigator && /(?:iPad|iPhone|iPod).*?AppleWebKit/i.test(WINDOW.navigator.userAgent);
+        var done = function done(naturalWidth, naturalHeight) {
+          assign(_this2.imageData, {
+            naturalWidth: naturalWidth,
+            naturalHeight: naturalHeight,
+            aspectRatio: naturalWidth / naturalHeight
+          });
+          _this2.initialImageData = assign({}, _this2.imageData);
+          _this2.sizing = false;
+          _this2.sized = true;
+          _this2.build();
+        };
+
+        // Most modern browsers (excepts iOS WebKit)
+        if (image.naturalWidth && !isIOSWebKit) {
+          done(image.naturalWidth, image.naturalHeight);
+          return;
+        }
+        var sizingImage = document.createElement('img');
+        var body = document.body || document.documentElement;
+        this.sizingImage = sizingImage;
+        sizingImage.onload = function () {
+          done(sizingImage.width, sizingImage.height);
+          if (!isIOSWebKit) {
+            body.removeChild(sizingImage);
+          }
+        };
+        sizingImage.src = image.src;
+
+        // iOS WebKit will convert the image automatically
+        // with its orientation once append it into DOM (#279)
+        if (!isIOSWebKit) {
+          sizingImage.style.cssText = 'left:0;' + 'max-height:none!important;' + 'max-width:none!important;' + 'min-height:0!important;' + 'min-width:0!important;' + 'opacity:0;' + 'position:absolute;' + 'top:0;' + 'z-index:-1;';
+          body.appendChild(sizingImage);
+        }
+      }
+    }, {
+      key: "stop",
+      value: function stop() {
+        var image = this.image;
+        image.onload = null;
+        image.onerror = null;
+        image.parentNode.removeChild(image);
+        this.image = null;
+      }
+    }, {
+      key: "build",
+      value: function build() {
+        if (!this.sized || this.ready) {
+          return;
+        }
+        var element = this.element,
+          options = this.options,
+          image = this.image;
+
+        // Create cropper elements
+        var container = element.parentNode;
+        var template = document.createElement('div');
+        template.innerHTML = TEMPLATE;
+        var cropper = template.querySelector(".".concat(NAMESPACE, "-container"));
+        var canvas = cropper.querySelector(".".concat(NAMESPACE, "-canvas"));
+        var dragBox = cropper.querySelector(".".concat(NAMESPACE, "-drag-box"));
+        var cropBox = cropper.querySelector(".".concat(NAMESPACE, "-crop-box"));
+        var face = cropBox.querySelector(".".concat(NAMESPACE, "-face"));
+        this.container = container;
+        this.cropper = cropper;
+        this.canvas = canvas;
+        this.dragBox = dragBox;
+        this.cropBox = cropBox;
+        this.viewBox = cropper.querySelector(".".concat(NAMESPACE, "-view-box"));
+        this.face = face;
+        canvas.appendChild(image);
+
+        // Hide the original image
+        addClass(element, CLASS_HIDDEN);
+
+        // Inserts the cropper after to the current image
+        container.insertBefore(cropper, element.nextSibling);
+
+        // Show the hidden image
+        removeClass(image, CLASS_HIDE);
+        this.initPreview();
+        this.bind();
+        options.initialAspectRatio = Math.max(0, options.initialAspectRatio) || NaN;
+        options.aspectRatio = Math.max(0, options.aspectRatio) || NaN;
+        options.viewMode = Math.max(0, Math.min(3, Math.round(options.viewMode))) || 0;
+        addClass(cropBox, CLASS_HIDDEN);
+        if (!options.guides) {
+          addClass(cropBox.getElementsByClassName("".concat(NAMESPACE, "-dashed")), CLASS_HIDDEN);
+        }
+        if (!options.center) {
+          addClass(cropBox.getElementsByClassName("".concat(NAMESPACE, "-center")), CLASS_HIDDEN);
+        }
+        if (options.background) {
+          addClass(cropper, "".concat(NAMESPACE, "-bg"));
+        }
+        if (!options.highlight) {
+          addClass(face, CLASS_INVISIBLE);
+        }
+        if (options.cropBoxMovable) {
+          addClass(face, CLASS_MOVE);
+          setData(face, DATA_ACTION, ACTION_ALL);
+        }
+        if (!options.cropBoxResizable) {
+          addClass(cropBox.getElementsByClassName("".concat(NAMESPACE, "-line")), CLASS_HIDDEN);
+          addClass(cropBox.getElementsByClassName("".concat(NAMESPACE, "-point")), CLASS_HIDDEN);
+        }
+        this.render();
+        this.ready = true;
+        this.setDragMode(options.dragMode);
+        if (options.autoCrop) {
+          this.crop();
+        }
+        this.setData(options.data);
+        if (isFunction(options.ready)) {
+          addListener(element, EVENT_READY, options.ready, {
+            once: true
+          });
+        }
+        dispatchEvent(element, EVENT_READY);
+      }
+    }, {
+      key: "unbuild",
+      value: function unbuild() {
+        if (!this.ready) {
+          return;
+        }
+        this.ready = false;
+        this.unbind();
+        this.resetPreview();
+        var parentNode = this.cropper.parentNode;
+        if (parentNode) {
+          parentNode.removeChild(this.cropper);
+        }
+        removeClass(this.element, CLASS_HIDDEN);
+      }
+    }, {
+      key: "uncreate",
+      value: function uncreate() {
+        if (this.ready) {
+          this.unbuild();
+          this.ready = false;
+          this.cropped = false;
+        } else if (this.sizing) {
+          this.sizingImage.onload = null;
+          this.sizing = false;
+          this.sized = false;
+        } else if (this.reloading) {
+          this.xhr.onabort = null;
+          this.xhr.abort();
+        } else if (this.image) {
+          this.stop();
+        }
+      }
+
+      /**
+       * Get the no conflict cropper class.
+       * @returns {Cropper} The cropper class.
+       */
+    }], [{
+      key: "noConflict",
+      value: function noConflict() {
+        window.Cropper = AnotherCropper;
+        return Cropper;
+      }
+
+      /**
+       * Change the default options.
+       * @param {Object} options - The new default options.
+       */
+    }, {
+      key: "setDefaults",
+      value: function setDefaults(options) {
+        assign(DEFAULTS, isPlainObject(options) && options);
+      }
+    }]);
+  }();
+  assign(Cropper.prototype, render, preview, events, handlers, change, methods);
+
+  return Cropper;
+
+}));
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js ***!
+  \****************************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginFileValidateSize 2.2.8
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+     true
+        ? (module.exports = factory())
+        : 0;
+})(this, function() {
+    'use strict';
+
+    var plugin = function plugin(_ref) {
+        var addFilter = _ref.addFilter,
+            utils = _ref.utils;
+        // get quick reference to Type utils
+        var Type = utils.Type,
+            replaceInString = utils.replaceInString,
+            toNaturalFileSize = utils.toNaturalFileSize;
+
+        // filtering if an item is allowed in hopper
+        addFilter('ALLOW_HOPPER_ITEM', function(file, _ref2) {
+            var query = _ref2.query;
+            if (!query('GET_ALLOW_FILE_SIZE_VALIDATION')) {
+                return true;
+            }
+
+            var sizeMax = query('GET_MAX_FILE_SIZE');
+            if (sizeMax !== null && file.size > sizeMax) {
+                return false;
+            }
+
+            var sizeMin = query('GET_MIN_FILE_SIZE');
+            if (sizeMin !== null && file.size < sizeMin) {
+                return false;
+            }
+
+            return true;
+        });
+
+        // called for each file that is loaded
+        // right before it is set to the item state
+        // should return a promise
+        addFilter('LOAD_FILE', function(file, _ref3) {
+            var query = _ref3.query;
+            return new Promise(function(resolve, reject) {
+                // if not allowed, all fine, exit
+                if (!query('GET_ALLOW_FILE_SIZE_VALIDATION')) {
+                    return resolve(file);
+                }
+
+                // check if file should be filtered
+                var fileFilter = query('GET_FILE_VALIDATE_SIZE_FILTER');
+                if (fileFilter && !fileFilter(file)) {
+                    return resolve(file);
+                }
+
+                // reject or resolve based on file size
+                var sizeMax = query('GET_MAX_FILE_SIZE');
+                if (sizeMax !== null && file.size > sizeMax) {
+                    reject({
+                        status: {
+                            main: query('GET_LABEL_MAX_FILE_SIZE_EXCEEDED'),
+                            sub: replaceInString(query('GET_LABEL_MAX_FILE_SIZE'), {
+                                filesize: toNaturalFileSize(
+                                    sizeMax,
+                                    '.',
+                                    query('GET_FILE_SIZE_BASE'),
+                                    query('GET_FILE_SIZE_LABELS', query)
+                                ),
+                            }),
+                        },
+                    });
+
+                    return;
+                }
+
+                // reject or resolve based on file size
+                var sizeMin = query('GET_MIN_FILE_SIZE');
+                if (sizeMin !== null && file.size < sizeMin) {
+                    reject({
+                        status: {
+                            main: query('GET_LABEL_MIN_FILE_SIZE_EXCEEDED'),
+                            sub: replaceInString(query('GET_LABEL_MIN_FILE_SIZE'), {
+                                filesize: toNaturalFileSize(
+                                    sizeMin,
+                                    '.',
+                                    query('GET_FILE_SIZE_BASE'),
+                                    query('GET_FILE_SIZE_LABELS', query)
+                                ),
+                            }),
+                        },
+                    });
+
+                    return;
+                }
+
+                // returns the current option value
+                var totalSizeMax = query('GET_MAX_TOTAL_FILE_SIZE');
+                if (totalSizeMax !== null) {
+                    // get the current total file size
+                    var currentTotalSize = query('GET_ACTIVE_ITEMS').reduce(function(total, item) {
+                        return total + item.fileSize;
+                    }, 0);
+
+                    // get the size of the new file
+                    if (currentTotalSize > totalSizeMax) {
+                        reject({
+                            status: {
+                                main: query('GET_LABEL_MAX_TOTAL_FILE_SIZE_EXCEEDED'),
+                                sub: replaceInString(query('GET_LABEL_MAX_TOTAL_FILE_SIZE'), {
+                                    filesize: toNaturalFileSize(
+                                        totalSizeMax,
+                                        '.',
+                                        query('GET_FILE_SIZE_BASE'),
+                                        query('GET_FILE_SIZE_LABELS', query)
+                                    ),
+                                }),
+                            },
+                        });
+
+                        return;
+                    }
+                }
+
+                // file is fine, let's pass it back
+                resolve(file);
+            });
+        });
+
+        return {
+            options: {
+                // Enable or disable file type validation
+                allowFileSizeValidation: [true, Type.BOOLEAN],
+
+                // Max individual file size in bytes
+                maxFileSize: [null, Type.INT],
+
+                // Min individual file size in bytes
+                minFileSize: [null, Type.INT],
+
+                // Max total file size in bytes
+                maxTotalFileSize: [null, Type.INT],
+
+                // Filter the files that need to be validated for size
+                fileValidateSizeFilter: [null, Type.FUNCTION],
+
+                // error labels
+                labelMinFileSizeExceeded: ['File is too small', Type.STRING],
+                labelMinFileSize: ['Minimum file size is {filesize}', Type.STRING],
+
+                labelMaxFileSizeExceeded: ['File is too large', Type.STRING],
+                labelMaxFileSize: ['Maximum file size is {filesize}', Type.STRING],
+
+                labelMaxTotalFileSizeExceeded: ['Maximum total size exceeded', Type.STRING],
+                labelMaxTotalFileSize: ['Maximum total file size is {filesize}', Type.STRING],
+            },
+        };
+    };
+
+    // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    if (isBrowser) {
+        document.dispatchEvent(new CustomEvent('FilePond:pluginloaded', { detail: plugin }));
+    }
+
+    return plugin;
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js":
 /*!****************************************************************************************************!*\
   !*** ./node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js ***!
@@ -4256,6 +7732,674 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"axios","version":"0.21.4","de
     }
 
     return plugin;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js ***!
+  \************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginImageCrop 2.0.6
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+   true
+    ? (module.exports = factory())
+    : 0;
+})(this, function() {
+  'use strict';
+
+  var isImage = function isImage(file) {
+    return /^image/.test(file.type);
+  };
+
+  /**
+   * Image Auto Crop Plugin
+   */
+  var plugin = function plugin(_ref) {
+    var addFilter = _ref.addFilter,
+      utils = _ref.utils;
+    var Type = utils.Type,
+      isFile = utils.isFile,
+      getNumericAspectRatioFromString = utils.getNumericAspectRatioFromString;
+
+    // tests if crop is allowed on this item
+    var allowCrop = function allowCrop(item, query) {
+      return !(!isImage(item.file) || !query('GET_ALLOW_IMAGE_CROP'));
+    };
+
+    var isObject = function isObject(value) {
+      return typeof value === 'object';
+    };
+
+    var isNumber = function isNumber(value) {
+      return typeof value === 'number';
+    };
+
+    var updateCrop = function updateCrop(item, obj) {
+      return item.setMetadata(
+        'crop',
+        Object.assign({}, item.getMetadata('crop'), obj)
+      );
+    };
+
+    // extend item methods
+    addFilter('DID_CREATE_ITEM', function(item, _ref2) {
+      var query = _ref2.query;
+
+      item.extend('setImageCrop', function(crop) {
+        if (!allowCrop(item, query) || !isObject(center)) return;
+        item.setMetadata('crop', crop);
+        return crop;
+      });
+
+      item.extend('setImageCropCenter', function(center) {
+        if (!allowCrop(item, query) || !isObject(center)) return;
+        return updateCrop(item, { center: center });
+      });
+
+      item.extend('setImageCropZoom', function(zoom) {
+        if (!allowCrop(item, query) || !isNumber(zoom)) return;
+        return updateCrop(item, { zoom: Math.max(1, zoom) });
+      });
+
+      item.extend('setImageCropRotation', function(rotation) {
+        if (!allowCrop(item, query) || !isNumber(rotation)) return;
+        return updateCrop(item, { rotation: rotation });
+      });
+
+      item.extend('setImageCropFlip', function(flip) {
+        if (!allowCrop(item, query) || !isObject(flip)) return;
+        return updateCrop(item, { flip: flip });
+      });
+
+      item.extend('setImageCropAspectRatio', function(newAspectRatio) {
+        if (!allowCrop(item, query) || typeof newAspectRatio === 'undefined')
+          return;
+
+        var currentCrop = item.getMetadata('crop');
+
+        var aspectRatio = getNumericAspectRatioFromString(newAspectRatio);
+
+        var newCrop = {
+          center: {
+            x: 0.5,
+            y: 0.5
+          },
+
+          flip: currentCrop
+            ? Object.assign({}, currentCrop.flip)
+            : {
+                horizontal: false,
+                vertical: false
+              },
+
+          rotation: 0,
+          zoom: 1,
+          aspectRatio: aspectRatio
+        };
+
+        item.setMetadata('crop', newCrop);
+
+        return newCrop;
+      });
+    });
+
+    // subscribe to file transformations
+    addFilter('DID_LOAD_ITEM', function(item, _ref3) {
+      var query = _ref3.query;
+      return new Promise(function(resolve, reject) {
+        // get file reference
+        var file = item.file;
+
+        // if this is not an image we do not have any business cropping it and we'll continue with the unaltered dataset
+        if (!isFile(file) || !isImage(file) || !query('GET_ALLOW_IMAGE_CROP')) {
+          return resolve(item);
+        }
+
+        // already has crop metadata set?
+        var crop = item.getMetadata('crop');
+        if (crop) {
+          return resolve(item);
+        }
+
+        // get the required aspect ratio and exit if it's not set
+        var humanAspectRatio = query('GET_IMAGE_CROP_ASPECT_RATIO');
+
+        // set default crop rectangle
+        item.setMetadata('crop', {
+          center: {
+            x: 0.5,
+            y: 0.5
+          },
+
+          flip: {
+            horizontal: false,
+            vertical: false
+          },
+
+          rotation: 0,
+          zoom: 1,
+          aspectRatio: humanAspectRatio
+            ? getNumericAspectRatioFromString(humanAspectRatio)
+            : null
+        });
+
+        // we done!
+        resolve(item);
+      });
+    });
+
+    // Expose plugin options
+    return {
+      options: {
+        // enable or disable image cropping
+        allowImageCrop: [true, Type.BOOLEAN],
+
+        // the aspect ratio of the crop ('1:1', '16:9', etc)
+        imageCropAspectRatio: [null, Type.STRING]
+      }
+    };
+  };
+
+  // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+  var isBrowser =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  if (isBrowser) {
+    document.dispatchEvent(
+      new CustomEvent('FilePond:pluginloaded', { detail: plugin })
+    );
+  }
+
+  return plugin;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js ***!
+  \************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginImageEdit 1.6.3
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+   true
+    ? (module.exports = factory())
+    : 0;
+})(this, function() {
+  'use strict';
+
+  var isPreviewableImage = function isPreviewableImage(file) {
+    return /^image/.test(file.type);
+  };
+
+  /**
+   * Image Edit Proxy Plugin
+   */
+  var plugin = function plugin(_) {
+    var addFilter = _.addFilter,
+      utils = _.utils,
+      views = _.views;
+    var Type = utils.Type,
+      createRoute = utils.createRoute,
+      _utils$createItemAPI = utils.createItemAPI,
+      createItemAPI =
+        _utils$createItemAPI === void 0
+          ? function(item) {
+              return item;
+            }
+          : _utils$createItemAPI;
+    var fileActionButton = views.fileActionButton;
+
+    addFilter('SHOULD_REMOVE_ON_REVERT', function(shouldRemove, _ref) {
+      var item = _ref.item,
+        query = _ref.query;
+      return new Promise(function(resolve) {
+        var file = item.file;
+
+        // if this file is editable it shouldn't be removed immidiately even when instant uploading
+        var canEdit =
+          query('GET_ALLOW_IMAGE_EDIT') &&
+          query('GET_IMAGE_EDIT_ALLOW_EDIT') &&
+          isPreviewableImage(file);
+
+        // if the file cannot be edited it should be removed on revert
+        resolve(!canEdit);
+      });
+    });
+
+    // open editor when loading a new item
+    addFilter('DID_LOAD_ITEM', function(item, _ref2) {
+      var query = _ref2.query,
+        dispatch = _ref2.dispatch;
+      return new Promise(function(resolve, reject) {
+        // if is temp or local file
+        if (item.origin > 1) {
+          resolve(item);
+          return;
+        }
+
+        // get file reference
+        var file = item.file;
+        if (
+          !query('GET_ALLOW_IMAGE_EDIT') ||
+          !query('GET_IMAGE_EDIT_INSTANT_EDIT')
+        ) {
+          resolve(item);
+          return;
+        }
+
+        // exit if this is not an image
+        if (!isPreviewableImage(file)) {
+          resolve(item);
+          return;
+        }
+
+        var createEditorResponseHandler = function createEditorResponseHandler(
+          item,
+          resolve,
+          reject
+        ) {
+          return function(userDidConfirm) {
+            // remove item
+            editRequestQueue.shift();
+
+            // handle item
+            if (userDidConfirm) {
+              resolve(item);
+            } else {
+              reject(item);
+            }
+
+            // TODO: Fix, should not be needed to kick the internal loop in case no processes are running
+            dispatch('KICK');
+
+            // handle next item!
+            requestEdit();
+          };
+        };
+
+        var requestEdit = function requestEdit() {
+          if (!editRequestQueue.length) return;
+          var _editRequestQueue$ = editRequestQueue[0],
+            item = _editRequestQueue$.item,
+            resolve = _editRequestQueue$.resolve,
+            reject = _editRequestQueue$.reject;
+
+          dispatch('EDIT_ITEM', {
+            id: item.id,
+            handleEditorResponse: createEditorResponseHandler(
+              item,
+              resolve,
+              reject
+            )
+          });
+        };
+
+        queueEditRequest({ item: item, resolve: resolve, reject: reject });
+
+        if (editRequestQueue.length === 1) {
+          requestEdit();
+        }
+      });
+    });
+
+    // extend item methods
+    addFilter('DID_CREATE_ITEM', function(item, _ref3) {
+      var query = _ref3.query,
+        dispatch = _ref3.dispatch;
+      item.extend('edit', function() {
+        dispatch('EDIT_ITEM', { id: item.id });
+      });
+    });
+
+    var editRequestQueue = [];
+    var queueEditRequest = function queueEditRequest(editRequest) {
+      editRequestQueue.push(editRequest);
+      return editRequest;
+    };
+
+    // called for each view that is created right after the 'create' method
+    addFilter('CREATE_VIEW', function(viewAPI) {
+      // get reference to created view
+      var is = viewAPI.is,
+        view = viewAPI.view,
+        query = viewAPI.query;
+
+      if (!query('GET_ALLOW_IMAGE_EDIT')) return;
+
+      var canShowImagePreview = query('GET_ALLOW_IMAGE_PREVIEW');
+
+      // only run for either the file or the file info panel
+      var shouldExtendView =
+        (is('file-info') && !canShowImagePreview) ||
+        (is('file') && canShowImagePreview);
+
+      if (!shouldExtendView) return;
+
+      // no editor defined, then exit
+      var editor = query('GET_IMAGE_EDIT_EDITOR');
+      if (!editor) return;
+
+      // set default FilePond options and add bridge once
+      if (!editor.filepondCallbackBridge) {
+        editor.outputData = true;
+        editor.outputFile = false;
+        editor.filepondCallbackBridge = {
+          onconfirm: editor.onconfirm || function() {},
+          oncancel: editor.oncancel || function() {}
+        };
+      }
+
+      // opens the editor, if it does not already exist, it creates the editor
+      var openEditor = function openEditor(_ref4) {
+        var root = _ref4.root,
+          props = _ref4.props,
+          action = _ref4.action;
+        var id = props.id;
+        var handleEditorResponse = action.handleEditorResponse;
+
+        // update editor props that could have changed
+        editor.cropAspectRatio =
+          root.query('GET_IMAGE_CROP_ASPECT_RATIO') || editor.cropAspectRatio;
+        editor.outputCanvasBackgroundColor =
+          root.query('GET_IMAGE_TRANSFORM_CANVAS_BACKGROUND_COLOR') ||
+          editor.outputCanvasBackgroundColor;
+
+        // get item
+        var item = root.query('GET_ITEM', id);
+        if (!item) return;
+
+        // file to open
+        var file = item.file;
+
+        // crop data to pass to editor
+        var crop = item.getMetadata('crop');
+        var cropDefault = {
+          center: {
+            x: 0.5,
+            y: 0.5
+          },
+
+          flip: {
+            horizontal: false,
+            vertical: false
+          },
+
+          zoom: 1,
+          rotation: 0,
+          aspectRatio: null
+        };
+
+        // size data to pass to editor
+        var resize = item.getMetadata('resize');
+
+        // filter and color data to pass to editor
+        var filter = item.getMetadata('filter') || null;
+        var filters = item.getMetadata('filters') || null;
+        var colors = item.getMetadata('colors') || null;
+        var markup = item.getMetadata('markup') || null;
+
+        // build parameters object
+        var imageParameters = {
+          crop: crop || cropDefault,
+          size: resize
+            ? {
+                upscale: resize.upscale,
+                mode: resize.mode,
+                width: resize.size.width,
+                height: resize.size.height
+              }
+            : null,
+          filter: filters
+            ? filters.id || filters.matrix
+            : root.query('GET_ALLOW_IMAGE_FILTER') &&
+              root.query('GET_IMAGE_FILTER_COLOR_MATRIX') &&
+              !colors
+            ? filter
+            : null,
+          color: colors,
+          markup: markup
+        };
+
+        editor.onconfirm = function(_ref5) {
+          var data = _ref5.data;
+          var crop = data.crop,
+            size = data.size,
+            filter = data.filter,
+            color = data.color,
+            colorMatrix = data.colorMatrix,
+            markup = data.markup;
+
+          // create new metadata object
+          var metadata = {};
+
+          // append crop data
+          if (crop) {
+            metadata.crop = crop;
+          }
+
+          // append size data
+          if (size) {
+            var initialSize = (item.getMetadata('resize') || {}).size;
+            var targetSize = {
+              width: size.width,
+              height: size.height
+            };
+
+            if (!(targetSize.width && targetSize.height) && initialSize) {
+              targetSize.width = initialSize.width;
+              targetSize.height = initialSize.height;
+            }
+
+            if (targetSize.width || targetSize.height) {
+              metadata.resize = {
+                upscale: size.upscale,
+                mode: size.mode,
+                size: targetSize
+              };
+            }
+          }
+
+          if (markup) {
+            metadata.markup = markup;
+          }
+
+          // set filters and colors so we can restore them when re-editing the image
+          metadata.colors = color;
+          metadata.filters = filter;
+
+          // set merged color matrix to use in preview plugin
+          metadata.filter = colorMatrix;
+
+          // update crop metadata
+          item.setMetadata(metadata);
+
+          // call
+          editor.filepondCallbackBridge.onconfirm(data, createItemAPI(item));
+
+          // used in instant edit mode
+          if (!handleEditorResponse) return;
+          editor.onclose = function() {
+            handleEditorResponse(true);
+            editor.onclose = null;
+          };
+        };
+
+        editor.oncancel = function() {
+          // call
+          editor.filepondCallbackBridge.oncancel(createItemAPI(item));
+
+          // used in instant edit mode
+          if (!handleEditorResponse) return;
+          editor.onclose = function() {
+            handleEditorResponse(false);
+            editor.onclose = null;
+          };
+        };
+
+        editor.open(file, imageParameters);
+      };
+
+      /**
+       * Image Preview related
+       */
+
+      // create the image edit plugin, but only do so if the item is an image
+      var didLoadItem = function didLoadItem(_ref6) {
+        var root = _ref6.root,
+          props = _ref6.props;
+
+        if (!query('GET_IMAGE_EDIT_ALLOW_EDIT')) return;
+        var id = props.id;
+
+        // try to access item
+        var item = query('GET_ITEM', id);
+        if (!item) return;
+
+        // get the file object
+        var file = item.file;
+
+        // exit if this is not an image
+        if (!isPreviewableImage(file)) return;
+
+        // handle interactions
+        root.ref.handleEdit = function(e) {
+          e.stopPropagation();
+          root.dispatch('EDIT_ITEM', { id: id });
+        };
+
+        if (canShowImagePreview) {
+          // add edit button to preview
+          var buttonView = view.createChildView(fileActionButton, {
+            label: 'edit',
+            icon: query('GET_IMAGE_EDIT_ICON_EDIT'),
+            opacity: 0
+          });
+
+          // edit item classname
+          buttonView.element.classList.add('filepond--action-edit-item');
+          buttonView.element.dataset.align = query(
+            'GET_STYLE_IMAGE_EDIT_BUTTON_EDIT_ITEM_POSITION'
+          );
+          buttonView.on('click', root.ref.handleEdit);
+
+          root.ref.buttonEditItem = view.appendChildView(buttonView);
+        } else {
+          // view is file info
+          var filenameElement = view.element.querySelector(
+            '.filepond--file-info-main'
+          );
+          var editButton = document.createElement('button');
+          editButton.className = 'filepond--action-edit-item-alt';
+          editButton.innerHTML =
+            query('GET_IMAGE_EDIT_ICON_EDIT') + '<span>edit</span>';
+          editButton.addEventListener('click', root.ref.handleEdit);
+          filenameElement.appendChild(editButton);
+
+          root.ref.editButton = editButton;
+        }
+      };
+
+      view.registerDestroyer(function(_ref7) {
+        var root = _ref7.root;
+        if (root.ref.buttonEditItem) {
+          root.ref.buttonEditItem.off('click', root.ref.handleEdit);
+        }
+        if (root.ref.editButton) {
+          root.ref.editButton.removeEventListener('click', root.ref.handleEdit);
+        }
+      });
+
+      var routes = {
+        EDIT_ITEM: openEditor,
+        DID_LOAD_ITEM: didLoadItem
+      };
+
+      if (canShowImagePreview) {
+        // view is file
+        var didPreviewUpdate = function didPreviewUpdate(_ref8) {
+          var root = _ref8.root;
+          if (!root.ref.buttonEditItem) return;
+          root.ref.buttonEditItem.opacity = 1;
+        };
+
+        routes.DID_IMAGE_PREVIEW_SHOW = didPreviewUpdate;
+      } else {
+      }
+
+      // start writing
+      view.registerWriter(createRoute(routes));
+    });
+
+    // Expose plugin options
+    return {
+      options: {
+        // enable or disable image editing
+        allowImageEdit: [true, Type.BOOLEAN],
+
+        // location of processing button
+        styleImageEditButtonEditItemPosition: ['bottom center', Type.STRING],
+
+        // open editor when image is dropped
+        imageEditInstantEdit: [false, Type.BOOLEAN],
+
+        // allow editing
+        imageEditAllowEdit: [true, Type.BOOLEAN],
+
+        // the icon to use for the edit button
+        imageEditIconEdit: [
+          '<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M8.5 17h1.586l7-7L15.5 8.414l-7 7V17zm-1.707-2.707l8-8a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-8 8A1 1 0 0 1 10.5 19h-3a1 1 0 0 1-1-1v-3a1 1 0 0 1 .293-.707z" fill="currentColor" fill-rule="nonzero"/></svg>',
+          Type.STRING
+        ],
+
+        // editor object
+        imageEditEditor: [null, Type.OBJECT]
+      }
+    };
+  };
+
+  // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+  var isBrowser =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  if (isBrowser) {
+    document.dispatchEvent(
+      new CustomEvent('FilePond:pluginloaded', { detail: plugin })
+    );
+  }
+
+  return plugin;
 });
 
 
@@ -8044,6 +12188,4241 @@ __webpack_require__.r(__webpack_exports__);
             return true;
           },
           Type.FUNCTION
+        ]
+      }
+    };
+  };
+
+  // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+  var isBrowser =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  if (isBrowser) {
+    document.dispatchEvent(
+      new CustomEvent('FilePond:pluginloaded', { detail: plugin })
+    );
+  }
+
+  return plugin;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js ***!
+  \****************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginImageResize 2.0.10
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+     true
+        ? (module.exports = factory())
+        : 0;
+})(this, function() {
+    'use strict';
+
+    // test if file is of type image
+    var isImage = function isImage(file) {
+        return /^image/.test(file.type);
+    };
+
+    var getImageSize = function getImageSize(url, cb) {
+        var image = new Image();
+        image.onload = function() {
+            var width = image.naturalWidth;
+            var height = image.naturalHeight;
+            image = null;
+            cb({ width: width, height: height });
+        };
+        image.onerror = function() {
+            return cb(null);
+        };
+        image.src = url;
+    };
+
+    /**
+     * Image Auto Resize Plugin
+     */
+    var plugin = function plugin(_ref) {
+        var addFilter = _ref.addFilter,
+            utils = _ref.utils;
+        var Type = utils.Type;
+
+        // subscribe to file load and append required transformations
+        addFilter('DID_LOAD_ITEM', function(item, _ref2) {
+            var query = _ref2.query;
+            return new Promise(function(resolve, reject) {
+                // get file reference
+                var file = item.file;
+
+                // if this is not an image we do not have any business cropping it
+                if (!isImage(file) || !query('GET_ALLOW_IMAGE_RESIZE')) {
+                    // continue with the unaltered dataset
+                    return resolve(item);
+                }
+
+                var mode = query('GET_IMAGE_RESIZE_MODE');
+                var width = query('GET_IMAGE_RESIZE_TARGET_WIDTH');
+                var height = query('GET_IMAGE_RESIZE_TARGET_HEIGHT');
+                var upscale = query('GET_IMAGE_RESIZE_UPSCALE');
+
+                // no resizing to be done
+                if (width === null && height === null) return resolve(item);
+
+                var targetWidth = width === null ? height : width;
+                var targetHeight = height === null ? targetWidth : height;
+
+                // if should not upscale, we need to determine the size of the file
+                var fileURL = URL.createObjectURL(file);
+                getImageSize(fileURL, function(size) {
+                    URL.revokeObjectURL(fileURL);
+
+                    // something went wrong
+                    if (!size) return resolve(item);
+                    var imageWidth = size.width,
+                        imageHeight = size.height;
+
+                    // get exif orientation
+                    var orientation = (item.getMetadata('exif') || {}).orientation || -1;
+
+                    // swap width and height if orientation needs correcting
+                    if (orientation >= 5 && orientation <= 8) {
+                        var _ref3 = [imageHeight, imageWidth];
+                        imageWidth = _ref3[0];
+                        imageHeight = _ref3[1];
+                    }
+
+                    // image is already perfect size, no transformations required
+                    if (imageWidth === targetWidth && imageHeight === targetHeight)
+                        return resolve(item);
+
+                    // already contained?
+                    // can't upscale image, so if already at correct scale, exit
+                    if (!upscale) {
+                        // covering target size
+                        if (mode === 'cover') {
+                            // if one of edges is smaller than target size, exit
+                            if (imageWidth <= targetWidth || imageHeight <= targetHeight)
+                                return resolve(item);
+                        }
+
+                        // not covering target size, if image is contained in target size, exit
+                        else if (imageWidth <= targetWidth && imageHeight <= targetWidth) {
+                            return resolve(item);
+                        }
+                    }
+
+                    // the image needs to be resized
+                    item.setMetadata('resize', {
+                        mode: mode,
+                        upscale: upscale,
+                        size: {
+                            width: targetWidth,
+                            height: targetHeight,
+                        },
+                    });
+
+                    resolve(item);
+                });
+            });
+        });
+
+        // Expose plugin options
+        return {
+            options: {
+                // Enable or disable image resizing
+                allowImageResize: [true, Type.BOOLEAN],
+
+                // the method of rescaling
+                // - force => force set size
+                // - cover => pick biggest dimension
+                // - contain => pick smaller dimension
+                imageResizeMode: ['cover', Type.STRING],
+
+                // set to false to disable upscaling of image smaller than the target width / height
+                imageResizeUpscale: [true, Type.BOOLEAN],
+
+                // target width
+                imageResizeTargetWidth: [null, Type.INT],
+
+                // target height
+                imageResizeTargetHeight: [null, Type.INT],
+            },
+        };
+    };
+
+    // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    if (isBrowser) {
+        document.dispatchEvent(new CustomEvent('FilePond:pluginloaded', { detail: plugin }));
+    }
+
+    return plugin;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js ***!
+  \**********************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginImageTransform 3.8.7
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+     true
+        ? (module.exports = factory())
+        : 0;
+})(this, function() {
+    'use strict';
+
+    // test if file is of type image
+    var isImage = function isImage(file) {
+        return /^image/.test(file.type);
+    };
+
+    var getFilenameWithoutExtension = function getFilenameWithoutExtension(name) {
+        return name.substr(0, name.lastIndexOf('.')) || name;
+    };
+
+    // only handles image/jpg, image/jpeg, image/png, and image/svg+xml for now
+    var ExtensionMap = {
+        jpeg: 'jpg',
+        'svg+xml': 'svg',
+    };
+
+    var renameFileToMatchMimeType = function renameFileToMatchMimeType(filename, mimeType) {
+        var name = getFilenameWithoutExtension(filename);
+        var type = mimeType.split('/')[1];
+        var extension = ExtensionMap[type] || type;
+        return ''.concat(name, '.').concat(extension);
+    };
+
+    // returns all the valid output formats we can encode towards
+    var getValidOutputMimeType = function getValidOutputMimeType(type) {
+        return /jpeg|png|svg\+xml/.test(type) ? type : 'image/jpeg';
+    };
+
+    // test if file is of type image
+    var isImage$1 = function isImage(file) {
+        return /^image/.test(file.type);
+    };
+
+    var MATRICES = {
+        1: function _() {
+            return [1, 0, 0, 1, 0, 0];
+        },
+        2: function _(width) {
+            return [-1, 0, 0, 1, width, 0];
+        },
+        3: function _(width, height) {
+            return [-1, 0, 0, -1, width, height];
+        },
+        4: function _(width, height) {
+            return [1, 0, 0, -1, 0, height];
+        },
+        5: function _() {
+            return [0, 1, 1, 0, 0, 0];
+        },
+        6: function _(width, height) {
+            return [0, 1, -1, 0, height, 0];
+        },
+        7: function _(width, height) {
+            return [0, -1, -1, 0, height, width];
+        },
+        8: function _(width) {
+            return [0, -1, 1, 0, 0, width];
+        },
+    };
+
+    var getImageOrientationMatrix = function getImageOrientationMatrix(width, height, orientation) {
+        if (orientation === -1) {
+            orientation = 1;
+        }
+        return MATRICES[orientation](width, height);
+    };
+
+    var createVector = function createVector(x, y) {
+        return { x: x, y: y };
+    };
+
+    var vectorDot = function vectorDot(a, b) {
+        return a.x * b.x + a.y * b.y;
+    };
+
+    var vectorSubtract = function vectorSubtract(a, b) {
+        return createVector(a.x - b.x, a.y - b.y);
+    };
+
+    var vectorDistanceSquared = function vectorDistanceSquared(a, b) {
+        return vectorDot(vectorSubtract(a, b), vectorSubtract(a, b));
+    };
+
+    var vectorDistance = function vectorDistance(a, b) {
+        return Math.sqrt(vectorDistanceSquared(a, b));
+    };
+
+    var getOffsetPointOnEdge = function getOffsetPointOnEdge(length, rotation) {
+        var a = length;
+
+        var A = 1.5707963267948966;
+        var B = rotation;
+        var C = 1.5707963267948966 - rotation;
+
+        var sinA = Math.sin(A);
+        var sinB = Math.sin(B);
+        var sinC = Math.sin(C);
+        var cosC = Math.cos(C);
+        var ratio = a / sinA;
+        var b = ratio * sinB;
+        var c = ratio * sinC;
+
+        return createVector(cosC * b, cosC * c);
+    };
+
+    var getRotatedRectSize = function getRotatedRectSize(rect, rotation) {
+        var w = rect.width;
+        var h = rect.height;
+
+        var hor = getOffsetPointOnEdge(w, rotation);
+        var ver = getOffsetPointOnEdge(h, rotation);
+
+        var tl = createVector(rect.x + Math.abs(hor.x), rect.y - Math.abs(hor.y));
+
+        var tr = createVector(rect.x + rect.width + Math.abs(ver.y), rect.y + Math.abs(ver.x));
+
+        var bl = createVector(rect.x - Math.abs(ver.y), rect.y + rect.height - Math.abs(ver.x));
+
+        return {
+            width: vectorDistance(tl, tr),
+            height: vectorDistance(tl, bl),
+        };
+    };
+
+    var getImageRectZoomFactor = function getImageRectZoomFactor(imageRect, cropRect) {
+        var rotation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+        var center =
+            arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { x: 0.5, y: 0.5 };
+
+        // calculate available space round image center position
+        var cx = center.x > 0.5 ? 1 - center.x : center.x;
+        var cy = center.y > 0.5 ? 1 - center.y : center.y;
+        var imageWidth = cx * 2 * imageRect.width;
+        var imageHeight = cy * 2 * imageRect.height;
+
+        // calculate rotated crop rectangle size
+        var rotatedCropSize = getRotatedRectSize(cropRect, rotation);
+
+        return Math.max(rotatedCropSize.width / imageWidth, rotatedCropSize.height / imageHeight);
+    };
+
+    var getCenteredCropRect = function getCenteredCropRect(container, aspectRatio) {
+        var width = container.width;
+        var height = width * aspectRatio;
+        if (height > container.height) {
+            height = container.height;
+            width = height / aspectRatio;
+        }
+        var x = (container.width - width) * 0.5;
+        var y = (container.height - height) * 0.5;
+
+        return {
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+        };
+    };
+
+    var calculateCanvasSize = function calculateCanvasSize(image, canvasAspectRatio) {
+        var zoom = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+        var imageAspectRatio = image.height / image.width;
+
+        // determine actual pixels on x and y axis
+        var canvasWidth = 1;
+        var canvasHeight = canvasAspectRatio;
+        var imgWidth = 1;
+        var imgHeight = imageAspectRatio;
+        if (imgHeight > canvasHeight) {
+            imgHeight = canvasHeight;
+            imgWidth = imgHeight / imageAspectRatio;
+        }
+
+        var scalar = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+        var width = image.width / (zoom * scalar * imgWidth);
+        var height = width * canvasAspectRatio;
+
+        return {
+            width: width,
+            height: height,
+        };
+    };
+
+    var canvasRelease = function canvasRelease(canvas) {
+        canvas.width = 1;
+        canvas.height = 1;
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 1, 1);
+    };
+
+    var isFlipped = function isFlipped(flip) {
+        return flip && (flip.horizontal || flip.vertical);
+    };
+
+    var getBitmap = function getBitmap(image, orientation, flip) {
+        if (orientation <= 1 && !isFlipped(flip)) {
+            image.width = image.naturalWidth;
+            image.height = image.naturalHeight;
+            return image;
+        }
+
+        var canvas = document.createElement('canvas');
+        var width = image.naturalWidth;
+        var height = image.naturalHeight;
+
+        // if is rotated incorrectly swap width and height
+        var swapped = orientation >= 5 && orientation <= 8;
+        if (swapped) {
+            canvas.width = height;
+            canvas.height = width;
+        } else {
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        // draw the image but first fix orientation and set correct flip
+        var ctx = canvas.getContext('2d');
+
+        // get base transformation matrix
+        if (orientation) {
+            ctx.transform.apply(ctx, getImageOrientationMatrix(width, height, orientation));
+        }
+
+        if (isFlipped(flip)) {
+            // flip horizontal
+            // [-1, 0, 0, 1, width, 0]
+            var matrix = [1, 0, 0, 1, 0, 0];
+            if ((!swapped && flip.horizontal) || swapped & flip.vertical) {
+                matrix[0] = -1;
+                matrix[4] = width;
+            }
+
+            // flip vertical
+            // [1, 0, 0, -1, 0, height]
+            if ((!swapped && flip.vertical) || (swapped && flip.horizontal)) {
+                matrix[3] = -1;
+                matrix[5] = height;
+            }
+
+            ctx.transform.apply(ctx, matrix);
+        }
+
+        ctx.drawImage(image, 0, 0, width, height);
+
+        return canvas;
+    };
+
+    var imageToImageData = function imageToImageData(imageElement, orientation) {
+        var crop = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+        var canvasMemoryLimit = options.canvasMemoryLimit,
+            _options$background = options.background,
+            background = _options$background === void 0 ? null : _options$background;
+
+        var zoom = crop.zoom || 1;
+
+        // fixes possible image orientation problems by drawing the image on the correct canvas
+        var bitmap = getBitmap(imageElement, orientation, crop.flip);
+        var imageSize = {
+            width: bitmap.width,
+            height: bitmap.height,
+        };
+
+        var aspectRatio = crop.aspectRatio || imageSize.height / imageSize.width;
+
+        var canvasSize = calculateCanvasSize(imageSize, aspectRatio, zoom);
+
+        if (canvasMemoryLimit) {
+            var requiredMemory = canvasSize.width * canvasSize.height;
+            if (requiredMemory > canvasMemoryLimit) {
+                var scalar = Math.sqrt(canvasMemoryLimit) / Math.sqrt(requiredMemory);
+                imageSize.width = Math.floor(imageSize.width * scalar);
+                imageSize.height = Math.floor(imageSize.height * scalar);
+                canvasSize = calculateCanvasSize(imageSize, aspectRatio, zoom);
+            }
+        }
+
+        var canvas = document.createElement('canvas');
+
+        var canvasCenter = {
+            x: canvasSize.width * 0.5,
+            y: canvasSize.height * 0.5,
+        };
+
+        var stage = {
+            x: 0,
+            y: 0,
+            width: canvasSize.width,
+            height: canvasSize.height,
+            center: canvasCenter,
+        };
+
+        var shouldLimit = typeof crop.scaleToFit === 'undefined' || crop.scaleToFit;
+
+        var scale =
+            zoom *
+            getImageRectZoomFactor(
+                imageSize,
+                getCenteredCropRect(stage, aspectRatio),
+                crop.rotation,
+                shouldLimit ? crop.center : { x: 0.5, y: 0.5 }
+            );
+
+        // start drawing
+        canvas.width = Math.round(canvasSize.width / scale);
+        canvas.height = Math.round(canvasSize.height / scale);
+
+        canvasCenter.x /= scale;
+        canvasCenter.y /= scale;
+
+        var imageOffset = {
+            x: canvasCenter.x - imageSize.width * (crop.center ? crop.center.x : 0.5),
+            y: canvasCenter.y - imageSize.height * (crop.center ? crop.center.y : 0.5),
+        };
+
+        var ctx = canvas.getContext('2d');
+        if (background) {
+            ctx.fillStyle = background;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // move to draw offset
+        ctx.translate(canvasCenter.x, canvasCenter.y);
+        ctx.rotate(crop.rotation || 0);
+
+        // draw the image
+        ctx.drawImage(
+            bitmap,
+            imageOffset.x - canvasCenter.x,
+            imageOffset.y - canvasCenter.y,
+            imageSize.width,
+            imageSize.height
+        );
+
+        // get data from canvas
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // release canvas
+        canvasRelease(canvas);
+
+        // return data
+        return imageData;
+    };
+
+    /**
+     * Polyfill toBlob for Edge
+     */
+    var IS_BROWSER = (function() {
+        return typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    })();
+    if (IS_BROWSER) {
+        if (!HTMLCanvasElement.prototype.toBlob) {
+            Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+                value: function value(callback, type, quality) {
+                    var dataURL = this.toDataURL(type, quality).split(',')[1];
+                    setTimeout(function() {
+                        var binStr = atob(dataURL);
+                        var len = binStr.length;
+                        var arr = new Uint8Array(len);
+                        for (var i = 0; i < len; i++) {
+                            arr[i] = binStr.charCodeAt(i);
+                        }
+                        callback(new Blob([arr], { type: type || 'image/png' }));
+                    });
+                },
+            });
+        }
+    }
+
+    var canvasToBlob = function canvasToBlob(canvas, options) {
+        var beforeCreateBlob =
+            arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        return new Promise(function(resolve) {
+            var promisedImage = beforeCreateBlob ? beforeCreateBlob(canvas) : canvas;
+            Promise.resolve(promisedImage).then(function(canvas) {
+                canvas.toBlob(resolve, options.type, options.quality);
+            });
+        });
+    };
+
+    var vectorMultiply = function vectorMultiply(v, amount) {
+        return createVector$1(v.x * amount, v.y * amount);
+    };
+
+    var vectorAdd = function vectorAdd(a, b) {
+        return createVector$1(a.x + b.x, a.y + b.y);
+    };
+
+    var vectorNormalize = function vectorNormalize(v) {
+        var l = Math.sqrt(v.x * v.x + v.y * v.y);
+        if (l === 0) {
+            return {
+                x: 0,
+                y: 0,
+            };
+        }
+        return createVector$1(v.x / l, v.y / l);
+    };
+
+    var vectorRotate = function vectorRotate(v, radians, origin) {
+        var cos = Math.cos(radians);
+        var sin = Math.sin(radians);
+        var t = createVector$1(v.x - origin.x, v.y - origin.y);
+        return createVector$1(origin.x + cos * t.x - sin * t.y, origin.y + sin * t.x + cos * t.y);
+    };
+
+    var createVector$1 = function createVector() {
+        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        return { x: x, y: y };
+    };
+
+    var getMarkupValue = function getMarkupValue(value, size) {
+        var scalar = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+        var axis = arguments.length > 3 ? arguments[3] : undefined;
+        if (typeof value === 'string') {
+            return parseFloat(value) * scalar;
+        }
+        if (typeof value === 'number') {
+            return value * (axis ? size[axis] : Math.min(size.width, size.height));
+        }
+        return;
+    };
+
+    var getMarkupStyles = function getMarkupStyles(markup, size, scale) {
+        var lineStyle = markup.borderStyle || markup.lineStyle || 'solid';
+        var fill = markup.backgroundColor || markup.fontColor || 'transparent';
+        var stroke = markup.borderColor || markup.lineColor || 'transparent';
+        var strokeWidth = getMarkupValue(markup.borderWidth || markup.lineWidth, size, scale);
+        var lineCap = markup.lineCap || 'round';
+        var lineJoin = markup.lineJoin || 'round';
+        var dashes =
+            typeof lineStyle === 'string'
+                ? ''
+                : lineStyle
+                      .map(function(v) {
+                          return getMarkupValue(v, size, scale);
+                      })
+                      .join(',');
+        var opacity = markup.opacity || 1;
+        return {
+            'stroke-linecap': lineCap,
+            'stroke-linejoin': lineJoin,
+            'stroke-width': strokeWidth || 0,
+            'stroke-dasharray': dashes,
+            stroke: stroke,
+            fill: fill,
+            opacity: opacity,
+        };
+    };
+
+    var isDefined = function isDefined(value) {
+        return value != null;
+    };
+
+    var getMarkupRect = function getMarkupRect(rect, size) {
+        var scalar = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+        var left =
+            getMarkupValue(rect.x, size, scalar, 'width') ||
+            getMarkupValue(rect.left, size, scalar, 'width');
+        var top =
+            getMarkupValue(rect.y, size, scalar, 'height') ||
+            getMarkupValue(rect.top, size, scalar, 'height');
+        var width = getMarkupValue(rect.width, size, scalar, 'width');
+        var height = getMarkupValue(rect.height, size, scalar, 'height');
+        var right = getMarkupValue(rect.right, size, scalar, 'width');
+        var bottom = getMarkupValue(rect.bottom, size, scalar, 'height');
+
+        if (!isDefined(top)) {
+            if (isDefined(height) && isDefined(bottom)) {
+                top = size.height - height - bottom;
+            } else {
+                top = bottom;
+            }
+        }
+
+        if (!isDefined(left)) {
+            if (isDefined(width) && isDefined(right)) {
+                left = size.width - width - right;
+            } else {
+                left = right;
+            }
+        }
+
+        if (!isDefined(width)) {
+            if (isDefined(left) && isDefined(right)) {
+                width = size.width - left - right;
+            } else {
+                width = 0;
+            }
+        }
+
+        if (!isDefined(height)) {
+            if (isDefined(top) && isDefined(bottom)) {
+                height = size.height - top - bottom;
+            } else {
+                height = 0;
+            }
+        }
+
+        return {
+            x: left || 0,
+            y: top || 0,
+            width: width || 0,
+            height: height || 0,
+        };
+    };
+
+    var pointsToPathShape = function pointsToPathShape(points) {
+        return points
+            .map(function(point, index) {
+                return ''
+                    .concat(index === 0 ? 'M' : 'L', ' ')
+                    .concat(point.x, ' ')
+                    .concat(point.y);
+            })
+            .join(' ');
+    };
+
+    var setAttributes = function setAttributes(element, attr) {
+        return Object.keys(attr).forEach(function(key) {
+            return element.setAttribute(key, attr[key]);
+        });
+    };
+
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = function svg(tag, attr) {
+        var element = document.createElementNS(ns, tag);
+        if (attr) {
+            setAttributes(element, attr);
+        }
+        return element;
+    };
+
+    var updateRect = function updateRect(element) {
+        return setAttributes(element, Object.assign({}, element.rect, element.styles));
+    };
+
+    var updateEllipse = function updateEllipse(element) {
+        var cx = element.rect.x + element.rect.width * 0.5;
+        var cy = element.rect.y + element.rect.height * 0.5;
+        var rx = element.rect.width * 0.5;
+        var ry = element.rect.height * 0.5;
+        return setAttributes(
+            element,
+            Object.assign(
+                {
+                    cx: cx,
+                    cy: cy,
+                    rx: rx,
+                    ry: ry,
+                },
+                element.styles
+            )
+        );
+    };
+
+    var IMAGE_FIT_STYLE = {
+        contain: 'xMidYMid meet',
+        cover: 'xMidYMid slice',
+    };
+
+    var updateImage = function updateImage(element, markup) {
+        setAttributes(
+            element,
+            Object.assign({}, element.rect, element.styles, {
+                preserveAspectRatio: IMAGE_FIT_STYLE[markup.fit] || 'none',
+            })
+        );
+    };
+
+    var TEXT_ANCHOR = {
+        left: 'start',
+        center: 'middle',
+        right: 'end',
+    };
+
+    var updateText = function updateText(element, markup, size, scale) {
+        var fontSize = getMarkupValue(markup.fontSize, size, scale);
+        var fontFamily = markup.fontFamily || 'sans-serif';
+        var fontWeight = markup.fontWeight || 'normal';
+        var textAlign = TEXT_ANCHOR[markup.textAlign] || 'start';
+
+        setAttributes(
+            element,
+            Object.assign({}, element.rect, element.styles, {
+                'stroke-width': 0,
+                'font-weight': fontWeight,
+                'font-size': fontSize,
+                'font-family': fontFamily,
+                'text-anchor': textAlign,
+            })
+        );
+
+        // update text
+        if (element.text !== markup.text) {
+            element.text = markup.text;
+            element.textContent = markup.text.length ? markup.text : ' ';
+        }
+    };
+
+    var updateLine = function updateLine(element, markup, size, scale) {
+        setAttributes(
+            element,
+            Object.assign({}, element.rect, element.styles, {
+                fill: 'none',
+            })
+        );
+
+        var line = element.childNodes[0];
+        var begin = element.childNodes[1];
+        var end = element.childNodes[2];
+
+        var origin = element.rect;
+
+        var target = {
+            x: element.rect.x + element.rect.width,
+            y: element.rect.y + element.rect.height,
+        };
+
+        setAttributes(line, {
+            x1: origin.x,
+            y1: origin.y,
+            x2: target.x,
+            y2: target.y,
+        });
+
+        if (!markup.lineDecoration) return;
+
+        begin.style.display = 'none';
+        end.style.display = 'none';
+
+        var v = vectorNormalize({
+            x: target.x - origin.x,
+            y: target.y - origin.y,
+        });
+
+        var l = getMarkupValue(0.05, size, scale);
+
+        if (markup.lineDecoration.indexOf('arrow-begin') !== -1) {
+            var arrowBeginRotationPoint = vectorMultiply(v, l);
+            var arrowBeginCenter = vectorAdd(origin, arrowBeginRotationPoint);
+            var arrowBeginA = vectorRotate(origin, 2, arrowBeginCenter);
+            var arrowBeginB = vectorRotate(origin, -2, arrowBeginCenter);
+
+            setAttributes(begin, {
+                style: 'display:block;',
+                d: 'M'
+                    .concat(arrowBeginA.x, ',')
+                    .concat(arrowBeginA.y, ' L')
+                    .concat(origin.x, ',')
+                    .concat(origin.y, ' L')
+                    .concat(arrowBeginB.x, ',')
+                    .concat(arrowBeginB.y),
+            });
+        }
+
+        if (markup.lineDecoration.indexOf('arrow-end') !== -1) {
+            var arrowEndRotationPoint = vectorMultiply(v, -l);
+            var arrowEndCenter = vectorAdd(target, arrowEndRotationPoint);
+            var arrowEndA = vectorRotate(target, 2, arrowEndCenter);
+            var arrowEndB = vectorRotate(target, -2, arrowEndCenter);
+
+            setAttributes(end, {
+                style: 'display:block;',
+                d: 'M'
+                    .concat(arrowEndA.x, ',')
+                    .concat(arrowEndA.y, ' L')
+                    .concat(target.x, ',')
+                    .concat(target.y, ' L')
+                    .concat(arrowEndB.x, ',')
+                    .concat(arrowEndB.y),
+            });
+        }
+    };
+
+    var updatePath = function updatePath(element, markup, size, scale) {
+        setAttributes(
+            element,
+            Object.assign({}, element.styles, {
+                fill: 'none',
+                d: pointsToPathShape(
+                    markup.points.map(function(point) {
+                        return {
+                            x: getMarkupValue(point.x, size, scale, 'width'),
+                            y: getMarkupValue(point.y, size, scale, 'height'),
+                        };
+                    })
+                ),
+            })
+        );
+    };
+
+    var createShape = function createShape(node) {
+        return function(markup) {
+            return svg(node, { id: markup.id });
+        };
+    };
+
+    var createImage = function createImage(markup) {
+        var shape = svg('image', {
+            id: markup.id,
+            'stroke-linecap': 'round',
+            'stroke-linejoin': 'round',
+            opacity: '0',
+        });
+
+        shape.onload = function() {
+            shape.setAttribute('opacity', markup.opacity || 1);
+        };
+        shape.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', markup.src);
+        return shape;
+    };
+
+    var createLine = function createLine(markup) {
+        var shape = svg('g', {
+            id: markup.id,
+            'stroke-linecap': 'round',
+            'stroke-linejoin': 'round',
+        });
+
+        var line = svg('line');
+        shape.appendChild(line);
+
+        var begin = svg('path');
+        shape.appendChild(begin);
+
+        var end = svg('path');
+        shape.appendChild(end);
+
+        return shape;
+    };
+
+    var CREATE_TYPE_ROUTES = {
+        image: createImage,
+        rect: createShape('rect'),
+        ellipse: createShape('ellipse'),
+        text: createShape('text'),
+        path: createShape('path'),
+        line: createLine,
+    };
+
+    var UPDATE_TYPE_ROUTES = {
+        rect: updateRect,
+        ellipse: updateEllipse,
+        image: updateImage,
+        text: updateText,
+        path: updatePath,
+        line: updateLine,
+    };
+
+    var createMarkupByType = function createMarkupByType(type, markup) {
+        return CREATE_TYPE_ROUTES[type](markup);
+    };
+
+    var updateMarkupByType = function updateMarkupByType(element, type, markup, size, scale) {
+        if (type !== 'path') {
+            element.rect = getMarkupRect(markup, size, scale);
+        }
+        element.styles = getMarkupStyles(markup, size, scale);
+        UPDATE_TYPE_ROUTES[type](element, markup, size, scale);
+    };
+
+    var sortMarkupByZIndex = function sortMarkupByZIndex(a, b) {
+        if (a[1].zIndex > b[1].zIndex) {
+            return 1;
+        }
+        if (a[1].zIndex < b[1].zIndex) {
+            return -1;
+        }
+        return 0;
+    };
+
+    var cropSVG = function cropSVG(blob) {
+        var crop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var markup = arguments.length > 2 ? arguments[2] : undefined;
+        var options = arguments.length > 3 ? arguments[3] : undefined;
+        return new Promise(function(resolve) {
+            var _options$background = options.background,
+                background = _options$background === void 0 ? null : _options$background;
+
+            // load blob contents and wrap in crop svg
+            var fr = new FileReader();
+            fr.onloadend = function() {
+                // get svg text
+                var text = fr.result;
+
+                // create element with svg and get size
+                var original = document.createElement('div');
+                original.style.cssText =
+                    'position:absolute;pointer-events:none;width:0;height:0;visibility:hidden;';
+                original.innerHTML = text;
+                var originalNode = original.querySelector('svg');
+                document.body.appendChild(original);
+
+                // request bounding box dimensions
+                var bBox = originalNode.getBBox();
+                original.parentNode.removeChild(original);
+
+                // get title
+                var titleNode = original.querySelector('title');
+
+                // calculate new heights and widths
+                var viewBoxAttribute = originalNode.getAttribute('viewBox') || '';
+                var widthAttribute = originalNode.getAttribute('width') || '';
+                var heightAttribute = originalNode.getAttribute('height') || '';
+                var width = parseFloat(widthAttribute) || null;
+                var height = parseFloat(heightAttribute) || null;
+                var widthUnits = (widthAttribute.match(/[a-z]+/) || [])[0] || '';
+                var heightUnits = (heightAttribute.match(/[a-z]+/) || [])[0] || '';
+
+                // create new size
+                var viewBoxList = viewBoxAttribute.split(' ').map(parseFloat);
+                var viewBox = viewBoxList.length
+                    ? {
+                          x: viewBoxList[0],
+                          y: viewBoxList[1],
+                          width: viewBoxList[2],
+                          height: viewBoxList[3],
+                      }
+                    : bBox;
+
+                var imageWidth = width != null ? width : viewBox.width;
+                var imageHeight = height != null ? height : viewBox.height;
+
+                originalNode.style.overflow = 'visible';
+                originalNode.setAttribute('width', imageWidth);
+                originalNode.setAttribute('height', imageHeight);
+
+                // markup
+                var markupSVG = '';
+                if (markup && markup.length) {
+                    var size = {
+                        width: imageWidth,
+                        height: imageHeight,
+                    };
+
+                    markupSVG = markup.sort(sortMarkupByZIndex).reduce(function(prev, shape) {
+                        var el = createMarkupByType(shape[0], shape[1]);
+                        updateMarkupByType(el, shape[0], shape[1], size);
+                        el.removeAttribute('id');
+                        if (el.getAttribute('opacity') === 1) {
+                            el.removeAttribute('opacity');
+                        }
+                        return prev + '\n' + el.outerHTML + '\n';
+                    }, '');
+                    markupSVG = '\n\n<g>'.concat(markupSVG.replace(/&nbsp;/g, ' '), '</g>\n\n');
+                }
+
+                var aspectRatio = crop.aspectRatio || imageHeight / imageWidth;
+
+                var canvasWidth = imageWidth;
+                var canvasHeight = canvasWidth * aspectRatio;
+
+                var shouldLimit = typeof crop.scaleToFit === 'undefined' || crop.scaleToFit;
+
+                var cropCenterX = crop.center ? crop.center.x : 0.5;
+                var cropCenterY = crop.center ? crop.center.y : 0.5;
+
+                var canvasZoomFactor = getImageRectZoomFactor(
+                    {
+                        width: imageWidth,
+                        height: imageHeight,
+                    },
+
+                    getCenteredCropRect(
+                        {
+                            width: canvasWidth,
+                            height: canvasHeight,
+                        },
+
+                        aspectRatio
+                    ),
+
+                    crop.rotation,
+                    shouldLimit
+                        ? { x: cropCenterX, y: cropCenterY }
+                        : {
+                              x: 0.5,
+                              y: 0.5,
+                          }
+                );
+
+                var scale = crop.zoom * canvasZoomFactor;
+
+                var rotation = crop.rotation * (180 / Math.PI);
+
+                var canvasCenter = {
+                    x: canvasWidth * 0.5,
+                    y: canvasHeight * 0.5,
+                };
+
+                var imageOffset = {
+                    x: canvasCenter.x - imageWidth * cropCenterX,
+                    y: canvasCenter.y - imageHeight * cropCenterY,
+                };
+
+                var cropTransforms = [
+                    // rotate
+                    'rotate('
+                        .concat(rotation, ' ')
+                        .concat(canvasCenter.x, ' ')
+                        .concat(canvasCenter.y, ')'),
+
+                    // scale
+                    'translate('.concat(canvasCenter.x, ' ').concat(canvasCenter.y, ')'),
+                    'scale('.concat(scale, ')'),
+                    'translate('.concat(-canvasCenter.x, ' ').concat(-canvasCenter.y, ')'),
+
+                    // offset
+                    'translate('.concat(imageOffset.x, ' ').concat(imageOffset.y, ')'),
+                ];
+
+                var cropFlipHorizontal = crop.flip && crop.flip.horizontal;
+                var cropFlipVertical = crop.flip && crop.flip.vertical;
+
+                var flipTransforms = [
+                    'scale('
+                        .concat(cropFlipHorizontal ? -1 : 1, ' ')
+                        .concat(cropFlipVertical ? -1 : 1, ')'),
+                    'translate('
+                        .concat(cropFlipHorizontal ? -imageWidth : 0, ' ')
+                        .concat(cropFlipVertical ? -imageHeight : 0, ')'),
+                ];
+
+                // crop
+                var transformed = '<?xml version="1.0" encoding="UTF-8"?>\n<svg width="'
+                    .concat(canvasWidth)
+                    .concat(widthUnits, '" height="')
+                    .concat(canvasHeight)
+                    .concat(heightUnits, '" \nviewBox="0 0 ')
+                    .concat(canvasWidth, ' ')
+                    .concat(canvasHeight, '" ')
+                    .concat(
+                        background ? 'style="background:' + background + '" ' : '',
+                        '\npreserveAspectRatio="xMinYMin"\nxmlns:xlink="http://www.w3.org/1999/xlink"\nxmlns="http://www.w3.org/2000/svg">\n<!-- Generated by PQINA - https://pqina.nl/ -->\n<title>'
+                    )
+                    .concat(titleNode ? titleNode.textContent : '', '</title>\n<g transform="')
+                    .concat(cropTransforms.join(' '), '">\n<g transform="')
+                    .concat(flipTransforms.join(' '), '">\n')
+                    .concat(originalNode.outerHTML)
+                    .concat(markupSVG, '\n</g>\n</g>\n</svg>');
+
+                // create new svg file
+                resolve(transformed);
+            };
+
+            fr.readAsText(blob);
+        });
+    };
+
+    var objectToImageData = function objectToImageData(obj) {
+        var imageData;
+        try {
+            imageData = new ImageData(obj.width, obj.height);
+        } catch (e) {
+            // IE + Old EDGE (tested on 12)
+            var canvas = document.createElement('canvas');
+            imageData = canvas.getContext('2d').createImageData(obj.width, obj.height);
+        }
+        imageData.data.set(obj.data);
+        return imageData;
+    };
+
+    /* javascript-obfuscator:disable */
+    var TransformWorker = function TransformWorker() {
+        // maps transform types to transform functions
+        var TRANSFORMS = { resize: resize, filter: filter };
+
+        // applies all image transforms to the image data array
+        var applyTransforms = function applyTransforms(transforms, imageData) {
+            transforms.forEach(function(transform) {
+                imageData = TRANSFORMS[transform.type](imageData, transform.data);
+            });
+            return imageData;
+        };
+
+        // transform image hub
+        var transform = function transform(data, cb) {
+            var transforms = data.transforms;
+
+            // if has filter and has resize, move filter to resize operation
+            var filterTransform = null;
+            transforms.forEach(function(transform) {
+                if (transform.type === 'filter') {
+                    filterTransform = transform;
+                }
+            });
+            if (filterTransform) {
+                // find resize
+                var resizeTransform = null;
+                transforms.forEach(function(transform) {
+                    if (transform.type === 'resize') {
+                        resizeTransform = transform;
+                    }
+                });
+
+                if (resizeTransform) {
+                    // update resize operation
+                    resizeTransform.data.matrix = filterTransform.data;
+
+                    // remove filter
+                    transforms = transforms.filter(function(transform) {
+                        return transform.type !== 'filter';
+                    });
+                }
+            }
+
+            cb(applyTransforms(transforms, data.imageData));
+        };
+
+        // eslint-disable-next-line no-restricted-globals
+        self.onmessage = function(e) {
+            transform(e.data.message, function(response) {
+                // eslint-disable-next-line no-restricted-globals
+                self.postMessage({ id: e.data.id, message: response }, [response.data.buffer]);
+            });
+        };
+
+        var br = 1.0;
+        var bg = 1.0;
+        var bb = 1.0;
+        function applyFilterMatrix(index, data, m) {
+            var ir = data[index] / 255;
+            var ig = data[index + 1] / 255;
+            var ib = data[index + 2] / 255;
+            var ia = data[index + 3] / 255;
+
+            var mr = ir * m[0] + ig * m[1] + ib * m[2] + ia * m[3] + m[4];
+            var mg = ir * m[5] + ig * m[6] + ib * m[7] + ia * m[8] + m[9];
+            var mb = ir * m[10] + ig * m[11] + ib * m[12] + ia * m[13] + m[14];
+            var ma = ir * m[15] + ig * m[16] + ib * m[17] + ia * m[18] + m[19];
+
+            var or = Math.max(0, mr * ma) + br * (1.0 - ma);
+            var og = Math.max(0, mg * ma) + bg * (1.0 - ma);
+            var ob = Math.max(0, mb * ma) + bb * (1.0 - ma);
+
+            data[index] = Math.max(0.0, Math.min(1.0, or)) * 255;
+            data[index + 1] = Math.max(0.0, Math.min(1.0, og)) * 255;
+            data[index + 2] = Math.max(0.0, Math.min(1.0, ob)) * 255;
+        }
+
+        var identityMatrix = self.JSON.stringify([
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+        ]);
+        function isIdentityMatrix(filter) {
+            return self.JSON.stringify(filter || []) === identityMatrix;
+        }
+
+        function filter(imageData, matrix) {
+            if (!matrix || isIdentityMatrix(matrix)) return imageData;
+
+            var data = imageData.data;
+            var l = data.length;
+
+            var m11 = matrix[0];
+            var m12 = matrix[1];
+            var m13 = matrix[2];
+            var m14 = matrix[3];
+            var m15 = matrix[4];
+
+            var m21 = matrix[5];
+            var m22 = matrix[6];
+            var m23 = matrix[7];
+            var m24 = matrix[8];
+            var m25 = matrix[9];
+
+            var m31 = matrix[10];
+            var m32 = matrix[11];
+            var m33 = matrix[12];
+            var m34 = matrix[13];
+            var m35 = matrix[14];
+
+            var m41 = matrix[15];
+            var m42 = matrix[16];
+            var m43 = matrix[17];
+            var m44 = matrix[18];
+            var m45 = matrix[19];
+
+            var index = 0,
+                r = 0.0,
+                g = 0.0,
+                b = 0.0,
+                a = 0.0,
+                mr = 0.0,
+                mg = 0.0,
+                mb = 0.0,
+                ma = 0.0,
+                or = 0.0,
+                og = 0.0,
+                ob = 0.0;
+
+            for (; index < l; index += 4) {
+                r = data[index] / 255;
+                g = data[index + 1] / 255;
+                b = data[index + 2] / 255;
+                a = data[index + 3] / 255;
+
+                mr = r * m11 + g * m12 + b * m13 + a * m14 + m15;
+                mg = r * m21 + g * m22 + b * m23 + a * m24 + m25;
+                mb = r * m31 + g * m32 + b * m33 + a * m34 + m35;
+                ma = r * m41 + g * m42 + b * m43 + a * m44 + m45;
+
+                or = Math.max(0, mr * ma) + br * (1.0 - ma);
+                og = Math.max(0, mg * ma) + bg * (1.0 - ma);
+                ob = Math.max(0, mb * ma) + bb * (1.0 - ma);
+
+                data[index] = Math.max(0.0, Math.min(1.0, or)) * 255;
+                data[index + 1] = Math.max(0.0, Math.min(1.0, og)) * 255;
+                data[index + 2] = Math.max(0.0, Math.min(1.0, ob)) * 255;
+                // don't update alpha value
+            }
+
+            return imageData;
+        }
+
+        function resize(imageData, data) {
+            var _data$mode = data.mode,
+                mode = _data$mode === void 0 ? 'contain' : _data$mode,
+                _data$upscale = data.upscale,
+                upscale = _data$upscale === void 0 ? false : _data$upscale,
+                width = data.width,
+                height = data.height,
+                matrix = data.matrix;
+
+            // test if is identity matrix
+            matrix = !matrix || isIdentityMatrix(matrix) ? null : matrix;
+
+            // need at least a width or a height
+            // also 0 is not a valid width or height
+            if (!width && !height) {
+                return filter(imageData, matrix);
+            }
+
+            // make sure all bounds are set
+            if (width === null) {
+                width = height;
+            } else if (height === null) {
+                height = width;
+            }
+
+            if (mode !== 'force') {
+                var scalarWidth = width / imageData.width;
+                var scalarHeight = height / imageData.height;
+                var scalar = 1;
+
+                if (mode === 'cover') {
+                    scalar = Math.max(scalarWidth, scalarHeight);
+                } else if (mode === 'contain') {
+                    scalar = Math.min(scalarWidth, scalarHeight);
+                }
+
+                // if image is too small, exit here with original image
+                if (scalar > 1 && upscale === false) {
+                    return filter(imageData, matrix);
+                }
+
+                width = imageData.width * scalar;
+                height = imageData.height * scalar;
+            }
+
+            var originWidth = imageData.width;
+            var originHeight = imageData.height;
+            var targetWidth = Math.round(width);
+            var targetHeight = Math.round(height);
+            var inputData = imageData.data;
+            var outputData = new Uint8ClampedArray(targetWidth * targetHeight * 4);
+            var ratioWidth = originWidth / targetWidth;
+            var ratioHeight = originHeight / targetHeight;
+            var ratioWidthHalf = Math.ceil(ratioWidth * 0.5);
+            var ratioHeightHalf = Math.ceil(ratioHeight * 0.5);
+
+            for (var j = 0; j < targetHeight; j++) {
+                for (var i = 0; i < targetWidth; i++) {
+                    var x2 = (i + j * targetWidth) * 4;
+                    var weight = 0;
+                    var weights = 0;
+                    var weightsAlpha = 0;
+                    var r = 0;
+                    var g = 0;
+                    var b = 0;
+                    var a = 0;
+                    var centerY = (j + 0.5) * ratioHeight;
+
+                    for (var yy = Math.floor(j * ratioHeight); yy < (j + 1) * ratioHeight; yy++) {
+                        var dy = Math.abs(centerY - (yy + 0.5)) / ratioHeightHalf;
+                        var centerX = (i + 0.5) * ratioWidth;
+                        var w0 = dy * dy;
+
+                        for (var xx = Math.floor(i * ratioWidth); xx < (i + 1) * ratioWidth; xx++) {
+                            var dx = Math.abs(centerX - (xx + 0.5)) / ratioWidthHalf;
+                            var w = Math.sqrt(w0 + dx * dx);
+
+                            if (w >= -1 && w <= 1) {
+                                weight = 2 * w * w * w - 3 * w * w + 1;
+
+                                if (weight > 0) {
+                                    dx = 4 * (xx + yy * originWidth);
+
+                                    var ref = inputData[dx + 3];
+                                    a += weight * ref;
+                                    weightsAlpha += weight;
+
+                                    if (ref < 255) {
+                                        weight = (weight * ref) / 250;
+                                    }
+
+                                    r += weight * inputData[dx];
+                                    g += weight * inputData[dx + 1];
+                                    b += weight * inputData[dx + 2];
+                                    weights += weight;
+                                }
+                            }
+                        }
+                    }
+
+                    outputData[x2] = r / weights;
+                    outputData[x2 + 1] = g / weights;
+                    outputData[x2 + 2] = b / weights;
+                    outputData[x2 + 3] = a / weightsAlpha;
+
+                    matrix && applyFilterMatrix(x2, outputData, matrix);
+                }
+            }
+
+            return {
+                data: outputData,
+                width: targetWidth,
+                height: targetHeight,
+            };
+        }
+    };
+    /* javascript-obfuscator:enable */
+
+    var correctOrientation = function correctOrientation(view, offset) {
+        // Missing 0x45786966 Marker? No Exif Header, stop here
+        if (view.getUint32(offset + 4, false) !== 0x45786966) return;
+
+        // next byte!
+        offset += 4;
+
+        // First 2bytes defines byte align of TIFF data.
+        // If it is 0x4949="I I", it means "Intel" type byte align
+        var intelByteAligned = view.getUint16((offset += 6), false) === 0x4949;
+        offset += view.getUint32(offset + 4, intelByteAligned);
+
+        var tags = view.getUint16(offset, intelByteAligned);
+        offset += 2;
+
+        // find Orientation tag
+        for (var i = 0; i < tags; i++) {
+            if (view.getUint16(offset + i * 12, intelByteAligned) === 0x0112) {
+                view.setUint16(offset + i * 12 + 8, 1, intelByteAligned);
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var readData = function readData(data) {
+        var view = new DataView(data);
+
+        // Every JPEG file starts from binary value '0xFFD8'
+        // If it's not present, exit here
+        if (view.getUint16(0) !== 0xffd8) return null;
+
+        var offset = 2; // Start at 2 as we skipped two bytes (FFD8)
+        var marker;
+        var markerLength;
+        var orientationCorrected = false;
+
+        while (offset < view.byteLength) {
+            marker = view.getUint16(offset, false);
+            markerLength = view.getUint16(offset + 2, false) + 2;
+
+            // Test if is APP and COM markers
+            var isData = (marker >= 0xffe0 && marker <= 0xffef) || marker === 0xfffe;
+            if (!isData) {
+                break;
+            }
+
+            if (!orientationCorrected) {
+                orientationCorrected = correctOrientation(view, offset, markerLength);
+            }
+
+            if (offset + markerLength > view.byteLength) {
+                break;
+            }
+
+            offset += markerLength;
+        }
+        return data.slice(0, offset);
+    };
+
+    var getImageHead = function getImageHead(file) {
+        return new Promise(function(resolve) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                return resolve(readData(reader.result) || null);
+            };
+            reader.readAsArrayBuffer(file.slice(0, 256 * 1024));
+        });
+    };
+
+    var getBlobBuilder = function getBlobBuilder() {
+        return (window.BlobBuilder =
+            window.BlobBuilder ||
+            window.WebKitBlobBuilder ||
+            window.MozBlobBuilder ||
+            window.MSBlobBuilder);
+    };
+
+    var createBlob = function createBlob(arrayBuffer, mimeType) {
+        var BB = getBlobBuilder();
+
+        if (BB) {
+            var bb = new BB();
+            bb.append(arrayBuffer);
+            return bb.getBlob(mimeType);
+        }
+
+        return new Blob([arrayBuffer], {
+            type: mimeType,
+        });
+    };
+
+    var getUniqueId = function getUniqueId() {
+        return Math.random()
+            .toString(36)
+            .substr(2, 9);
+    };
+
+    var createWorker = function createWorker(fn) {
+        var workerBlob = new Blob(['(', fn.toString(), ')()'], { type: 'application/javascript' });
+        var workerURL = URL.createObjectURL(workerBlob);
+        var worker = new Worker(workerURL);
+
+        var trips = [];
+
+        return {
+            transfer: function transfer() {}, // (message, cb) => {}
+            post: function post(message, cb, transferList) {
+                var id = getUniqueId();
+                trips[id] = cb;
+
+                worker.onmessage = function(e) {
+                    var cb = trips[e.data.id];
+                    if (!cb) return;
+                    cb(e.data.message);
+                    delete trips[e.data.id];
+                };
+
+                worker.postMessage(
+                    {
+                        id: id,
+                        message: message,
+                    },
+
+                    transferList
+                );
+            },
+            terminate: function terminate() {
+                worker.terminate();
+                URL.revokeObjectURL(workerURL);
+            },
+        };
+    };
+
+    var loadImage = function loadImage(url) {
+        return new Promise(function(resolve, reject) {
+            var img = new Image();
+            img.onload = function() {
+                resolve(img);
+            };
+            img.onerror = function(e) {
+                reject(e);
+            };
+            img.src = url;
+        });
+    };
+
+    var chain = function chain(funcs) {
+        return funcs.reduce(function(promise, func) {
+            return promise.then(function(result) {
+                return func().then(Array.prototype.concat.bind(result));
+            });
+        }, Promise.resolve([]));
+    };
+
+    var canvasApplyMarkup = function canvasApplyMarkup(canvas, markup) {
+        return new Promise(function(resolve) {
+            var size = {
+                width: canvas.width,
+                height: canvas.height,
+            };
+
+            var ctx = canvas.getContext('2d');
+
+            var drawers = markup.sort(sortMarkupByZIndex).map(function(item) {
+                return function() {
+                    return new Promise(function(resolve) {
+                        var result = TYPE_DRAW_ROUTES[item[0]](ctx, size, item[1], resolve);
+                        if (result) resolve();
+                    });
+                };
+            });
+
+            chain(drawers).then(function() {
+                return resolve(canvas);
+            });
+        });
+    };
+
+    var applyMarkupStyles = function applyMarkupStyles(ctx, styles) {
+        ctx.beginPath();
+        ctx.lineCap = styles['stroke-linecap'];
+        ctx.lineJoin = styles['stroke-linejoin'];
+        ctx.lineWidth = styles['stroke-width'];
+        if (styles['stroke-dasharray'].length) {
+            ctx.setLineDash(styles['stroke-dasharray'].split(','));
+        }
+        ctx.fillStyle = styles['fill'];
+        ctx.strokeStyle = styles['stroke'];
+        ctx.globalAlpha = styles.opacity || 1;
+    };
+
+    var drawMarkupStyles = function drawMarkupStyles(ctx) {
+        ctx.fill();
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+    };
+
+    var drawRect = function drawRect(ctx, size, markup) {
+        var rect = getMarkupRect(markup, size);
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+        ctx.rect(rect.x, rect.y, rect.width, rect.height);
+        drawMarkupStyles(ctx, styles);
+        return true;
+    };
+
+    var drawEllipse = function drawEllipse(ctx, size, markup) {
+        var rect = getMarkupRect(markup, size);
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+
+        var x = rect.x,
+            y = rect.y,
+            w = rect.width,
+            h = rect.height,
+            kappa = 0.5522848,
+            ox = (w / 2) * kappa,
+            oy = (h / 2) * kappa,
+            xe = x + w,
+            ye = y + h,
+            xm = x + w / 2,
+            ym = y + h / 2;
+
+        ctx.moveTo(x, ym);
+        ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+        ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+        ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+        ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+
+        drawMarkupStyles(ctx, styles);
+        return true;
+    };
+
+    var drawImage = function drawImage(ctx, size, markup, done) {
+        var rect = getMarkupRect(markup, size);
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+
+        var image = new Image();
+
+        // if is cross origin image add cross origin attribute
+        var isCrossOriginImage =
+            new URL(markup.src, window.location.href).origin !== window.location.origin;
+        if (isCrossOriginImage) image.crossOrigin = '';
+
+        image.onload = function() {
+            if (markup.fit === 'cover') {
+                var ar = rect.width / rect.height;
+                var width = ar > 1 ? image.width : image.height * ar;
+                var height = ar > 1 ? image.width / ar : image.height;
+                var x = image.width * 0.5 - width * 0.5;
+                var y = image.height * 0.5 - height * 0.5;
+                ctx.drawImage(image, x, y, width, height, rect.x, rect.y, rect.width, rect.height);
+            } else if (markup.fit === 'contain') {
+                var scalar = Math.min(rect.width / image.width, rect.height / image.height);
+                var _width = scalar * image.width;
+                var _height = scalar * image.height;
+                var _x = rect.x + rect.width * 0.5 - _width * 0.5;
+                var _y = rect.y + rect.height * 0.5 - _height * 0.5;
+                ctx.drawImage(image, 0, 0, image.width, image.height, _x, _y, _width, _height);
+            } else {
+                ctx.drawImage(
+                    image,
+                    0,
+                    0,
+                    image.width,
+                    image.height,
+                    rect.x,
+                    rect.y,
+                    rect.width,
+                    rect.height
+                );
+            }
+
+            drawMarkupStyles(ctx, styles);
+            done();
+        };
+        image.src = markup.src;
+    };
+
+    var drawText = function drawText(ctx, size, markup) {
+        var rect = getMarkupRect(markup, size);
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+
+        var fontSize = getMarkupValue(markup.fontSize, size);
+        var fontFamily = markup.fontFamily || 'sans-serif';
+        var fontWeight = markup.fontWeight || 'normal';
+        var textAlign = markup.textAlign || 'left';
+
+        ctx.font = ''
+            .concat(fontWeight, ' ')
+            .concat(fontSize, 'px ')
+            .concat(fontFamily);
+        ctx.textAlign = textAlign;
+        ctx.fillText(markup.text, rect.x, rect.y);
+
+        drawMarkupStyles(ctx, styles);
+        return true;
+    };
+
+    var drawPath = function drawPath(ctx, size, markup) {
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+        ctx.beginPath();
+
+        var points = markup.points.map(function(point) {
+            return {
+                x: getMarkupValue(point.x, size, 1, 'width'),
+                y: getMarkupValue(point.y, size, 1, 'height'),
+            };
+        });
+
+        ctx.moveTo(points[0].x, points[0].y);
+        var l = points.length;
+        for (var i = 1; i < l; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+
+        drawMarkupStyles(ctx, styles);
+        return true;
+    };
+
+    var drawLine = function drawLine(ctx, size, markup) {
+        var rect = getMarkupRect(markup, size);
+        var styles = getMarkupStyles(markup, size);
+        applyMarkupStyles(ctx, styles);
+
+        ctx.beginPath();
+
+        var origin = {
+            x: rect.x,
+            y: rect.y,
+        };
+
+        var target = {
+            x: rect.x + rect.width,
+            y: rect.y + rect.height,
+        };
+
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(target.x, target.y);
+
+        var v = vectorNormalize({
+            x: target.x - origin.x,
+            y: target.y - origin.y,
+        });
+
+        var l = 0.04 * Math.min(size.width, size.height);
+
+        if (markup.lineDecoration.indexOf('arrow-begin') !== -1) {
+            var arrowBeginRotationPoint = vectorMultiply(v, l);
+            var arrowBeginCenter = vectorAdd(origin, arrowBeginRotationPoint);
+            var arrowBeginA = vectorRotate(origin, 2, arrowBeginCenter);
+            var arrowBeginB = vectorRotate(origin, -2, arrowBeginCenter);
+
+            ctx.moveTo(arrowBeginA.x, arrowBeginA.y);
+            ctx.lineTo(origin.x, origin.y);
+            ctx.lineTo(arrowBeginB.x, arrowBeginB.y);
+        }
+        if (markup.lineDecoration.indexOf('arrow-end') !== -1) {
+            var arrowEndRotationPoint = vectorMultiply(v, -l);
+            var arrowEndCenter = vectorAdd(target, arrowEndRotationPoint);
+            var arrowEndA = vectorRotate(target, 2, arrowEndCenter);
+            var arrowEndB = vectorRotate(target, -2, arrowEndCenter);
+
+            ctx.moveTo(arrowEndA.x, arrowEndA.y);
+            ctx.lineTo(target.x, target.y);
+            ctx.lineTo(arrowEndB.x, arrowEndB.y);
+        }
+
+        drawMarkupStyles(ctx, styles);
+        return true;
+    };
+
+    var TYPE_DRAW_ROUTES = {
+        rect: drawRect,
+        ellipse: drawEllipse,
+        image: drawImage,
+        text: drawText,
+        line: drawLine,
+        path: drawPath,
+    };
+
+    var imageDataToCanvas = function imageDataToCanvas(imageData) {
+        var image = document.createElement('canvas');
+        image.width = imageData.width;
+        image.height = imageData.height;
+        var ctx = image.getContext('2d');
+        ctx.putImageData(imageData, 0, 0);
+        return image;
+    };
+
+    var transformImage = function transformImage(file, instructions) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        return new Promise(function(resolve, reject) {
+            // if the file is not an image we do not have any business transforming it
+            if (!file || !isImage$1(file))
+                return reject({ status: 'not an image file', file: file });
+
+            // get separate options for easier use
+            var stripImageHead = options.stripImageHead,
+                beforeCreateBlob = options.beforeCreateBlob,
+                afterCreateBlob = options.afterCreateBlob,
+                canvasMemoryLimit = options.canvasMemoryLimit;
+
+            // get crop
+            var crop = instructions.crop,
+                size = instructions.size,
+                filter = instructions.filter,
+                markup = instructions.markup,
+                output = instructions.output;
+
+            // get exif orientation
+            var orientation =
+                instructions.image && instructions.image.orientation
+                    ? Math.max(1, Math.min(8, instructions.image.orientation))
+                    : null;
+
+            // compression quality 0 => 100
+            var qualityAsPercentage = output && output.quality;
+            var quality = qualityAsPercentage === null ? null : qualityAsPercentage / 100;
+
+            // output format
+            var type = (output && output.type) || null;
+
+            // background color
+            var background = (output && output.background) || null;
+
+            // get transforms
+            var transforms = [];
+
+            // add resize transforms if set
+            if (size && (typeof size.width === 'number' || typeof size.height === 'number')) {
+                transforms.push({ type: 'resize', data: size });
+            }
+
+            // add filters
+            if (filter && filter.length === 20) {
+                transforms.push({ type: 'filter', data: filter });
+            }
+
+            // resolves with supplied blob
+            var resolveWithBlob = function resolveWithBlob(blob) {
+                var promisedBlob = afterCreateBlob ? afterCreateBlob(blob) : blob;
+                Promise.resolve(promisedBlob).then(resolve);
+            };
+
+            // done
+            var toBlob = function toBlob(imageData, options) {
+                var canvas = imageDataToCanvas(imageData);
+                var promisedCanvas = markup.length ? canvasApplyMarkup(canvas, markup) : canvas;
+                Promise.resolve(promisedCanvas).then(function(canvas) {
+                    canvasToBlob(canvas, options, beforeCreateBlob)
+                        .then(function(blob) {
+                            // force release of canvas memory
+                            canvasRelease(canvas);
+
+                            // remove image head (default)
+                            if (stripImageHead) return resolveWithBlob(blob);
+
+                            // try to copy image head from original file to generated blob
+                            getImageHead(file).then(function(imageHead) {
+                                // re-inject image head in case of JPEG, as the image head is removed by canvas export
+                                if (imageHead !== null) {
+                                    blob = new Blob([imageHead, blob.slice(20)], {
+                                        type: blob.type,
+                                    });
+                                }
+
+                                // done!
+                                resolveWithBlob(blob);
+                            });
+                        })
+                        .catch(reject);
+                });
+            };
+
+            // if this is an svg and we want it to stay an svg
+            if (/svg/.test(file.type) && type === null) {
+                return cropSVG(file, crop, markup, { background: background }).then(function(text) {
+                    resolve(createBlob(text, 'image/svg+xml'));
+                });
+            }
+
+            // get file url
+            var url = URL.createObjectURL(file);
+
+            // turn the file into an image
+            loadImage(url)
+                .then(function(image) {
+                    // url is no longer needed
+                    URL.revokeObjectURL(url);
+
+                    // draw to canvas and start transform chain
+                    var imageData = imageToImageData(image, orientation, crop, {
+                        canvasMemoryLimit: canvasMemoryLimit,
+                        background: background,
+                    });
+
+                    // determine the format of the blob that we will output
+                    var outputFormat = {
+                        quality: quality,
+                        type: type || file.type,
+                    };
+
+                    // no transforms necessary, we done!
+                    if (!transforms.length) {
+                        return toBlob(imageData, outputFormat);
+                    }
+
+                    // send to the transform worker to transform the blob on a separate thread
+                    var worker = createWorker(TransformWorker);
+                    worker.post(
+                        {
+                            transforms: transforms,
+                            imageData: imageData,
+                        },
+
+                        function(response) {
+                            // finish up
+                            toBlob(objectToImageData(response), outputFormat);
+
+                            // stop worker
+                            worker.terminate();
+                        },
+                        [imageData.data.buffer]
+                    );
+                })
+                .catch(reject);
+        });
+    };
+
+    function _typeof(obj) {
+        if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
+            _typeof = function(obj) {
+                return typeof obj;
+            };
+        } else {
+            _typeof = function(obj) {
+                return obj &&
+                    typeof Symbol === 'function' &&
+                    obj.constructor === Symbol &&
+                    obj !== Symbol.prototype
+                    ? 'symbol'
+                    : typeof obj;
+            };
+        }
+
+        return _typeof(obj);
+    }
+
+    var REACT_ELEMENT_TYPE;
+
+    function _jsx(type, props, key, children) {
+        if (!REACT_ELEMENT_TYPE) {
+            REACT_ELEMENT_TYPE =
+                (typeof Symbol === 'function' && Symbol.for && Symbol.for('react.element')) ||
+                0xeac7;
+        }
+
+        var defaultProps = type && type.defaultProps;
+        var childrenLength = arguments.length - 3;
+
+        if (!props && childrenLength !== 0) {
+            props = {
+                children: void 0,
+            };
+        }
+
+        if (props && defaultProps) {
+            for (var propName in defaultProps) {
+                if (props[propName] === void 0) {
+                    props[propName] = defaultProps[propName];
+                }
+            }
+        } else if (!props) {
+            props = defaultProps || {};
+        }
+
+        if (childrenLength === 1) {
+            props.children = children;
+        } else if (childrenLength > 1) {
+            var childArray = new Array(childrenLength);
+
+            for (var i = 0; i < childrenLength; i++) {
+                childArray[i] = arguments[i + 3];
+            }
+
+            props.children = childArray;
+        }
+
+        return {
+            $$typeof: REACT_ELEMENT_TYPE,
+            type: type,
+            key: key === undefined ? null : '' + key,
+            ref: null,
+            props: props,
+            _owner: null,
+        };
+    }
+
+    function _asyncIterator(iterable) {
+        var method;
+
+        if (typeof Symbol === 'function') {
+            if (Symbol.asyncIterator) {
+                method = iterable[Symbol.asyncIterator];
+                if (method != null) return method.call(iterable);
+            }
+
+            if (Symbol.iterator) {
+                method = iterable[Symbol.iterator];
+                if (method != null) return method.call(iterable);
+            }
+        }
+
+        throw new TypeError('Object is not async iterable');
+    }
+
+    function _AwaitValue(value) {
+        this.wrapped = value;
+    }
+
+    function _AsyncGenerator(gen) {
+        var front, back;
+
+        function send(key, arg) {
+            return new Promise(function(resolve, reject) {
+                var request = {
+                    key: key,
+                    arg: arg,
+                    resolve: resolve,
+                    reject: reject,
+                    next: null,
+                };
+
+                if (back) {
+                    back = back.next = request;
+                } else {
+                    front = back = request;
+                    resume(key, arg);
+                }
+            });
+        }
+
+        function resume(key, arg) {
+            try {
+                var result = gen[key](arg);
+                var value = result.value;
+                var wrappedAwait = value instanceof _AwaitValue;
+                Promise.resolve(wrappedAwait ? value.wrapped : value).then(
+                    function(arg) {
+                        if (wrappedAwait) {
+                            resume('next', arg);
+                            return;
+                        }
+
+                        settle(result.done ? 'return' : 'normal', arg);
+                    },
+                    function(err) {
+                        resume('throw', err);
+                    }
+                );
+            } catch (err) {
+                settle('throw', err);
+            }
+        }
+
+        function settle(type, value) {
+            switch (type) {
+                case 'return':
+                    front.resolve({
+                        value: value,
+                        done: true,
+                    });
+                    break;
+
+                case 'throw':
+                    front.reject(value);
+                    break;
+
+                default:
+                    front.resolve({
+                        value: value,
+                        done: false,
+                    });
+                    break;
+            }
+
+            front = front.next;
+
+            if (front) {
+                resume(front.key, front.arg);
+            } else {
+                back = null;
+            }
+        }
+
+        this._invoke = send;
+
+        if (typeof gen.return !== 'function') {
+            this.return = undefined;
+        }
+    }
+
+    if (typeof Symbol === 'function' && Symbol.asyncIterator) {
+        _AsyncGenerator.prototype[Symbol.asyncIterator] = function() {
+            return this;
+        };
+    }
+
+    _AsyncGenerator.prototype.next = function(arg) {
+        return this._invoke('next', arg);
+    };
+
+    _AsyncGenerator.prototype.throw = function(arg) {
+        return this._invoke('throw', arg);
+    };
+
+    _AsyncGenerator.prototype.return = function(arg) {
+        return this._invoke('return', arg);
+    };
+
+    function _wrapAsyncGenerator(fn) {
+        return function() {
+            return new _AsyncGenerator(fn.apply(this, arguments));
+        };
+    }
+
+    function _awaitAsyncGenerator(value) {
+        return new _AwaitValue(value);
+    }
+
+    function _asyncGeneratorDelegate(inner, awaitWrap) {
+        var iter = {},
+            waiting = false;
+
+        function pump(key, value) {
+            waiting = true;
+            value = new Promise(function(resolve) {
+                resolve(inner[key](value));
+            });
+            return {
+                done: false,
+                value: awaitWrap(value),
+            };
+        }
+
+        if (typeof Symbol === 'function' && Symbol.iterator) {
+            iter[Symbol.iterator] = function() {
+                return this;
+            };
+        }
+
+        iter.next = function(value) {
+            if (waiting) {
+                waiting = false;
+                return value;
+            }
+
+            return pump('next', value);
+        };
+
+        if (typeof inner.throw === 'function') {
+            iter.throw = function(value) {
+                if (waiting) {
+                    waiting = false;
+                    throw value;
+                }
+
+                return pump('throw', value);
+            };
+        }
+
+        if (typeof inner.return === 'function') {
+            iter.return = function(value) {
+                return pump('return', value);
+            };
+        }
+
+        return iter;
+    }
+
+    function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+        try {
+            var info = gen[key](arg);
+            var value = info.value;
+        } catch (error) {
+            reject(error);
+            return;
+        }
+
+        if (info.done) {
+            resolve(value);
+        } else {
+            Promise.resolve(value).then(_next, _throw);
+        }
+    }
+
+    function _asyncToGenerator(fn) {
+        return function() {
+            var self = this,
+                args = arguments;
+            return new Promise(function(resolve, reject) {
+                var gen = fn.apply(self, args);
+
+                function _next(value) {
+                    asyncGeneratorStep(gen, resolve, reject, _next, _throw, 'next', value);
+                }
+
+                function _throw(err) {
+                    asyncGeneratorStep(gen, resolve, reject, _next, _throw, 'throw', err);
+                }
+
+                _next(undefined);
+            });
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError('Cannot call a class as a function');
+        }
+    }
+
+    function _defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ('value' in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+
+    function _createClass(Constructor, protoProps, staticProps) {
+        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) _defineProperties(Constructor, staticProps);
+        return Constructor;
+    }
+
+    function _defineEnumerableProperties(obj, descs) {
+        for (var key in descs) {
+            var desc = descs[key];
+            desc.configurable = desc.enumerable = true;
+            if ('value' in desc) desc.writable = true;
+            Object.defineProperty(obj, key, desc);
+        }
+
+        if (Object.getOwnPropertySymbols) {
+            var objectSymbols = Object.getOwnPropertySymbols(descs);
+
+            for (var i = 0; i < objectSymbols.length; i++) {
+                var sym = objectSymbols[i];
+                var desc = descs[sym];
+                desc.configurable = desc.enumerable = true;
+                if ('value' in desc) desc.writable = true;
+                Object.defineProperty(obj, sym, desc);
+            }
+        }
+
+        return obj;
+    }
+
+    function _defaults(obj, defaults) {
+        var keys = Object.getOwnPropertyNames(defaults);
+
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = Object.getOwnPropertyDescriptor(defaults, key);
+
+            if (value && value.configurable && obj[key] === undefined) {
+                Object.defineProperty(obj, key, value);
+            }
+        }
+
+        return obj;
+    }
+
+    function _defineProperty(obj, key, value) {
+        if (key in obj) {
+            Object.defineProperty(obj, key, {
+                value: value,
+                enumerable: true,
+                configurable: true,
+                writable: true,
+            });
+        } else {
+            obj[key] = value;
+        }
+
+        return obj;
+    }
+
+    function _extends() {
+        _extends =
+            Object.assign ||
+            function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+
+                    for (var key in source) {
+                        if (Object.prototype.hasOwnProperty.call(source, key)) {
+                            target[key] = source[key];
+                        }
+                    }
+                }
+
+                return target;
+            };
+
+        return _extends.apply(this, arguments);
+    }
+
+    function _objectSpread(target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i] != null ? arguments[i] : {};
+            var ownKeys = Object.keys(source);
+
+            if (typeof Object.getOwnPropertySymbols === 'function') {
+                ownKeys = ownKeys.concat(
+                    Object.getOwnPropertySymbols(source).filter(function(sym) {
+                        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+                    })
+                );
+            }
+
+            ownKeys.forEach(function(key) {
+                _defineProperty(target, key, source[key]);
+            });
+        }
+
+        return target;
+    }
+
+    function _inherits(subClass, superClass) {
+        if (typeof superClass !== 'function' && superClass !== null) {
+            throw new TypeError('Super expression must either be null or a function');
+        }
+
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+            constructor: {
+                value: subClass,
+                writable: true,
+                configurable: true,
+            },
+        });
+        if (superClass) _setPrototypeOf(subClass, superClass);
+    }
+
+    function _inheritsLoose(subClass, superClass) {
+        subClass.prototype = Object.create(superClass.prototype);
+        subClass.prototype.constructor = subClass;
+        subClass.__proto__ = superClass;
+    }
+
+    function _getPrototypeOf(o) {
+        _getPrototypeOf = Object.setPrototypeOf
+            ? Object.getPrototypeOf
+            : function _getPrototypeOf(o) {
+                  return o.__proto__ || Object.getPrototypeOf(o);
+              };
+        return _getPrototypeOf(o);
+    }
+
+    function _setPrototypeOf(o, p) {
+        _setPrototypeOf =
+            Object.setPrototypeOf ||
+            function _setPrototypeOf(o, p) {
+                o.__proto__ = p;
+                return o;
+            };
+
+        return _setPrototypeOf(o, p);
+    }
+
+    function isNativeReflectConstruct() {
+        if (typeof Reflect === 'undefined' || !Reflect.construct) return false;
+        if (Reflect.construct.sham) return false;
+        if (typeof Proxy === 'function') return true;
+
+        try {
+            Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function _construct(Parent, args, Class) {
+        if (isNativeReflectConstruct()) {
+            _construct = Reflect.construct;
+        } else {
+            _construct = function _construct(Parent, args, Class) {
+                var a = [null];
+                a.push.apply(a, args);
+                var Constructor = Function.bind.apply(Parent, a);
+                var instance = new Constructor();
+                if (Class) _setPrototypeOf(instance, Class.prototype);
+                return instance;
+            };
+        }
+
+        return _construct.apply(null, arguments);
+    }
+
+    function _isNativeFunction(fn) {
+        return Function.toString.call(fn).indexOf('[native code]') !== -1;
+    }
+
+    function _wrapNativeSuper(Class) {
+        var _cache = typeof Map === 'function' ? new Map() : undefined;
+
+        _wrapNativeSuper = function _wrapNativeSuper(Class) {
+            if (Class === null || !_isNativeFunction(Class)) return Class;
+
+            if (typeof Class !== 'function') {
+                throw new TypeError('Super expression must either be null or a function');
+            }
+
+            if (typeof _cache !== 'undefined') {
+                if (_cache.has(Class)) return _cache.get(Class);
+
+                _cache.set(Class, Wrapper);
+            }
+
+            function Wrapper() {
+                return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+            }
+
+            Wrapper.prototype = Object.create(Class.prototype, {
+                constructor: {
+                    value: Wrapper,
+                    enumerable: false,
+                    writable: true,
+                    configurable: true,
+                },
+            });
+            return _setPrototypeOf(Wrapper, Class);
+        };
+
+        return _wrapNativeSuper(Class);
+    }
+
+    function _instanceof(left, right) {
+        if (right != null && typeof Symbol !== 'undefined' && right[Symbol.hasInstance]) {
+            return right[Symbol.hasInstance](left);
+        } else {
+            return left instanceof right;
+        }
+    }
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule
+            ? obj
+            : {
+                  default: obj,
+              };
+    }
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                        var desc =
+                            Object.defineProperty && Object.getOwnPropertyDescriptor
+                                ? Object.getOwnPropertyDescriptor(obj, key)
+                                : {};
+
+                        if (desc.get || desc.set) {
+                            Object.defineProperty(newObj, key, desc);
+                        } else {
+                            newObj[key] = obj[key];
+                        }
+                    }
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
+
+    function _newArrowCheck(innerThis, boundThis) {
+        if (innerThis !== boundThis) {
+            throw new TypeError('Cannot instantiate an arrow function');
+        }
+    }
+
+    function _objectDestructuringEmpty(obj) {
+        if (obj == null) throw new TypeError('Cannot destructure undefined');
+    }
+
+    function _objectWithoutPropertiesLoose(source, excluded) {
+        if (source == null) return {};
+        var target = {};
+        var sourceKeys = Object.keys(source);
+        var key, i;
+
+        for (i = 0; i < sourceKeys.length; i++) {
+            key = sourceKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            target[key] = source[key];
+        }
+
+        return target;
+    }
+
+    function _objectWithoutProperties(source, excluded) {
+        if (source == null) return {};
+
+        var target = _objectWithoutPropertiesLoose(source, excluded);
+
+        var key, i;
+
+        if (Object.getOwnPropertySymbols) {
+            var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+            for (i = 0; i < sourceSymbolKeys.length; i++) {
+                key = sourceSymbolKeys[i];
+                if (excluded.indexOf(key) >= 0) continue;
+                if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+                target[key] = source[key];
+            }
+        }
+
+        return target;
+    }
+
+    function _assertThisInitialized(self) {
+        if (self === void 0) {
+            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+
+        return self;
+    }
+
+    function _possibleConstructorReturn(self, call) {
+        if (call && (typeof call === 'object' || typeof call === 'function')) {
+            return call;
+        }
+
+        return _assertThisInitialized(self);
+    }
+
+    function _superPropBase(object, property) {
+        while (!Object.prototype.hasOwnProperty.call(object, property)) {
+            object = _getPrototypeOf(object);
+            if (object === null) break;
+        }
+
+        return object;
+    }
+
+    function _get(target, property, receiver) {
+        if (typeof Reflect !== 'undefined' && Reflect.get) {
+            _get = Reflect.get;
+        } else {
+            _get = function _get(target, property, receiver) {
+                var base = _superPropBase(target, property);
+
+                if (!base) return;
+                var desc = Object.getOwnPropertyDescriptor(base, property);
+
+                if (desc.get) {
+                    return desc.get.call(receiver);
+                }
+
+                return desc.value;
+            };
+        }
+
+        return _get(target, property, receiver || target);
+    }
+
+    function set(target, property, value, receiver) {
+        if (typeof Reflect !== 'undefined' && Reflect.set) {
+            set = Reflect.set;
+        } else {
+            set = function set(target, property, value, receiver) {
+                var base = _superPropBase(target, property);
+
+                var desc;
+
+                if (base) {
+                    desc = Object.getOwnPropertyDescriptor(base, property);
+
+                    if (desc.set) {
+                        desc.set.call(receiver, value);
+                        return true;
+                    } else if (!desc.writable) {
+                        return false;
+                    }
+                }
+
+                desc = Object.getOwnPropertyDescriptor(receiver, property);
+
+                if (desc) {
+                    if (!desc.writable) {
+                        return false;
+                    }
+
+                    desc.value = value;
+                    Object.defineProperty(receiver, property, desc);
+                } else {
+                    _defineProperty(receiver, property, value);
+                }
+
+                return true;
+            };
+        }
+
+        return set(target, property, value, receiver);
+    }
+
+    function _set(target, property, value, receiver, isStrict) {
+        var s = set(target, property, value, receiver || target);
+
+        if (!s && isStrict) {
+            throw new Error('failed to set property');
+        }
+
+        return value;
+    }
+
+    function _taggedTemplateLiteral(strings, raw) {
+        if (!raw) {
+            raw = strings.slice(0);
+        }
+
+        return Object.freeze(
+            Object.defineProperties(strings, {
+                raw: {
+                    value: Object.freeze(raw),
+                },
+            })
+        );
+    }
+
+    function _taggedTemplateLiteralLoose(strings, raw) {
+        if (!raw) {
+            raw = strings.slice(0);
+        }
+
+        strings.raw = raw;
+        return strings;
+    }
+
+    function _temporalRef(val, name) {
+        if (val === _temporalUndefined) {
+            throw new ReferenceError(name + ' is not defined - temporal dead zone');
+        } else {
+            return val;
+        }
+    }
+
+    function _readOnlyError(name) {
+        throw new Error('"' + name + '" is read-only');
+    }
+
+    function _classNameTDZError(name) {
+        throw new Error('Class "' + name + '" cannot be referenced in computed property keys.');
+    }
+
+    var _temporalUndefined = {};
+
+    function _slicedToArray(arr, i) {
+        return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+    }
+
+    function _slicedToArrayLoose(arr, i) {
+        return _arrayWithHoles(arr) || _iterableToArrayLimitLoose(arr, i) || _nonIterableRest();
+    }
+
+    function _toArray(arr) {
+        return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
+    }
+
+    function _toConsumableArray(arr) {
+        return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+    }
+
+    function _arrayWithoutHoles(arr) {
+        if (Array.isArray(arr)) {
+            for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+            return arr2;
+        }
+    }
+
+    function _arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+    }
+
+    function _iterableToArray(iter) {
+        if (
+            Symbol.iterator in Object(iter) ||
+            Object.prototype.toString.call(iter) === '[object Arguments]'
+        )
+            return Array.from(iter);
+    }
+
+    function _iterableToArrayLimit(arr, i) {
+        var _arr = [];
+        var _n = true;
+        var _d = false;
+        var _e = undefined;
+
+        try {
+            for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+                _arr.push(_s.value);
+
+                if (i && _arr.length === i) break;
+            }
+        } catch (err) {
+            _d = true;
+            _e = err;
+        } finally {
+            try {
+                if (!_n && _i['return'] != null) _i['return']();
+            } finally {
+                if (_d) throw _e;
+            }
+        }
+
+        return _arr;
+    }
+
+    function _iterableToArrayLimitLoose(arr, i) {
+        var _arr = [];
+
+        for (var _iterator = arr[Symbol.iterator](), _step; !(_step = _iterator.next()).done; ) {
+            _arr.push(_step.value);
+
+            if (i && _arr.length === i) break;
+        }
+
+        return _arr;
+    }
+
+    function _nonIterableSpread() {
+        throw new TypeError('Invalid attempt to spread non-iterable instance');
+    }
+
+    function _nonIterableRest() {
+        throw new TypeError('Invalid attempt to destructure non-iterable instance');
+    }
+
+    function _skipFirstGeneratorNext(fn) {
+        return function() {
+            var it = fn.apply(this, arguments);
+            it.next();
+            return it;
+        };
+    }
+
+    function _toPrimitive(input, hint) {
+        if (typeof input !== 'object' || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+
+        if (prim !== undefined) {
+            var res = prim.call(input, hint || 'default');
+            if (typeof res !== 'object') return res;
+            throw new TypeError('@@toPrimitive must return a primitive value.');
+        }
+
+        return (hint === 'string' ? String : Number)(input);
+    }
+
+    function _toPropertyKey(arg) {
+        var key = _toPrimitive(arg, 'string');
+
+        return typeof key === 'symbol' ? key : String(key);
+    }
+
+    function _initializerWarningHelper(descriptor, context) {
+        throw new Error(
+            'Decorating class property failed. Please ensure that ' +
+                'proposal-class-properties is enabled and set to use loose mode. ' +
+                'To use proposal-class-properties in spec mode with decorators, wait for ' +
+                'the next major version of decorators in stage 2.'
+        );
+    }
+
+    function _initializerDefineProperty(target, property, descriptor, context) {
+        if (!descriptor) return;
+        Object.defineProperty(target, property, {
+            enumerable: descriptor.enumerable,
+            configurable: descriptor.configurable,
+            writable: descriptor.writable,
+            value: descriptor.initializer ? descriptor.initializer.call(context) : void 0,
+        });
+    }
+
+    function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+        var desc = {};
+        Object.keys(descriptor).forEach(function(key) {
+            desc[key] = descriptor[key];
+        });
+        desc.enumerable = !!desc.enumerable;
+        desc.configurable = !!desc.configurable;
+
+        if ('value' in desc || desc.initializer) {
+            desc.writable = true;
+        }
+
+        desc = decorators
+            .slice()
+            .reverse()
+            .reduce(function(desc, decorator) {
+                return decorator(target, property, desc) || desc;
+            }, desc);
+
+        if (context && desc.initializer !== void 0) {
+            desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+            desc.initializer = undefined;
+        }
+
+        if (desc.initializer === void 0) {
+            Object.defineProperty(target, property, desc);
+            desc = null;
+        }
+
+        return desc;
+    }
+
+    var id = 0;
+
+    function _classPrivateFieldLooseKey(name) {
+        return '__private_' + id++ + '_' + name;
+    }
+
+    function _classPrivateFieldLooseBase(receiver, privateKey) {
+        if (!Object.prototype.hasOwnProperty.call(receiver, privateKey)) {
+            throw new TypeError('attempted to use private field on non-instance');
+        }
+
+        return receiver;
+    }
+
+    function _classPrivateFieldGet(receiver, privateMap) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError('attempted to get private field on non-instance');
+        }
+
+        var descriptor = privateMap.get(receiver);
+
+        if (descriptor.get) {
+            return descriptor.get.call(receiver);
+        }
+
+        return descriptor.value;
+    }
+
+    function _classPrivateFieldSet(receiver, privateMap, value) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError('attempted to set private field on non-instance');
+        }
+
+        var descriptor = privateMap.get(receiver);
+
+        if (descriptor.set) {
+            descriptor.set.call(receiver, value);
+        } else {
+            if (!descriptor.writable) {
+                throw new TypeError('attempted to set read only private field');
+            }
+
+            descriptor.value = value;
+        }
+
+        return value;
+    }
+
+    function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) {
+        if (receiver !== classConstructor) {
+            throw new TypeError('Private static access of wrong provenance');
+        }
+
+        return descriptor.value;
+    }
+
+    function _classStaticPrivateFieldSpecSet(receiver, classConstructor, descriptor, value) {
+        if (receiver !== classConstructor) {
+            throw new TypeError('Private static access of wrong provenance');
+        }
+
+        if (!descriptor.writable) {
+            throw new TypeError('attempted to set read only private field');
+        }
+
+        descriptor.value = value;
+        return value;
+    }
+
+    function _classStaticPrivateMethodGet(receiver, classConstructor, method) {
+        if (receiver !== classConstructor) {
+            throw new TypeError('Private static access of wrong provenance');
+        }
+
+        return method;
+    }
+
+    function _classStaticPrivateMethodSet() {
+        throw new TypeError('attempted to set read only static private field');
+    }
+
+    function _decorate(decorators, factory, superClass, mixins) {
+        var api = _getDecoratorsApi();
+
+        if (mixins) {
+            for (var i = 0; i < mixins.length; i++) {
+                api = mixins[i](api);
+            }
+        }
+
+        var r = factory(function initialize(O) {
+            api.initializeInstanceElements(O, decorated.elements);
+        }, superClass);
+        var decorated = api.decorateClass(
+            _coalesceClassElements(r.d.map(_createElementDescriptor)),
+            decorators
+        );
+        api.initializeClassElements(r.F, decorated.elements);
+        return api.runClassFinishers(r.F, decorated.finishers);
+    }
+
+    function _getDecoratorsApi() {
+        _getDecoratorsApi = function() {
+            return api;
+        };
+
+        var api = {
+            elementsDefinitionOrder: [['method'], ['field']],
+            initializeInstanceElements: function(O, elements) {
+                ['method', 'field'].forEach(function(kind) {
+                    elements.forEach(function(element) {
+                        if (element.kind === kind && element.placement === 'own') {
+                            this.defineClassElement(O, element);
+                        }
+                    }, this);
+                }, this);
+            },
+            initializeClassElements: function(F, elements) {
+                var proto = F.prototype;
+                ['method', 'field'].forEach(function(kind) {
+                    elements.forEach(function(element) {
+                        var placement = element.placement;
+
+                        if (
+                            element.kind === kind &&
+                            (placement === 'static' || placement === 'prototype')
+                        ) {
+                            var receiver = placement === 'static' ? F : proto;
+                            this.defineClassElement(receiver, element);
+                        }
+                    }, this);
+                }, this);
+            },
+            defineClassElement: function(receiver, element) {
+                var descriptor = element.descriptor;
+
+                if (element.kind === 'field') {
+                    var initializer = element.initializer;
+                    descriptor = {
+                        enumerable: descriptor.enumerable,
+                        writable: descriptor.writable,
+                        configurable: descriptor.configurable,
+                        value: initializer === void 0 ? void 0 : initializer.call(receiver),
+                    };
+                }
+
+                Object.defineProperty(receiver, element.key, descriptor);
+            },
+            decorateClass: function(elements, decorators) {
+                var newElements = [];
+                var finishers = [];
+                var placements = {
+                    static: [],
+                    prototype: [],
+                    own: [],
+                };
+                elements.forEach(function(element) {
+                    this.addElementPlacement(element, placements);
+                }, this);
+                elements.forEach(function(element) {
+                    if (!_hasDecorators(element)) return newElements.push(element);
+                    var elementFinishersExtras = this.decorateElement(element, placements);
+                    newElements.push(elementFinishersExtras.element);
+                    newElements.push.apply(newElements, elementFinishersExtras.extras);
+                    finishers.push.apply(finishers, elementFinishersExtras.finishers);
+                }, this);
+
+                if (!decorators) {
+                    return {
+                        elements: newElements,
+                        finishers: finishers,
+                    };
+                }
+
+                var result = this.decorateConstructor(newElements, decorators);
+                finishers.push.apply(finishers, result.finishers);
+                result.finishers = finishers;
+                return result;
+            },
+            addElementPlacement: function(element, placements, silent) {
+                var keys = placements[element.placement];
+
+                if (!silent && keys.indexOf(element.key) !== -1) {
+                    throw new TypeError('Duplicated element (' + element.key + ')');
+                }
+
+                keys.push(element.key);
+            },
+            decorateElement: function(element, placements) {
+                var extras = [];
+                var finishers = [];
+
+                for (var decorators = element.decorators, i = decorators.length - 1; i >= 0; i--) {
+                    var keys = placements[element.placement];
+                    keys.splice(keys.indexOf(element.key), 1);
+                    var elementObject = this.fromElementDescriptor(element);
+                    var elementFinisherExtras = this.toElementFinisherExtras(
+                        (0, decorators[i])(elementObject) || elementObject
+                    );
+                    element = elementFinisherExtras.element;
+                    this.addElementPlacement(element, placements);
+
+                    if (elementFinisherExtras.finisher) {
+                        finishers.push(elementFinisherExtras.finisher);
+                    }
+
+                    var newExtras = elementFinisherExtras.extras;
+
+                    if (newExtras) {
+                        for (var j = 0; j < newExtras.length; j++) {
+                            this.addElementPlacement(newExtras[j], placements);
+                        }
+
+                        extras.push.apply(extras, newExtras);
+                    }
+                }
+
+                return {
+                    element: element,
+                    finishers: finishers,
+                    extras: extras,
+                };
+            },
+            decorateConstructor: function(elements, decorators) {
+                var finishers = [];
+
+                for (var i = decorators.length - 1; i >= 0; i--) {
+                    var obj = this.fromClassDescriptor(elements);
+                    var elementsAndFinisher = this.toClassDescriptor(
+                        (0, decorators[i])(obj) || obj
+                    );
+
+                    if (elementsAndFinisher.finisher !== undefined) {
+                        finishers.push(elementsAndFinisher.finisher);
+                    }
+
+                    if (elementsAndFinisher.elements !== undefined) {
+                        elements = elementsAndFinisher.elements;
+
+                        for (var j = 0; j < elements.length - 1; j++) {
+                            for (var k = j + 1; k < elements.length; k++) {
+                                if (
+                                    elements[j].key === elements[k].key &&
+                                    elements[j].placement === elements[k].placement
+                                ) {
+                                    throw new TypeError(
+                                        'Duplicated element (' + elements[j].key + ')'
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return {
+                    elements: elements,
+                    finishers: finishers,
+                };
+            },
+            fromElementDescriptor: function(element) {
+                var obj = {
+                    kind: element.kind,
+                    key: element.key,
+                    placement: element.placement,
+                    descriptor: element.descriptor,
+                };
+                var desc = {
+                    value: 'Descriptor',
+                    configurable: true,
+                };
+                Object.defineProperty(obj, Symbol.toStringTag, desc);
+                if (element.kind === 'field') obj.initializer = element.initializer;
+                return obj;
+            },
+            toElementDescriptors: function(elementObjects) {
+                if (elementObjects === undefined) return;
+                return _toArray(elementObjects).map(function(elementObject) {
+                    var element = this.toElementDescriptor(elementObject);
+                    this.disallowProperty(elementObject, 'finisher', 'An element descriptor');
+                    this.disallowProperty(elementObject, 'extras', 'An element descriptor');
+                    return element;
+                }, this);
+            },
+            toElementDescriptor: function(elementObject) {
+                var kind = String(elementObject.kind);
+
+                if (kind !== 'method' && kind !== 'field') {
+                    throw new TypeError(
+                        'An element descriptor\'s .kind property must be either "method" or' +
+                            ' "field", but a decorator created an element descriptor with' +
+                            ' .kind "' +
+                            kind +
+                            '"'
+                    );
+                }
+
+                var key = _toPropertyKey(elementObject.key);
+
+                var placement = String(elementObject.placement);
+
+                if (placement !== 'static' && placement !== 'prototype' && placement !== 'own') {
+                    throw new TypeError(
+                        'An element descriptor\'s .placement property must be one of "static",' +
+                            ' "prototype" or "own", but a decorator created an element descriptor' +
+                            ' with .placement "' +
+                            placement +
+                            '"'
+                    );
+                }
+
+                var descriptor = elementObject.descriptor;
+                this.disallowProperty(elementObject, 'elements', 'An element descriptor');
+                var element = {
+                    kind: kind,
+                    key: key,
+                    placement: placement,
+                    descriptor: Object.assign({}, descriptor),
+                };
+
+                if (kind !== 'field') {
+                    this.disallowProperty(elementObject, 'initializer', 'A method descriptor');
+                } else {
+                    this.disallowProperty(
+                        descriptor,
+                        'get',
+                        'The property descriptor of a field descriptor'
+                    );
+                    this.disallowProperty(
+                        descriptor,
+                        'set',
+                        'The property descriptor of a field descriptor'
+                    );
+                    this.disallowProperty(
+                        descriptor,
+                        'value',
+                        'The property descriptor of a field descriptor'
+                    );
+                    element.initializer = elementObject.initializer;
+                }
+
+                return element;
+            },
+            toElementFinisherExtras: function(elementObject) {
+                var element = this.toElementDescriptor(elementObject);
+
+                var finisher = _optionalCallableProperty(elementObject, 'finisher');
+
+                var extras = this.toElementDescriptors(elementObject.extras);
+                return {
+                    element: element,
+                    finisher: finisher,
+                    extras: extras,
+                };
+            },
+            fromClassDescriptor: function(elements) {
+                var obj = {
+                    kind: 'class',
+                    elements: elements.map(this.fromElementDescriptor, this),
+                };
+                var desc = {
+                    value: 'Descriptor',
+                    configurable: true,
+                };
+                Object.defineProperty(obj, Symbol.toStringTag, desc);
+                return obj;
+            },
+            toClassDescriptor: function(obj) {
+                var kind = String(obj.kind);
+
+                if (kind !== 'class') {
+                    throw new TypeError(
+                        'A class descriptor\'s .kind property must be "class", but a decorator' +
+                            ' created a class descriptor with .kind "' +
+                            kind +
+                            '"'
+                    );
+                }
+
+                this.disallowProperty(obj, 'key', 'A class descriptor');
+                this.disallowProperty(obj, 'placement', 'A class descriptor');
+                this.disallowProperty(obj, 'descriptor', 'A class descriptor');
+                this.disallowProperty(obj, 'initializer', 'A class descriptor');
+                this.disallowProperty(obj, 'extras', 'A class descriptor');
+
+                var finisher = _optionalCallableProperty(obj, 'finisher');
+
+                var elements = this.toElementDescriptors(obj.elements);
+                return {
+                    elements: elements,
+                    finisher: finisher,
+                };
+            },
+            runClassFinishers: function(constructor, finishers) {
+                for (var i = 0; i < finishers.length; i++) {
+                    var newConstructor = (0, finishers[i])(constructor);
+
+                    if (newConstructor !== undefined) {
+                        if (typeof newConstructor !== 'function') {
+                            throw new TypeError('Finishers must return a constructor.');
+                        }
+
+                        constructor = newConstructor;
+                    }
+                }
+
+                return constructor;
+            },
+            disallowProperty: function(obj, name, objectType) {
+                if (obj[name] !== undefined) {
+                    throw new TypeError(objectType + " can't have a ." + name + ' property.');
+                }
+            },
+        };
+        return api;
+    }
+
+    function _createElementDescriptor(def) {
+        var key = _toPropertyKey(def.key);
+
+        var descriptor;
+
+        if (def.kind === 'method') {
+            descriptor = {
+                value: def.value,
+                writable: true,
+                configurable: true,
+                enumerable: false,
+            };
+        } else if (def.kind === 'get') {
+            descriptor = {
+                get: def.value,
+                configurable: true,
+                enumerable: false,
+            };
+        } else if (def.kind === 'set') {
+            descriptor = {
+                set: def.value,
+                configurable: true,
+                enumerable: false,
+            };
+        } else if (def.kind === 'field') {
+            descriptor = {
+                configurable: true,
+                writable: true,
+                enumerable: true,
+            };
+        }
+
+        var element = {
+            kind: def.kind === 'field' ? 'field' : 'method',
+            key: key,
+            placement: def.static ? 'static' : def.kind === 'field' ? 'own' : 'prototype',
+            descriptor: descriptor,
+        };
+        if (def.decorators) element.decorators = def.decorators;
+        if (def.kind === 'field') element.initializer = def.value;
+        return element;
+    }
+
+    function _coalesceGetterSetter(element, other) {
+        if (element.descriptor.get !== undefined) {
+            other.descriptor.get = element.descriptor.get;
+        } else {
+            other.descriptor.set = element.descriptor.set;
+        }
+    }
+
+    function _coalesceClassElements(elements) {
+        var newElements = [];
+
+        var isSameElement = function(other) {
+            return (
+                other.kind === 'method' &&
+                other.key === element.key &&
+                other.placement === element.placement
+            );
+        };
+
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            var other;
+
+            if (element.kind === 'method' && (other = newElements.find(isSameElement))) {
+                if (_isDataDescriptor(element.descriptor) || _isDataDescriptor(other.descriptor)) {
+                    if (_hasDecorators(element) || _hasDecorators(other)) {
+                        throw new ReferenceError(
+                            'Duplicated methods (' + element.key + ") can't be decorated."
+                        );
+                    }
+
+                    other.descriptor = element.descriptor;
+                } else {
+                    if (_hasDecorators(element)) {
+                        if (_hasDecorators(other)) {
+                            throw new ReferenceError(
+                                "Decorators can't be placed on different accessors with for " +
+                                    'the same property (' +
+                                    element.key +
+                                    ').'
+                            );
+                        }
+
+                        other.decorators = element.decorators;
+                    }
+
+                    _coalesceGetterSetter(element, other);
+                }
+            } else {
+                newElements.push(element);
+            }
+        }
+
+        return newElements;
+    }
+
+    function _hasDecorators(element) {
+        return element.decorators && element.decorators.length;
+    }
+
+    function _isDataDescriptor(desc) {
+        return desc !== undefined && !(desc.value === undefined && desc.writable === undefined);
+    }
+
+    function _optionalCallableProperty(obj, name) {
+        var value = obj[name];
+
+        if (value !== undefined && typeof value !== 'function') {
+            throw new TypeError("Expected '" + name + "' to be a function");
+        }
+
+        return value;
+    }
+
+    function _classPrivateMethodGet(receiver, privateSet, fn) {
+        if (!privateSet.has(receiver)) {
+            throw new TypeError('attempted to get private field on non-instance');
+        }
+
+        return fn;
+    }
+
+    function _classPrivateMethodSet() {
+        throw new TypeError('attempted to reassign private method');
+    }
+
+    function _wrapRegExp(re, groups) {
+        _wrapRegExp = function(re, groups) {
+            return new BabelRegExp(re, groups);
+        };
+
+        var _RegExp = _wrapNativeSuper(RegExp);
+
+        var _super = RegExp.prototype;
+
+        var _groups = new WeakMap();
+
+        function BabelRegExp(re, groups) {
+            var _this = _RegExp.call(this, re);
+
+            _groups.set(_this, groups);
+
+            return _this;
+        }
+
+        _inherits(BabelRegExp, _RegExp);
+
+        BabelRegExp.prototype.exec = function(str) {
+            var result = _super.exec.call(this, str);
+
+            if (result) result.groups = buildGroups(result, this);
+            return result;
+        };
+
+        BabelRegExp.prototype[Symbol.replace] = function(str, substitution) {
+            if (typeof substitution === 'string') {
+                var groups = _groups.get(this);
+
+                return _super[Symbol.replace].call(
+                    this,
+                    str,
+                    substitution.replace(/\$<([^>]+)>/g, function(_, name) {
+                        return '$' + groups[name];
+                    })
+                );
+            } else if (typeof substitution === 'function') {
+                var _this = this;
+
+                return _super[Symbol.replace].call(this, str, function() {
+                    var args = [];
+                    args.push.apply(args, arguments);
+
+                    if (typeof args[args.length - 1] !== 'object') {
+                        args.push(buildGroups(args, _this));
+                    }
+
+                    return substitution.apply(this, args);
+                });
+            } else {
+                return _super[Symbol.replace].call(this, str, substitution);
+            }
+        };
+
+        function buildGroups(result, re) {
+            var g = _groups.get(re);
+
+            return Object.keys(g).reduce(function(groups, name) {
+                groups[name] = result[g[name]];
+                return groups;
+            }, Object.create(null));
+        }
+
+        return _wrapRegExp.apply(this, arguments);
+    }
+
+    var MARKUP_RECT = ['x', 'y', 'left', 'top', 'right', 'bottom', 'width', 'height'];
+
+    var toOptionalFraction = function toOptionalFraction(value) {
+        return typeof value === 'string' && /%/.test(value) ? parseFloat(value) / 100 : value;
+    };
+
+    // adds default markup properties, clones markup
+    var prepareMarkup = function prepareMarkup(markup) {
+        var _markup = _slicedToArray(markup, 2),
+            type = _markup[0],
+            props = _markup[1];
+
+        var rect = props.points
+            ? {}
+            : MARKUP_RECT.reduce(function(prev, curr) {
+                  prev[curr] = toOptionalFraction(props[curr]);
+                  return prev;
+              }, {});
+
+        return [
+            type,
+            Object.assign(
+                {
+                    zIndex: 0,
+                },
+                props,
+                rect
+            ),
+        ];
+    };
+
+    var getImageSize = function getImageSize(file) {
+        return new Promise(function(resolve, reject) {
+            var imageElement = new Image();
+            imageElement.src = URL.createObjectURL(file);
+
+            // start testing size
+            var measure = function measure() {
+                var width = imageElement.naturalWidth;
+                var height = imageElement.naturalHeight;
+                var hasSize = width && height;
+                if (!hasSize) return;
+
+                URL.revokeObjectURL(imageElement.src);
+                clearInterval(intervalId);
+                resolve({ width: width, height: height });
+            };
+
+            imageElement.onerror = function(err) {
+                URL.revokeObjectURL(imageElement.src);
+                clearInterval(intervalId);
+                reject(err);
+            };
+
+            var intervalId = setInterval(measure, 1);
+
+            measure();
+        });
+    };
+
+    /**
+     * Polyfill Edge and IE when in Browser
+     */
+    if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
+        if (!HTMLCanvasElement.prototype.toBlob) {
+            Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+                value: function value(cb, type, quality) {
+                    var canvas = this;
+                    setTimeout(function() {
+                        var dataURL = canvas.toDataURL(type, quality).split(',')[1];
+                        var binStr = atob(dataURL);
+                        var index = binStr.length;
+                        var data = new Uint8Array(index);
+                        while (index--) {
+                            data[index] = binStr.charCodeAt(index);
+                        }
+                        cb(new Blob([data], { type: type || 'image/png' }));
+                    });
+                },
+            });
+        }
+    }
+
+    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    var isIOS = isBrowser && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    /**
+     * Image Transform Plugin
+     */
+    var plugin = function plugin(_ref) {
+        var addFilter = _ref.addFilter,
+            utils = _ref.utils;
+        var Type = utils.Type,
+            forin = utils.forin,
+            getFileFromBlob = utils.getFileFromBlob,
+            isFile = utils.isFile;
+
+        /**
+         * Helper functions
+         */
+
+        // valid transforms (in correct order)
+        var TRANSFORM_LIST = ['crop', 'resize', 'filter', 'markup', 'output'];
+
+        var createVariantCreator = function createVariantCreator(updateMetadata) {
+            return function(transform, file, metadata) {
+                return transform(file, updateMetadata ? updateMetadata(metadata) : metadata);
+            };
+        };
+
+        var isDefaultCrop = function isDefaultCrop(crop) {
+            return (
+                crop.aspectRatio === null &&
+                crop.rotation === 0 &&
+                crop.zoom === 1 &&
+                crop.center &&
+                crop.center.x === 0.5 &&
+                crop.center.y === 0.5 &&
+                crop.flip &&
+                crop.flip.horizontal === false &&
+                crop.flip.vertical === false
+            );
+        };
+
+        /**
+         * Filters
+         */
+        addFilter('SHOULD_PREPARE_OUTPUT', function(shouldPrepareOutput, _ref2) {
+            var query = _ref2.query;
+            return new Promise(function(resolve) {
+                // If is not async should prepare now
+                resolve(!query('IS_ASYNC'));
+            });
+        });
+
+        var shouldTransformFile = function shouldTransformFile(query, file, item) {
+            return new Promise(function(resolve) {
+                if (
+                    !query('GET_ALLOW_IMAGE_TRANSFORM') ||
+                    item.archived ||
+                    !isFile(file) ||
+                    !isImage(file)
+                ) {
+                    return resolve(false);
+                }
+
+                // if size can't be read this browser doesn't support image
+                getImageSize(file)
+                    .then(function() {
+                        var fn = query('GET_IMAGE_TRANSFORM_IMAGE_FILTER');
+                        if (fn) {
+                            var filterResult = fn(file);
+                            if (filterResult == null) {
+                                // undefined or null
+                                return handleRevert(true);
+                            }
+                            if (typeof filterResult === 'boolean') {
+                                return resolve(filterResult);
+                            }
+                            if (typeof filterResult.then === 'function') {
+                                return filterResult.then(resolve);
+                            }
+                        }
+
+                        resolve(true);
+                    })
+                    .catch(function(err) {
+                        resolve(false);
+                    });
+            });
+        };
+
+        addFilter('DID_CREATE_ITEM', function(item, _ref3) {
+            var query = _ref3.query,
+                dispatch = _ref3.dispatch;
+            if (!query('GET_ALLOW_IMAGE_TRANSFORM')) return;
+
+            item.extend('requestPrepare', function() {
+                return new Promise(function(resolve, reject) {
+                    dispatch(
+                        'REQUEST_PREPARE_OUTPUT',
+                        {
+                            query: item.id,
+                            item: item,
+                            success: resolve,
+                            failure: reject,
+                        },
+
+                        true
+                    );
+                });
+            });
+        });
+
+        // subscribe to file transformations
+        addFilter('PREPARE_OUTPUT', function(file, _ref4) {
+            var query = _ref4.query,
+                item = _ref4.item;
+            return new Promise(function(resolve) {
+                shouldTransformFile(query, file, item).then(function(shouldTransform) {
+                    // no need to transform, exit
+                    if (!shouldTransform) return resolve(file);
+
+                    // get variants
+                    var variants = [];
+
+                    // add original file
+                    if (query('GET_IMAGE_TRANSFORM_VARIANTS_INCLUDE_ORIGINAL')) {
+                        variants.push(function() {
+                            return new Promise(function(resolve) {
+                                resolve({
+                                    name: query('GET_IMAGE_TRANSFORM_VARIANTS_ORIGINAL_NAME'),
+                                    file: file,
+                                });
+                            });
+                        });
+                    }
+
+                    // add default output version if output default set to true or if no variants defined
+                    if (query('GET_IMAGE_TRANSFORM_VARIANTS_INCLUDE_DEFAULT')) {
+                        variants.push(function(transform, file, metadata) {
+                            return new Promise(function(resolve) {
+                                transform(file, metadata).then(function(file) {
+                                    return resolve({
+                                        name: query('GET_IMAGE_TRANSFORM_VARIANTS_DEFAULT_NAME'),
+
+                                        file: file,
+                                    });
+                                });
+                            });
+                        });
+                    }
+
+                    // get other variants
+                    var variantsDefinition = query('GET_IMAGE_TRANSFORM_VARIANTS') || {};
+                    forin(variantsDefinition, function(key, fn) {
+                        var createVariant = createVariantCreator(fn);
+                        variants.push(function(transform, file, metadata) {
+                            return new Promise(function(resolve) {
+                                createVariant(transform, file, metadata).then(function(file) {
+                                    return resolve({ name: key, file: file });
+                                });
+                            });
+                        });
+                    });
+
+                    // output format (quality 0 => 100)
+                    var qualityAsPercentage = query('GET_IMAGE_TRANSFORM_OUTPUT_QUALITY');
+                    var qualityMode = query('GET_IMAGE_TRANSFORM_OUTPUT_QUALITY_MODE');
+                    var quality = qualityAsPercentage === null ? null : qualityAsPercentage / 100;
+                    var type = query('GET_IMAGE_TRANSFORM_OUTPUT_MIME_TYPE');
+                    var clientTransforms =
+                        query('GET_IMAGE_TRANSFORM_CLIENT_TRANSFORMS') || TRANSFORM_LIST;
+
+                    // update transform metadata object
+                    item.setMetadata(
+                        'output',
+                        {
+                            type: type,
+                            quality: quality,
+                            client: clientTransforms,
+                        },
+
+                        true
+                    );
+
+                    // the function that is used to apply the file transformations
+                    var transform = function transform(file, metadata) {
+                        return new Promise(function(resolve, reject) {
+                            var filteredMetadata = Object.assign({}, metadata);
+
+                            Object.keys(filteredMetadata)
+                                .filter(function(instruction) {
+                                    return instruction !== 'exif';
+                                })
+                                .forEach(function(instruction) {
+                                    // if not in list, remove from object, the instruction will be handled by the server
+                                    if (clientTransforms.indexOf(instruction) === -1) {
+                                        delete filteredMetadata[instruction];
+                                    }
+                                });
+                            var resize = filteredMetadata.resize,
+                                exif = filteredMetadata.exif,
+                                output = filteredMetadata.output,
+                                crop = filteredMetadata.crop,
+                                filter = filteredMetadata.filter,
+                                markup = filteredMetadata.markup;
+
+                            var instructions = {
+                                image: {
+                                    orientation: exif ? exif.orientation : null,
+                                },
+
+                                output:
+                                    output &&
+                                    (output.type ||
+                                        typeof output.quality === 'number' ||
+                                        output.background)
+                                        ? {
+                                              type: output.type,
+                                              quality:
+                                                  typeof output.quality === 'number'
+                                                      ? output.quality * 100
+                                                      : null,
+                                              background:
+                                                  output.background ||
+                                                  query(
+                                                      'GET_IMAGE_TRANSFORM_CANVAS_BACKGROUND_COLOR'
+                                                  ) ||
+                                                  null,
+                                          }
+                                        : undefined,
+                                size:
+                                    resize && (resize.size.width || resize.size.height)
+                                        ? Object.assign(
+                                              {
+                                                  mode: resize.mode,
+                                                  upscale: resize.upscale,
+                                              },
+                                              resize.size
+                                          )
+                                        : undefined,
+                                crop:
+                                    crop && !isDefaultCrop(crop)
+                                        ? Object.assign(
+                                              {},
+
+                                              crop
+                                          )
+                                        : undefined,
+                                markup: markup && markup.length ? markup.map(prepareMarkup) : [],
+                                filter: filter,
+                            };
+
+                            if (instructions.output) {
+                                // determine if file type will change
+                                var willChangeType = output.type
+                                    ? // type set
+                                      output.type !== file.type
+                                    : // type not set
+                                      false;
+
+                                var canChangeQuality = /\/jpe?g$/.test(file.type);
+                                var willChangeQuality =
+                                    output.quality !== null
+                                        ? // quality set
+                                          canChangeQuality && qualityMode === 'always'
+                                        : // quality not set
+                                          false;
+
+                                // determine if file data will be modified
+                                var willModifyImageData = !!(
+                                    instructions.size ||
+                                    instructions.crop ||
+                                    instructions.filter ||
+                                    willChangeType ||
+                                    willChangeQuality
+                                );
+
+                                // if we're not modifying the image data then we don't have to modify the output
+                                if (!willModifyImageData) return resolve(file);
+                            }
+
+                            var options = {
+                                beforeCreateBlob: query('GET_IMAGE_TRANSFORM_BEFORE_CREATE_BLOB'),
+                                afterCreateBlob: query('GET_IMAGE_TRANSFORM_AFTER_CREATE_BLOB'),
+                                canvasMemoryLimit: query('GET_IMAGE_TRANSFORM_CANVAS_MEMORY_LIMIT'),
+                                stripImageHead: query(
+                                    'GET_IMAGE_TRANSFORM_OUTPUT_STRIP_IMAGE_HEAD'
+                                ),
+                            };
+
+                            transformImage(file, instructions, options)
+                                .then(function(blob) {
+                                    // set file object
+                                    var out = getFileFromBlob(
+                                        blob,
+                                        // rename the original filename to match the mime type of the output image
+                                        renameFileToMatchMimeType(
+                                            file.name,
+                                            getValidOutputMimeType(blob.type)
+                                        )
+                                    );
+
+                                    resolve(out);
+                                })
+                                .catch(reject);
+                        });
+                    };
+
+                    // start creating variants
+                    var variantPromises = variants.map(function(create) {
+                        return create(transform, file, item.getMetadata());
+                    });
+
+                    // wait for results
+                    Promise.all(variantPromises).then(function(files) {
+                        // if single file object in array, return the single file object else, return array of
+                        resolve(
+                            files.length === 1 && files[0].name === null
+                                ? // return the File object
+                                  files[0].file
+                                : // return an array of files { name:'name', file:File }
+                                  files
+                        );
+                    });
+                });
+            });
+        });
+
+        // Expose plugin options
+        return {
+            options: {
+                allowImageTransform: [true, Type.BOOLEAN],
+
+                // filter images to transform
+                imageTransformImageFilter: [null, Type.FUNCTION],
+
+                // null, 'image/jpeg', 'image/png'
+                imageTransformOutputMimeType: [null, Type.STRING],
+
+                // null, 0 - 100
+                imageTransformOutputQuality: [null, Type.INT],
+
+                // set to false to copy image exif data to output
+                imageTransformOutputStripImageHead: [true, Type.BOOLEAN],
+
+                // only apply transforms in this list
+                imageTransformClientTransforms: [null, Type.ARRAY],
+
+                // only apply output quality when a transform is required
+                imageTransformOutputQualityMode: ['always', Type.STRING],
+                // 'always'
+                // 'optional'
+                // 'mismatch' (future feature, only applied if quality differs from input)
+
+                // get image transform variants
+                imageTransformVariants: [null, Type.OBJECT],
+
+                // should we post the default transformed file
+                imageTransformVariantsIncludeDefault: [true, Type.BOOLEAN],
+
+                // which name to prefix the default transformed file with
+                imageTransformVariantsDefaultName: [null, Type.STRING],
+
+                // should we post the original file
+                imageTransformVariantsIncludeOriginal: [false, Type.BOOLEAN],
+
+                // which name to prefix the original file with
+                imageTransformVariantsOriginalName: ['original_', Type.STRING],
+
+                // called before creating the blob, receives canvas, expects promise resolve with canvas
+                imageTransformBeforeCreateBlob: [null, Type.FUNCTION],
+
+                // expects promise resolved with blob
+                imageTransformAfterCreateBlob: [null, Type.FUNCTION],
+
+                // canvas memory limit
+                imageTransformCanvasMemoryLimit: [
+                    isBrowser && isIOS ? 4096 * 4096 : null,
+                    Type.INT,
+                ],
+
+                // background image of the output canvas
+                imageTransformCanvasBackgroundColor: [null, Type.STRING],
+            },
+        };
+    };
+
+    // fire pluginloaded event if running in browser, this allows registering the plugin when using async script tags
+    if (isBrowser) {
+        document.dispatchEvent(new CustomEvent('FilePond:pluginloaded', { detail: plugin }));
+    }
+
+    return plugin;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js ***!
+  \******************************************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * FilePondPluginImageValidateSize 1.2.7
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/* eslint-disable */
+
+(function(global, factory) {
+   true
+    ? (module.exports = factory())
+    : 0;
+})(this, function() {
+  'use strict';
+
+  // test if file is of type image
+  var isImage = function isImage(file) {
+    return /^image/.test(file.type);
+  };
+
+  var getImageSize = function getImageSize(file) {
+    return new Promise(function(resolve, reject) {
+      var image = document.createElement('img');
+      image.src = URL.createObjectURL(file);
+      image.onerror = function(err) {
+        clearInterval(intervalId);
+        reject(err);
+      };
+      var intervalId = setInterval(function() {
+        if (image.naturalWidth && image.naturalHeight) {
+          clearInterval(intervalId);
+          URL.revokeObjectURL(image.src);
+          resolve({
+            width: image.naturalWidth,
+            height: image.naturalHeight
+          });
+        }
+      }, 1);
+    });
+  };
+
+  var plugin = function plugin(_ref) {
+    var addFilter = _ref.addFilter,
+      utils = _ref.utils;
+    // get quick reference to Type utils
+    var Type = utils.Type,
+      replaceInString = utils.replaceInString,
+      isFile = utils.isFile;
+
+    // required file size
+    var validateFile = function validateFile(file, bounds, measure) {
+      return new Promise(function(resolve, reject) {
+        var onReceiveSize = function onReceiveSize(_ref2) {
+          var width = _ref2.width,
+            height = _ref2.height;
+          var minWidth = bounds.minWidth,
+            minHeight = bounds.minHeight,
+            maxWidth = bounds.maxWidth,
+            maxHeight = bounds.maxHeight,
+            minResolution = bounds.minResolution,
+            maxResolution = bounds.maxResolution;
+
+          var resolution = width * height;
+
+          // validation result
+          if (width < minWidth || height < minHeight) {
+            reject('TOO_SMALL');
+          } else if (width > maxWidth || height > maxHeight) {
+            reject('TOO_BIG');
+          } else if (minResolution !== null && resolution < minResolution) {
+            reject('TOO_LOW_RES');
+          } else if (maxResolution !== null && resolution > maxResolution) {
+            reject('TOO_HIGH_RES');
+          }
+
+          // all is well
+          resolve();
+        };
+
+        getImageSize(file)
+          .then(onReceiveSize)
+          .catch(function() {
+            // no custom measure method supplied, exit here
+            if (!measure) {
+              reject();
+              return;
+            }
+
+            // try fallback if defined by user, else reject
+            measure(file, bounds)
+              .then(onReceiveSize)
+              .catch(function() {
+                return reject();
+              });
+          });
+      });
+    };
+
+    // called for each file that is loaded
+    // right before it is set to the item state
+    // should return a promise
+    addFilter('LOAD_FILE', function(file, _ref3) {
+      var query = _ref3.query;
+      return new Promise(function(resolve, reject) {
+        if (
+          !isFile(file) ||
+          !isImage(file) ||
+          !query('GET_ALLOW_IMAGE_VALIDATE_SIZE')
+        ) {
+          resolve(file);
+          return;
+        }
+
+        // get required dimensions
+        var bounds = {
+          minWidth: query('GET_IMAGE_VALIDATE_SIZE_MIN_WIDTH'),
+          minHeight: query('GET_IMAGE_VALIDATE_SIZE_MIN_HEIGHT'),
+          maxWidth: query('GET_IMAGE_VALIDATE_SIZE_MAX_WIDTH'),
+          maxHeight: query('GET_IMAGE_VALIDATE_SIZE_MAX_HEIGHT'),
+          minResolution: query('GET_IMAGE_VALIDATE_SIZE_MIN_RESOLUTION'),
+          maxResolution: query('GET_IMAGE_VALIDATE_SIZE_MAX_RESOLUTION')
+        };
+
+        // get optional custom measure function
+        var measure = query('GET_IMAGE_VALIDATE_SIZE_MEASURE');
+
+        validateFile(file, bounds, measure)
+          .then(function() {
+            resolve(file);
+          })
+          .catch(function(error) {
+            var status = error
+              ? {
+                  TOO_SMALL: {
+                    label: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_IMAGE_SIZE_TOO_SMALL'
+                    ),
+                    details: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_EXPECTED_MIN_SIZE'
+                    )
+                  },
+
+                  TOO_BIG: {
+                    label: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_IMAGE_SIZE_TOO_BIG'
+                    ),
+                    details: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_EXPECTED_MAX_SIZE'
+                    )
+                  },
+
+                  TOO_LOW_RES: {
+                    label: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_IMAGE_RESOLUTION_TOO_LOW'
+                    ),
+                    details: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_EXPECTED_MIN_RESOLUTION'
+                    )
+                  },
+
+                  TOO_HIGH_RES: {
+                    label: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_IMAGE_RESOLUTION_TOO_HIGH'
+                    ),
+                    details: query(
+                      'GET_IMAGE_VALIDATE_SIZE_LABEL_EXPECTED_MAX_RESOLUTION'
+                    )
+                  }
+                }[error]
+              : {
+                  label: query('GET_IMAGE_VALIDATE_SIZE_LABEL_FORMAT_ERROR'),
+                  details: file.type
+                };
+
+            reject({
+              status: {
+                main: status.label,
+                sub: error
+                  ? replaceInString(status.details, bounds)
+                  : status.details
+              }
+            });
+          });
+      });
+    });
+
+    // expose plugin
+    return {
+      // default options
+      options: {
+        // Enable or disable file type validation
+        allowImageValidateSize: [true, Type.BOOLEAN],
+
+        // Error thrown when image can not be loaded
+        imageValidateSizeLabelFormatError: [
+          'Image type not supported',
+          Type.STRING
+        ],
+
+        // Custom function to use as image measure
+        imageValidateSizeMeasure: [null, Type.FUNCTION],
+
+        // Required amount of pixels in the image
+        imageValidateSizeMinResolution: [null, Type.INT],
+        imageValidateSizeMaxResolution: [null, Type.INT],
+        imageValidateSizeLabelImageResolutionTooLow: [
+          'Resolution is too low',
+          Type.STRING
+        ],
+        imageValidateSizeLabelImageResolutionTooHigh: [
+          'Resolution is too high',
+          Type.STRING
+        ],
+        imageValidateSizeLabelExpectedMinResolution: [
+          'Minimum resolution is {minResolution}',
+          Type.STRING
+        ],
+        imageValidateSizeLabelExpectedMaxResolution: [
+          'Maximum resolution is {maxResolution}',
+          Type.STRING
+        ],
+
+        // Required dimensions
+        imageValidateSizeMinWidth: [1, Type.INT], // needs to be at least one pixel
+        imageValidateSizeMinHeight: [1, Type.INT],
+        imageValidateSizeMaxWidth: [65535, Type.INT], // maximum size of JPEG, fine for now I guess
+        imageValidateSizeMaxHeight: [65535, Type.INT],
+
+        // Label to show when an image is too small or image is too big
+        imageValidateSizeLabelImageSizeTooSmall: [
+          'Image is too small',
+          Type.STRING
+        ],
+        imageValidateSizeLabelImageSizeTooBig: [
+          'Image is too big',
+          Type.STRING
+        ],
+        imageValidateSizeLabelExpectedMinSize: [
+          'Minimum size is {minWidth} × {minHeight}',
+          Type.STRING
+        ],
+        imageValidateSizeLabelExpectedMaxSize: [
+          'Maximum size is {maxWidth} × {maxHeight}',
+          Type.STRING
         ]
       }
     };
@@ -38106,6 +46485,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 __webpack_require__(/*! ./filepond */ "./resources/js/filepond.js");
+__webpack_require__(/*! ./cropperjs */ "./resources/js/cropperjs.js");
 window.Alpine = (alpinejs__WEBPACK_IMPORTED_MODULE_0___default());
 alpinejs__WEBPACK_IMPORTED_MODULE_0___default().start();
 
@@ -38147,6 +46527,23 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/cropperjs.js":
+/*!***********************************!*\
+  !*** ./resources/js/cropperjs.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var cropperjs_dist_cropper_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cropperjs/dist/cropper.css */ "./node_modules/cropperjs/dist/cropper.css");
+/* harmony import */ var cropperjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! cropperjs */ "./node_modules/cropperjs/dist/cropper.js");
+/* harmony import */ var cropperjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(cropperjs__WEBPACK_IMPORTED_MODULE_1__);
+
+
+window.Cropper = (cropperjs__WEBPACK_IMPORTED_MODULE_1___default());
+
+/***/ }),
+
 /***/ "./resources/js/filepond.js":
 /*!**********************************!*\
   !*** ./resources/js/filepond.js ***!
@@ -38163,6 +46560,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! filepond-plugin-image-preview */ "./node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js");
 /* harmony import */ var filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! filepond-plugin-file-validate-size */ "./node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js");
+/* harmony import */ var filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var filepond_plugin_image_edit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! filepond-plugin-image-edit */ "./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js");
+/* harmony import */ var filepond_plugin_image_edit__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_edit__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! filepond-plugin-image-crop */ "./node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js");
+/* harmony import */ var filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! filepond-plugin-image-transform */ "./node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js");
+/* harmony import */ var filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var filepond_plugin_image_resize__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! filepond-plugin-image-resize */ "./node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js");
+/* harmony import */ var filepond_plugin_image_resize__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_resize__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var filepond_plugin_image_validate_size__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! filepond-plugin-image-validate-size */ "./node_modules/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js");
+/* harmony import */ var filepond_plugin_image_validate_size__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_validate_size__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var filepond_plugin_image_edit_dist_filepond_plugin_image_edit_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css */ "./node_modules/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css");
 
 
 
@@ -38171,7 +46581,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-filepond__WEBPACK_IMPORTED_MODULE_0__.registerPlugin((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_3___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_4___default()));
+
+
+
+
+
+
+
+filepond__WEBPACK_IMPORTED_MODULE_0__.registerPlugin((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_3___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_4___default()), (filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_5___default()), (filepond_plugin_image_edit__WEBPACK_IMPORTED_MODULE_6___default()), (filepond_plugin_image_crop__WEBPACK_IMPORTED_MODULE_7___default()), (filepond_plugin_image_transform__WEBPACK_IMPORTED_MODULE_8___default()), (filepond_plugin_image_resize__WEBPACK_IMPORTED_MODULE_9___default()), (filepond_plugin_image_validate_size__WEBPACK_IMPORTED_MODULE_10___default()));
 window.FilePond = filepond__WEBPACK_IMPORTED_MODULE_0__;
 
 /***/ })
