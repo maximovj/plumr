@@ -77,6 +77,7 @@
     <div
     x-ref="mainCover"
     x-show="showActions"
+    wire:ignore
     class="flex flex-col items-center gap-6 w-full animate__animated animate__fast animate__fadeIn">
 
         <!-- Canvas responsive -->
