@@ -1,5 +1,8 @@
-<div x-data="photoCropper()"
-    x-init="$watch('croppedPhoto', value => @this.set('croppedPhoto', value))"
+<div x-data="coverEditor()"
+    x-init="
+    $watch('croppedPhoto', value => @this.set('croppedPhoto', value));
+    $watch('mode', () => { draw(); updatePreview(); });
+    "
     class="space-y-6 max-w-full mx-auto p-6 bg-white rounded-2xl shadow-lg">
 
     <!-- Header -->
@@ -20,17 +23,11 @@
         </div>
     </div>
 
-    <!-- Carga de imagen -->
-    <div class="flex flex-col justify-center items-center content-center gap-6 ">
+    <!-- Botón flotante central -->
+    <div class="flex flex-col justify-center items-center content-center gap-4">
         <!-- Vista previa circular con glow -->
-        <div class="flex flex-col items-center gap-3 w-40 p-4 cursor-pointer">
-            <span class="text-sm font-semibold text-gray-800">Vista previa</span>
-
-            <div class="relative w-36 h-36 rounded-full overflow-hidden shadow-lg transition-shadow duration-300 group hover:shadow-[0_0_20px_5px_rgba(59,130,246,0.5)]">
-                <!-- Canvas circular actualizado -->
-                <canvas id="preview" width="150" height="150" class="w-full h-full rounded-full border-2 border-gray-300 shadow-inner"></canvas>
-
-                <!-- Botón flotante central -->
+        <div class="flex flex-col items-center gap-3 w-40 cursor-pointer">
+            <div class="relative w-20 h-20 rounded-full overflow-hidden shadow-lg transition-shadow duration-300 group">
                 <label class="absolute inset-0 flex items-center justify-center cursor-pointer">
                     <div class="w-10 h-10 bg-blue-500 rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transform hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,23 +37,39 @@
                     <input type="file" accept="image/*" @change="loadImage" class="hidden">
                 </label>
             </div>
-
-            <p class="text-xs text-gray-500 text-center mt-1">
-                Haz click en el centro para subir tu imagen.
-            </p>
         </div>
+        <p class="text-xs text-gray-500 text-center">
+            Haz click en el centro para subir tu imagen.
+        </p>
+    </div>
 
-        <!-- Canvas principal -->
-        <div class="relative w-full border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50" style="width: 1256px;height:640px;">
+    <!-- Selector de modo -->
+    <div class="flex gap-4">
+        <button @click="mode = 'auto'"
+            :class="mode==='auto' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
+            class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
+            Ajustar automáticamente
+        </button>
+        <button @click="mode = 'crop'"
+            :class="mode==='crop' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'"
+            class="px-4 py-2 rounded-lg shadow hover:bg-blue-600 hover:text-white transition">
+            Recortar manualmente
+        </button>
+    </div>
+
+    <!-- Área principal -->
+    <div class="flex flex-col items-center gap-4">
+        <!-- Canvas -->
+        <div class="relative border border-gray-300 rounded-xl overflow-hidden shadow-inner bg-gray-50"
+             style="width:1256px; height:640px;">
             <canvas id="canvas" width="1256" height="640"></canvas>
 
-            <!-- Caja azul -->
+            <!-- Caja de recorte solo en modo crop -->
             <div class="absolute border-2 border-blue-500 bg-blue-200 bg-opacity-20 rounded"
-                x-show="image"
+                x-show="image && mode==='crop'"
                 :style="'left:' + cropBox.x + 'px; top:' + cropBox.y + 'px; width:' + cropBox.w + 'px; height:' + cropBox.h + 'px;'"
                 @mousedown="startDrag($event)">
 
-                <!-- Esquinas de redimensionamiento -->
                 <template x-for="dir in ['nw','ne','sw','se']">
                     <div :class="{
                             'nw': 'absolute w-4 h-4 bg-blue-500 cursor-nw-resize -top-2 -left-2 rounded-full',
@@ -67,14 +80,22 @@
                         @mousedown.stop="startResize($event, dir)"></div>
                 </template>
             </div>
+
+        </div>
+
+        <!-- Vista previa final (628x160) -->
+        <div class="flex flex-col items-center">
+            <span class="text-sm font-semibold text-gray-800">Vista previa final</span>
+            <canvas id="preview" width="628" height="160"
+                class="mt-2 border rounded-lg shadow-inner"></canvas>
         </div>
     </div>
 
-    <!-- Botón de acción -->
+    <!-- Botón guardar -->
     <div class="flex justify-start">
-        <button @click.prevent="cropImage"
+        <button @click.prevent="saveCover"
             class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded">
-            Guardar foto
+            Guardar portada
         </button>
     </div>
 
@@ -83,19 +104,14 @@
 </div>
 
 <script>
-function photoCropper() {
+function coverEditor() {
     return {
-        canvas: null,
-        ctx: null,
-        image: null,
-        preview: null,
-        croppedPhoto: @entangle('croppedPhoto'),
-        dragging: false,
-        cropEnable: false,
-        resizing: false,
-        resizeDir: null,
-        startX: 0,
-        startY: 0,
+        canvas: null, ctx: null, preview: null,
+        image: null, croppedPhoto: @entangle('croppedPhoto'),
+        mode: 'auto',
+
+        dragging: false, resizing: false, resizeDir: null,
+        startX: 0, startY: 0,
         cropBox: { x: 50, y: 50, w: 628, h: 160 },
 
         loadImage(event) {
@@ -118,19 +134,17 @@ function photoCropper() {
         },
 
         draw() {
-            if (!this.ctx) return;
+            if (!this.ctx || !this.image) return;
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
             this.updatePreview();
         },
 
+        // CropBox controls
         startDrag(e) { this.dragging = true; this.startX = e.clientX; this.startY = e.clientY; },
-        startResize(e, dir) {
-            if(!this.cropEnable) return;
-            this.resizing = true; this.resizeDir = dir; this.startX = e.clientX; this.startY = e.clientY;
-        },
-
+        startResize(e, dir) { this.resizing = true; this.resizeDir = dir; this.startX = e.clientX; this.startY = e.clientY; },
         onMove(e) {
+            if (this.mode !== 'crop') return;
             if (this.dragging) {
                 const dx = e.clientX - this.startX, dy = e.clientY - this.startY;
                 this.cropBox.x += dx; this.cropBox.y += dy;
@@ -148,28 +162,24 @@ function photoCropper() {
                     case 'se': this.cropBox.w += dx; this.cropBox.h += dy; break;
                 }
                 this.cropBox.w = Math.max(50, this.cropBox.w); this.cropBox.h = Math.max(50, this.cropBox.h);
-                this.cropBox.x = Math.max(0, this.cropBox.x); this.cropBox.y = Math.max(0, this.cropBox.y);
-                if (this.cropBox.x + this.cropBox.w > this.canvas.width) this.cropBox.w = this.canvas.width - this.cropBox.x;
-                if (this.cropBox.y + this.cropBox.h > this.canvas.height) this.cropBox.h = this.canvas.height - this.cropBox.y;
                 this.startX = e.clientX; this.startY = e.clientY;
                 this.draw();
             }
         },
-
         stopAction() { this.dragging = false; this.resizing = false; },
+
         updatePreview() {
             if (!this.preview) return;
-            const { x, y, w, h } = this.cropBox;
-            this.preview.clearRect(0, 0, 150, 150);
-            this.preview.drawImage(this.canvas, x, y, w, h, 0, 0, 150, 150);
+            const { x, y, w, h } = this.mode === 'crop'
+                ? this.cropBox
+                : { x:0, y:0, w:this.canvas.width, h:this.canvas.height };
+
+            this.preview.clearRect(0, 0, 628, 160);
+            this.preview.drawImage(this.canvas, x, y, w, h, 0, 0, 628, 160);
         },
 
-        cropImage() {
-            const { x, y, w, h } = this.cropBox;
-            const tmpCanvas = document.createElement('canvas');
-            tmpCanvas.width = w; tmpCanvas.height = h;
-            tmpCanvas.getContext('2d').drawImage(this.canvas, x, y, w, h, 0, 0, w, h);
-            this.croppedPhoto = tmpCanvas.toDataURL('image/png');
+        saveCover() {
+            this.croppedPhoto = document.getElementById('preview').toDataURL('image/png');
             @this.save();
         }
     }
