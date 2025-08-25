@@ -2,8 +2,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet" />
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
-    <script defer src="{{ mix('js/app.js') }}"></script>
+    <script defer src="{{ asset('js/alpine.js') }}"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +16,9 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
 
-    <title>Document</title>
+    <title>Plumr</title>
+
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
+
     @livewireStyles
 </head>
