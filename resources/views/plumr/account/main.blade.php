@@ -24,8 +24,6 @@
                                 <i class="bi bi-gear"></i>
                             </a>
                         @endif
-
-                        @livewire('list-followers', ['user' => $user])
                     </div>
                 </div>
 
@@ -63,7 +61,7 @@
             </div>
 
             <!-- Información principal -->
-            <div class="mt-16 px-6 pb-4">
+            <div class="mt-16 px-6">
                 <p class="font-bold text-xl">{{ $profile->fullname }}</p>
                 <h1 class="text-sm text-gray-500">@<span class="font-medium">{{ $user->username }}</span></h1>
 
@@ -82,7 +80,7 @@
                     @isset($profile->address)<span><i class="bi bi-house-fill"></i> {{ $profile->address }}</span>@endisset
                 </div>
 
-
+                @livewire('list-followers', ['user' => $user])
             </div>
 
             <hr class="my-2">
