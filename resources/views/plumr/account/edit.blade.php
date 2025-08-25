@@ -54,17 +54,13 @@
                         </button>
                     </form>
 
-                    <button @click="confirm('¿Deseas eliminar tu cuenta?') && console.log('Eliminar')"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500">
-                        Eliminar cuenta
-                    </button>
+                    @livewire('delete-account')
                 </div>
             </div>
 
             <section>
                 @livewire('account-update-password')
             </section>
-
         </div>
     </x-main>
 @endsection
