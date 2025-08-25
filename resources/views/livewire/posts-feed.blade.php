@@ -39,17 +39,24 @@
         @foreach ($posts as $post)
             <div class="border-2 border-gray-100 rounded-lg mt-4">
                 <article class="p-4">
-                    <section class="flex flex-row justify-start gap-2 py-2">
-                        @if($post->author[0]->profile->photo)
-                        @else
+                    <section class="flex flex-row justify-between gap-2 py-2 items-center">
+                        <div class="flex items-end gap-2">
                             <a href="{{ route('main_account', ['user' => $post->author[0]->username]) }}">
-                                <div
-                                class="w-6 h-6 bg-white rounded-full text-center border-2 border-gray-400
-                                        flex items-center justify-center">
-                                {{ strtoupper(mb_substr($post->author[0]->username, 0, 1)) }}
-                                </div>
+                            <div
+                                class="w-10 h-10 bg-contain bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200
+                                                    flex items-center justify-center shadow-sm
+                                                    transform transition ease-out duration-700
+                                                    hover:-translate-y-1.5 hover:shadow-md"
+                                style="background-image: url('{{ asset($post->author->first()->profile->photo_url) }}')">
+                            </div>
                             </a>
-                        @endif
+                            <p class="flex flex-col">
+                                <span class="text-black text-xs font-bold">{{ $post->author->first()->profile->fullname }}</span>
+                                <a href="{{ route('main_account', [$post->author->first()]) }}">
+                                    <span class="text-black text-xs">{{ '@'.$post->author->first()->username }}</span>
+                                </a>
+                            </p>
+                        </div>
 
                         <a href="{{ route("posts.show", [$post->author[0]->username, $post]) }}"><i class="bi bi-chat-square-quote"></i></a>
                     </section>
