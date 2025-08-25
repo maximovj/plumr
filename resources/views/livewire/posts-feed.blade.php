@@ -43,7 +43,7 @@
                         <div class="flex items-end gap-2">
                             <a href="{{ route('main_account', ['user' => $post->author[0]->username]) }}">
                             <div
-                                class="w-10 h-10 bg-contain bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200
+                                class="w-10 h-10 bg-cover bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200
                                                     flex items-center justify-center shadow-sm
                                                     transform transition ease-out duration-700
                                                     hover:-translate-y-1.5 hover:shadow-md"

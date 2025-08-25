@@ -11,10 +11,20 @@
             <div class="relative h-40">
                 <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ $user->profile->cover_url }}')"></div>
 
-                <!-- Foto de usuario -->
                 <div class="absolute -bottom-12 left-6">
+                    <!-- Foto de usuario -->
                     <img src="{{ $user->profile->photo_url }}" alt="Foto de usuario"
-                        class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
+                    class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
+
+                    <!-- Botones de acciones (solo para el dueño) -->
+                    <div class="absolute -bottom-1 right-1  mt-4 flex justify-between items-center gap-2">
+                        @if(Auth::check() && Auth::user()->id === $user->id)
+                            <a href="{{ route('account.edit', ['user' => $user]) }}"
+                                class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
+                                <i class="bi bi-gear"></i>
+                            </a>
+                        @endif
+                    </div>
                 </div>
 
                 <!-- Botón de acciones (solo para el dueño) -->
@@ -51,7 +61,7 @@
             </div>
 
             <!-- Información principal -->
-            <div class="mt-16 px-6 pb-4">
+            <div class="mt-16 px-6">
                 <p class="font-bold text-xl">{{ $profile->fullname }}</p>
                 <h1 class="text-sm text-gray-500">@<span class="font-medium">{{ $user->username }}</span></h1>
 
@@ -70,17 +80,7 @@
                     @isset($profile->address)<span><i class="bi bi-house-fill"></i> {{ $profile->address }}</span>@endisset
                 </div>
 
-                <!-- Botones de acciones (solo para el dueño) -->
-                <div class="mt-4 flex justify-between items-center gap-2">
-                    @if(Auth::check() && Auth::user()->id === $user->id)
-                        <a href="{{ route('account.edit', ['user' => $user]) }}"
-                            class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
-                            <i class="bi bi-gear"></i>
-                        </a>
-                    @endif
-
-                    @livewire('list-followers', ['user' => $user])
-                </div>
+                @livewire('list-followers', ['user' => $user])
             </div>
 
             <hr class="my-2">

@@ -1,7 +1,7 @@
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
 
 require('./bootstrap');
 
-window.Alpine = Alpine;
+// window.Alpine = Alpine;
 
-Alpine.start();
+// Alpine.start();

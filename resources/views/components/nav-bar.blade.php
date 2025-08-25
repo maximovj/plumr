@@ -12,19 +12,19 @@
                 <div class="flex flex-row gap-2 justify-between items-end">
                     <a href="{{ route('main_account', ['user' => auth()->user()->username]) }}">
                         <div class="flex flex-col text-right">
-                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-                            <i class="bi bi-at"></i>{{ auth()->user()->username }}
-                            </span>
                             <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-xs">
                             {{ auth()->user()->profile->fullname }}
+                            </span>
+                            <span class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+                            <i class="bi bi-at"></i>{{ auth()->user()->username }}
                             </span>
                         </div>
                     </a>
                     <a href="{{ route('account.edit', ['user' => $user]) }}">
-                        <div
-                        class="w-10 h-10 bg-white rounded-full text-center border-2 border-gray-400 flex items-center justify-center">
-                            {{ strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
-                        </div>
+                            <div
+                                class="w-10 h-10 bg-cover bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200 flex items-center justify-center shadow-sm"
+                                style="background-image: url('{{ asset(auth()->user()->profile->photo_url) }}')">
+                            </div>
                     </a>
                 </div>
         </div>

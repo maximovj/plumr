@@ -12,10 +12,20 @@
     @yield('main')
     <x-footer></x-footer>
 
+
+    {{-- JS compilado con Mix --}}
+    <script defer src="{{ mix('js/app.js') }}"></script>
+
     {{-- Quill is a modern rich text editor built for compatibility and extensibility.  --}}
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/scrapooo/quill-resize-module@1.0.2/dist/quill-resize-module.js"></script>
 
+    <script>
+        window.addEventListener('load', function() {
+            window.Alpine = Alpine;
+            Alpine.start();
+        });
+    </script>
     @stack('script')
 </body>
 </html>

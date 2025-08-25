@@ -42,6 +42,7 @@
 
                 {{-- Publicación principal --}}
                 <div class="bg-white rounded-xl shadow p-6 space-y-4">
+                    @owner($user)
                     <div class="flex justify-between items-center">
                         <h2 class="text-lg font-bold text-gray-800">Mi publicación</h2>
                         <div class="flex gap-2 items-center">
@@ -50,31 +51,50 @@
                             </a>
 
                             {{-- Acciones solo para el dueño --}}
-                            @owner($user)
-                                <button x-data
-                                    x-on:click="Livewire.emit('postModalForm', {
-                                        mode: 'edit',
-                                        postId: '{{ $post->id }}',
-                                        redirect: '{{ route('posts.index', [$user]) }}'
-                                    })"
-                                    class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-yellow-200 transition">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </button>
-
-                                <button x-data
-                                    x-on:click="Livewire.emit('confirmDeleteModelClass',
-                                        'App\\Models\\Post', // Clase del modelo
-                                        {{ $post->id }},     // ID del registro
-                                        '{{ route('posts.index', $user) }}', // Redirect (opcional)
-                                        '¿Eliminar publicación?',  // Título (opcional)
-                                        'Esta publicación se eliminará permanentemente.' // Mensaje (opcional)
-                                    )"
-                                    class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-red-200 transition">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </button>
-                            @endowner
+                            <button x-data
+                                x-on:click="Livewire.emit('postModalForm', {
+                                    mode: 'edit',
+                                    postId: '{{ $post->id }}',
+                                    redirect: '{{ route('posts.index', [$user]) }}'
+                                })"
+                                class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-yellow-200 transition">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <button x-data
+                                x-on:click="Livewire.emit('confirmDeleteModelClass',
+                                    'App\\Models\\Post', // Clase del modelo
+                                    {{ $post->id }},     // ID del registro
+                                    '{{ route('posts.index', $user) }}', // Redirect (opcional)
+                                    '¿Eliminar publicación?',  // Título (opcional)
+                                    'Esta publicación se eliminará permanentemente.' // Mensaje (opcional)
+                                )"
+                                class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-red-200 transition">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
                         </div>
                     </div>
+                    @else
+                    @auth
+                        <div class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <a href="{{ route('posts.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
+                                    ← Volver
+                                </a>
+                            </div>
+
+                            @owner($user)
+                                <h4 class="text-lg font-semibold text-gray-800">Mis publicación</h4>
+                            @else
+                                <h4 class="text-gray-800">
+                                    Publicación de
+                                    <a href="{{ route('main_account', ['user' => $user]) }}" class="font-bold hover:underline">
+                                        {{ '@' . $user->username }}
+                                    </a>
+                                </h4>
+                            @endowner
+                        </div>
+                    @endauth
+                    @endowner
 
                     <div class="space-y-4">
                         <div>
