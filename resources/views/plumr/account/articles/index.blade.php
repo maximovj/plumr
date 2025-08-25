@@ -100,7 +100,9 @@
                             @if($article->tags)
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     @foreach($article->tags as $tag)
+                                        @if($tag)
                                         <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">{{ $tag }}</span>
+                                        @endif
                                     @endforeach
                                 </div>
                             @endif
