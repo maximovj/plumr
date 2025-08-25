@@ -22,7 +22,7 @@
                     </a>
                     <a href="{{ route('account.edit', ['user' => $user]) }}">
                             <div
-                                class="w-10 h-10 bg-contain bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200 flex items-center justify-center shadow-sm"
+                                class="w-10 h-10 bg-cover bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200 flex items-center justify-center shadow-sm"
                                 style="background-image: url('{{ asset(auth()->user()->profile->photo_url) }}')">
                             </div>
                     </a>
