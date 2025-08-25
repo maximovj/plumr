@@ -12,6 +12,7 @@ html { scroll-behavior: smooth; }
         <div class="fixed top-0 left-0 h-1 bg-blue-500 z-50" x-ref="progressBar"></div>
 
         <!-- Botón de volver y título -->
+        @owner($user)
         <section class="mb-4 flex justify-between">
             <a href="{{ route('articles.index', [$user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
                 ← Volver
@@ -30,6 +31,7 @@ html { scroll-behavior: smooth; }
                 @endowner
             </div>
         </section>
+        @endowner
 
         <!-- Imagen de portada -->
         @if (!empty($article->cover_url))
@@ -46,7 +48,7 @@ html { scroll-behavior: smooth; }
                 <section class="hidden lg:flex flex-col items-center" x-data="{ open: false }">
                     <div @mouseenter="open = true" @mouseleave="open = false" class="relative">
                         <a href="{{ route('main_account', [$user]) }}">
-                            <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario" class="w-20 h-20 rounded-full border-2 border-gray-200 shadow-md transition transform hover:scale-105">
+                            <img src="{{ asset($user->profile->photo_url) }}" alt="Foto de usuario" class="w-20 h-20 rounded-full border-2 border-gray-200 shadow-md transition transform hover:scale-105">
                         </a>
 
                         <!-- Tarjeta interactiva -->
