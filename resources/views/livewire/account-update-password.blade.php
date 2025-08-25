@@ -1,5 +1,6 @@
 <div x-data="{ open: false, openModal() { this.open = true; Livewire.emit('executeResetForm'); } }" wire:id="{{ $this->id }}" x-cloak>
-    <button @click="openModal"
+
+    <button @click="$wire.emit('executeResetForm'); open = true;"
         class="w-full text-left px-4 py-2 hover:bg-gray-100 ">
         Cambiar contraseña
     </button>
