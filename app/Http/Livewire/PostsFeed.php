@@ -35,7 +35,7 @@ class PostsFeed extends Component
 
         $posts = Post::with([
                 'author:id,username',
-                'author.profile:id,user_id,photo'
+                'author.profile:id,user_id,photo,fullname'
             ])
             ->join('users_posts', 'users_posts.post_id', '=', 'posts.id')
             ->whereIn('users_posts.user_id', $followingIds)

@@ -32,6 +32,7 @@ class Profile extends Model
 
     protected $appends = [
         'photo_url',
+        'cover_url',
     ];
 
     public $casts = [
@@ -51,6 +52,18 @@ class Profile extends Model
         $exists = Storage::disk('public')->exists($photo);
         if ($photo && $exists) {
             return asset('storage/'.$photo); // portada desde /storage
+        }
+
+        return asset('storage/'.$photo_default); // portada por defecto
+    }
+
+    public function getCoverUrlAttribute()
+    {
+        $photo_default = 'users/profiles/cover/cover_default.jpg';
+        $cover = $this->cover;
+        $exists = Storage::disk('public')->exists($cover);
+        if ($cover && $exists) {
+            return asset('storage/'.$cover); // portada desde /storage
         }
 
         return asset('storage/'.$photo_default); // portada por defecto

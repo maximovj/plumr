@@ -68,6 +68,10 @@ Route::get('/{user:username}/edit/photo', [AccountController::class, 'edit_photo
     ->middleware(['auth', 'owner'])
     ->name('account.edit_photo');
 
+Route::get('/{user:username}/edit/cover', [AccountController::class, 'edit_cover'])
+    ->middleware(['auth', 'owner'])
+    ->name('account.edit_cover');
+
 Route::get('/{user:username}/followers', FollowersController::class)
     ->middleware(['auth'])
     ->name('account.followers');

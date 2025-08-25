@@ -21,9 +21,9 @@ class PostController extends Controller
     public function index(User $user)
     {
         if($user->id == auth()->user()->id) {
-            $posts = $user->posts()->latest('updated_at')->take(10)->get();
+            $posts = $user->posts()->with('author.profile')->latest('updated_at')->take(10)->get();
         }else {
-            $posts = $user->posts()->take(10)->get();
+            $posts = $user->posts()->with('author.profile')->take(10)->get();
         }
 
         return view("plumr.account.posts.index", [

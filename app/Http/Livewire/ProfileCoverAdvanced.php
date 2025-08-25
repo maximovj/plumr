@@ -6,7 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 
-class ProfilePhotoCropAdvanced extends Component
+class ProfileCoverAdvanced extends Component
 {
     public $croppedPhoto;
 
@@ -36,11 +36,11 @@ class ProfilePhotoCropAdvanced extends Component
             $data = base64_decode($data);
 
             $fileName = 'profile_' . auth()->id() . '.png';
-            $path = Storage::disk('public')->put('users/profiles/photo/'.$fileName, $data);
+            $path = Storage::disk('public')->put('users/profiles/cover/'.$fileName, $data);
 
-            $this->user->profile()->update(['photo' => "users/profiles/photo/$fileName"]);
+            $this->user->profile()->update(['cover' => "users/profiles/cover/$fileName"]);
 
-            toastr()->addSuccess('Foto de perfil actualizada correctamente');
+            toastr()->addSuccess('Portada de perfil actualizada correctamente');
 
             sweetalert()
             ->showConfirmButton(
@@ -49,15 +49,15 @@ class ProfilePhotoCropAdvanced extends Component
                 "btn btn-success",
                 "Enterado"
             )
-            ->addSuccess('Foto de perfil actualizada correctamente');
+            ->addSuccess('Portada de perfil actualizada correctamente');
 
         } else {
-            toastr()->addError('Lo siento, fallo al actualizar foto de perfil');
+            toastr()->addError('Lo siento, fallo al actualizar portada de perfil');
         }
     }
 
     public function render()
     {
-        return view('livewire.profile-photo-crop-advanced');
+        return view('livewire.profile-cover-advanced');
     }
 }

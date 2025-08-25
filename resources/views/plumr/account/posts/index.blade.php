@@ -56,8 +56,7 @@
                                     <div class="flex items-center gap-3">
                                         <!-- Avatar ficticio -->
                                         <div
-                                            class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">
-                                            {{ strtoupper(substr($user->profile->fullname, 0, 1)) }}
+                                            class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold bg-contain bg-no-repeat bg-center" style="background-image: url('{{ asset($post->author->first()->profile->photo_url) }}')">
                                         </div>
                                         <div>
                                             <p class="font-semibold text-gray-800">{{ $user->profile->fullname }}</p>
