@@ -14,13 +14,11 @@
             </div>
 
             <!-- Formulario de actualización -->
-            <form action="{{ route('account.update', ['user' => $user]) }}" method="POST" class="space-y-5">
-                @csrf @method('POST')
-
+            <section class="space-y-5">
                 <!-- Usuario -->
                 <div class="flex flex-col">
                     <label for="username" class="text-gray-700 font-medium">Nombre de usuario</label>
-                    <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}"
+                    <input disabled type="text" name="username" id="username" value="{{ old('username', $user->username) }}"
                         placeholder="Ingresa un nuevo nombre de usuario"
                         class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('username') }}">
                     <p class="text-xs text-gray-500 mt-1">Ingrese un nuevo nombre de usuario disponible.</p>
@@ -30,37 +28,16 @@
                 <!-- Email -->
                 <div class="flex flex-col">
                     <label for="email" class="text-gray-700 font-medium">Correo electrónico</label>
-                    <input type="text" name="email" id="email" value="{{ old('email', $user->email) }}"
+                    <input disabled type="text" name="email" id="email" value="{{ old('email', $user->email) }}"
                         placeholder="Ingresa tu correo electrónico"
                         class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('email') }}">
                     <p class="text-xs text-gray-500 mt-1">Este correo se usa para autenticarte.</p>
                 </div>
 
-                <!-- Contraseña -->
-                <div class="flex flex-col">
-                    <label for="password" class="text-gray-700 font-medium">Nueva contraseña</label>
-                    <input type="password" name="password" id="password" placeholder="Ingresa una nueva contraseña"
-                        class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('password') }}">
-                    <p class="text-xs text-gray-500 mt-1">Completa solo si deseas cambiar la contraseña.</p>
-                </div>
-
-                <!-- Confirmar contraseña -->
-                <div class="flex flex-col">
-                    <label for="password_confirmation" class="text-gray-700 font-medium">Confirmar contraseña</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation"
-                        placeholder="Confirma la nueva contraseña"
-                        class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('password_confirmation') }}">
-                </div>
-
-                <!-- Botón Guardar -->
-                <button type="submit"
-                    class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg shadow transition">
-                    Guardar cambios
-                </button>
-            </form>
+            </section>
 
             <!-- Botón de acciones secundarias -->
-            <div x-data="{ open: false }" class="absolute top-4 right-8">
+            <div x-cloak x-data="{ open: false }" class="absolute top-4 right-8">
                 <button @click="open = !open"
                     class="h-10 w-10 p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none shadow">
                     <!-- Icono de tres puntos -->
@@ -83,6 +60,10 @@
                     </button>
                 </div>
             </div>
+
+            <section>
+                @livewire('account-update-password')
+            </section>
 
         </div>
     </x-main>
