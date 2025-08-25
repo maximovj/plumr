@@ -16,7 +16,9 @@ class ListFollowers extends Component
     public function mount($user)
     {
         $this->user = $user;
-        $this->followers = $user->followers()->select('users.id', 'users.username')->with('profile:id,user_id,photo')->take(10)->get();
+        $this->followers = $user->followers()
+        ->select('users.id', 'users.username')
+        ->with('profile:id,user_id,photo,fullname')->take(10)->get();
         $this->count = $this->followers->count();
     }
 
