@@ -21,10 +21,10 @@
                         </div>
                     </a>
                     <a href="{{ route('account.edit', ['user' => $user]) }}">
-                        <div
-                        class="w-10 h-10 bg-white rounded-full text-center border-2 border-gray-400 flex items-center justify-center">
-                            {{ strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
-                        </div>
+                            <div
+                                class="w-10 h-10 bg-contain bg-no-repeat bg-center rounded-full text-center border-2 border-gray-200 flex items-center justify-center shadow-sm"
+                                style="background-image: url('{{ asset(auth()->user()->profile->photo_url) }}')">
+                            </div>
                     </a>
                 </div>
         </div>
