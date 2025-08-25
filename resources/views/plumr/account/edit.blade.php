@@ -21,8 +21,7 @@
                     <input disabled type="text" name="username" id="username" value="{{ old('username', $user->username) }}"
                         placeholder="Ingresa un nuevo nombre de usuario"
                         class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('username') }}">
-                    <p class="text-xs text-gray-500 mt-1">Ingrese un nuevo nombre de usuario disponible.</p>
-                    <p class="text-xs text-gray-500">NOTA: Solo se puede modificar una vez.</p>
+                    <p class="text-xs text-gray-500 mt-1">Este nombre de usuario se usa para identificarte.</p>
                 </div>
 
                 <!-- Email -->
