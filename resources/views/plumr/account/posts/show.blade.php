@@ -73,6 +73,27 @@
                             </button>
                         </div>
                     </div>
+                    @else
+                    @auth
+                        <div class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <a href="{{ route('posts.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
+                                    ← Volver
+                                </a>
+                            </div>
+
+                            @owner($user)
+                                <h4 class="text-lg font-semibold text-gray-800">Mis publicación</h4>
+                            @else
+                                <h4 class="text-gray-800">
+                                    Publicación de
+                                    <a href="{{ route('main_account', ['user' => $user]) }}" class="font-bold hover:underline">
+                                        {{ '@' . $user->username }}
+                                    </a>
+                                </h4>
+                            @endowner
+                        </div>
+                    @endauth
                     @endowner
 
                     <div class="space-y-4">
