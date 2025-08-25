@@ -45,7 +45,7 @@
 
                 <!-- Menú desplegable -->
                 <div x-show="open" @click.away="open = false"
-                    class="mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 py-2 absolute right-0">
+                    class="mt-2 w-60 bg-white shadow-lg rounded-lg border border-gray-200 py-2 absolute right-0">
                     <form action="{{ route('auth.logout') }}" method="POST">
                         @csrf @method('POST')
                         <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700">
@@ -53,13 +53,17 @@
                         </button>
                     </form>
 
-                    @livewire('delete-account')
+                    <div>
+                        @livewire('account-update-password')
+                    </div>
+
+                    <div>
+                        @livewire('delete-account')
+                    </div>
+
                 </div>
             </div>
 
-            <section>
-                @livewire('account-update-password')
-            </section>
         </div>
     </x-main>
 @endsection

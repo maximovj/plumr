@@ -73,8 +73,6 @@
     {{-- Input oculto que se enviará en el form --}}
     <input type="hidden" name="{{ $fieldName }}" value="{{ $content }}">
 
-</div>
-
 <script>
 document.addEventListener('livewire:load', function () {
     Quill.register('modules/imageResize', QuillResizeModule);
@@ -95,7 +93,7 @@ document.addEventListener('livewire:load', function () {
             imageResize: {
                 displaySize: true
             },
-            counter: true,
+            //counter: true,
             toolbar: '#toolbar-{{ $editorId }}',
         }
     });
@@ -146,3 +144,6 @@ document.addEventListener('livewire:load', function () {
     });
 });
 </script>
+
+</div>
+
