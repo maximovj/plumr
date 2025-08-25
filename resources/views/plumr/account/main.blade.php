@@ -17,7 +17,7 @@
                     class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
 
                     <!-- Botones de acciones (solo para el dueño) -->
-                    <div class="absolute -bottom-1 -right-10  mt-4 flex justify-between items-center gap-2">
+                    <div class="absolute -bottom-1 right-1  mt-4 flex justify-between items-center gap-2">
                         @if(Auth::check() && Auth::user()->id === $user->id)
                             <a href="{{ route('account.edit', ['user' => $user]) }}"
                                 class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow hover:bg-blue-600 transition">
