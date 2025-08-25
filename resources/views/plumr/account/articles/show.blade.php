@@ -11,6 +11,23 @@ html { scroll-behavior: smooth; }
         {{-- CONTADOR DE LECTURA / PROGRESO --}}
         <div class="fixed top-0 left-0 h-1 bg-blue-500 z-50" x-ref="progressBar"></div>
 
+        {{-- Banner de bienvenida (solo invitados) --}}
+        @guest
+        <section class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-xl shadow-lg my-6 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <h1 class="text-2xl font-bold">Bienvenido a <span class="text-yellow-300">PLUMR</span></h1>
+                <p class="text-sm opacity-90">Comparte tus ideas, debates y opiniones sobre los acontecimientos actuales.</p>
+                <p class="text-sm opacity-75">Haz que tu voz sea escuchada 🚀</p>
+            </div>
+            <div>
+                <a href="{{ route('auth.login') }}"
+                   class="bg-white text-indigo-600 px-5 py-2 rounded-full font-semibold shadow hover:bg-gray-100 transition">
+                    Iniciar sesión
+                </a>
+            </div>
+        </section>
+        @endguest
+
         <!-- Botón de volver y título -->
         @owner($user)
         <section class="mb-4 flex justify-between">
