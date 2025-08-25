@@ -43,16 +43,20 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
         @foreach ($followers as $account)
         <!-- Tarjeta de perfil -->
-        <section class="mx-4 bg-white rounded-2xl shadow overflow-hidden relative mb-4">
+            <section class="mx-4 bg-white rounded-2xl shadow overflow-hidden relative mb-4">
 
             <!-- Imagen de portada -->
             <div class="relative h-40">
-                <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ asset('img/fondo.jpg') }}')"></div>
+                @if($account->profile->cover)
+                    <div class="h-full w-full bg-top bg-contain bg-no-repeat" style="background-image: url('{{ asset($account->profile->cover_url) }}')"></div>
+                @else
+                    <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ asset('img/fondo.jpg') }}')"></div>
+                @endif
 
                 <!-- Foto de usuario -->
                 <a href="{{ route('main_account', ['user' => $account]) }}">
                     <div class="absolute -bottom-12 left-6">
-                        <img src="{{ asset('img/user_default.png') }}" alt="Foto de usuario"
+                        <img src="{{ asset($account->profile->photo_url) }}" alt="Foto de usuario"
                             class="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition transform">
                     </div>
                 </a>
