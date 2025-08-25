@@ -12,11 +12,11 @@
                 <div class="flex flex-row gap-2 justify-between items-end">
                     <a href="{{ route('main_account', ['user' => auth()->user()->username]) }}">
                         <div class="flex flex-col text-right">
-                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-                            <i class="bi bi-at"></i>{{ auth()->user()->username }}
-                            </span>
                             <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-xs">
                             {{ auth()->user()->profile->fullname }}
+                            </span>
+                            <span class="text-xs bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+                            <i class="bi bi-at"></i>{{ auth()->user()->username }}
                             </span>
                         </div>
                     </a>
