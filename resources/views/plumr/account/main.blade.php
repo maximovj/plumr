@@ -104,7 +104,11 @@
                 </a>
 
                 <a href="{{ route('albums.index', ['user' => $user]) }}">
-                    <p><i class="bi bi-file-post-fill"></i> <strong>0</strong> Álbumes</p>
+                    @owner($user)
+                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums->count() }}</strong> Álbumes</p>
+                    @else
+                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums()->where('visibility', 'public')->count() }}</strong> Álbumes</p>
+                    @endowner
                 </a>
 
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
