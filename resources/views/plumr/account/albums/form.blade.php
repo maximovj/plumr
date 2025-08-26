@@ -150,7 +150,7 @@
                         </video>
                     </template>
                     <template x-if="previewFile && previewFile.type.startsWith('audio/')">
-                        <audio controls class="w-full">
+                        <audio controls class="w-full max-h-96 rounded">
                             <source :src="URL.createObjectURL(previewFile)" :type="previewFile.type">
                         </audio>
                     </template>
