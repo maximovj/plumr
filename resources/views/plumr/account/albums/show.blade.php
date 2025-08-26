@@ -149,10 +149,10 @@
              x-transition
              @click.self="showModal = false"
              x-cloak>
-            <div class="relative max-w-5xl w-full p-4">
+            <div class="max-w-5xl w-full p-4">
                 <!-- Botón cerrar -->
                 <button @click="showModal = false"
-                        class="absolute top-2 right-2 text-white text-2xl">&times;</button>
+                        class="absolute top-2 right-2 bg-white text-black rounded-full text-2xl w-10 h-10">&times;</button>
 
                 <!-- Imagen -->
                 <template x-if="['jpg','jpeg','png','gif','webp'].includes(mediaType)">
@@ -175,7 +175,7 @@
 
                 <!-- PDF -->
                 <template x-if="['pdf'].includes(mediaType)">
-                    <embed :src="mediaSrc" type="application/pdf" class="w-full h-[80vh] rounded border shadow-lg" />
+                    <embed :src="mediaSrc" type="application/pdf" class="w-full h-4/6 rounded border shadow-lg" style="height: 80vh !important;" />
                 </template>
             </div>
         </div>
