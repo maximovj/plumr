@@ -50,7 +50,7 @@ class AlbumController extends Controller
     public function create(User $user)
     {
         //
-        return view('plumr.account.albums.create', [
+        return view('plumr.account.albums.form', [
             'user' => $user,
             'album' => new Album(),
             'route' => route('albums.store', $user),
@@ -126,7 +126,7 @@ class AlbumController extends Controller
     public function edit(User $user, Album $album)
     {
         //
-        return view('plumr.account.albums.create', [
+        return view('plumr.account.albums.form', [
             'user' => $user,
             'album' => $album,
             'route' => route('albums.update', [$user, $album]),
