@@ -41,6 +41,12 @@
 
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach ($albums as $album)
+
+            <!-- Ver álbum (Apertura) -->
+            @isnotowner($user)
+            <a href="{{ route('albums.show', [$user, $album]) }}" >
+            @endisnotowner
+
             <!-- Tarjetas de álbumes -->
             <div
                 x-data="{
@@ -62,21 +68,24 @@
 
                     <!-- Acciones -->
                     @owner($user)
-                    <a href="{{ route('albums.edit', [$user, $album]) }}">
-                        <div class="absolute flex justify-center content-center items-center
-                        top-2 right-4 rounded-full bg-black bg-opacity-30 w-8 h-8
-                        text-center p-1 border-2 transform hover:scale-110 hover:shadow-lg">
-                            <i class="bi bi-pencil-fill text-base text-white"></i>
-                        </div>
-                    </a>
+                    <div class="absolute top-2 right-4 flex flex-col space-y-1">
 
-                    <a href="{{ route('albums.show', [$user, $album]) }}">
-                        <div class="absolute flex justify-center content-center items-center
-                        top-12 right-4 rounded-full bg-black bg-opacity-30 w-8 h-8
-                        text-center p-1 border-2 transform hover:scale-110 hover:shadow-lg">
-                            <i class="bi bi-eye-fill text-base text-white "></i>
-                        </div>
-                    </a>
+                        <a href="{{ route('albums.edit', [$user, $album]) }}">
+                            <div class="flex justify-center content-center items-center
+                            rounded-full bg-black bg-opacity-30 w-8 h-8
+                            text-center p-1 border-2 transform hover:scale-110 hover:shadow-lg">
+                                <i class="bi bi-pencil-fill text-base text-white"></i>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('albums.show', [$user, $album]) }}">
+                            <div class="flex justify-center content-center items-center
+                            rounded-full bg-black bg-opacity-30 w-8 h-8
+                            text-center p-1 border-2 transform hover:scale-110 hover:shadow-lg">
+                                <i class="bi bi-eye-fill text-base text-white "></i>
+                            </div>
+                        </a>
+                    </div>
                     @endowner
 
                     <!-- Tipo de visibilidad -->
@@ -130,6 +139,11 @@
                 </div>
 
             </div>
+
+            <!-- Ver álbum (Cierre) -->
+            @isnotowner($user)
+            </a>
+            @endisnotowner
             @endforeach
         </section>
         @endif
