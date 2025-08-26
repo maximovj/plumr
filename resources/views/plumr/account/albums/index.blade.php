@@ -56,7 +56,7 @@
                 x-cloak>
 
                 <!-- Sección para Portada, Acciones, Tipo de visibilidad -->
-                <div class="order-first xl:block w-full h-60 relative">
+                <div class="order-first xl:block w-full max-h-full lg:h-60 relative">
                     <!-- Portada -->
                     <img loading="lazy" src="{{ asset($album->cover_url) }}" alt="portada.jpg" class="w-full h-full object-fill rounded-md" />
 
