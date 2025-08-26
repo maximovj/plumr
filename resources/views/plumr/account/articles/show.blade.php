@@ -238,33 +238,9 @@ html { scroll-behavior: smooth; }
             <hr class="flex-grow border-t border-gray-300">
         </div>
 
-        <!-- Tags -->
-        @php
-            $real_tags = collect($article->tags)->filter(fn($item) => !empty($item));
-        @endphp
-
-        @if (!$real_tags->isEmpty())
-            <div class="flex gap-2 flex-wrap">
-                @foreach ($article->tags as $tag)
-
-                    @if($account_tag = is_account_tag($tag))
-                    <a href="{{ route('main_account', [$account_tag]) }}">
-                        <span class="bg-indigo-500 hover:bg-indigo-600 border-2 text-white rounded-full px-2 py-1 text-xs">
-                            <i class="bi bi-person-fill"></i> {{ $account_tag->username }}
-                        </span>
-                    </a>
-                    @else
-                    <span class="bg-gray-400 border-2 text-white rounded-full px-2 py-1 text-xs">
-                        <i class="bi bi-tag-fill"></i> {{ $tag }}
-                    </span>
-                @endif
-                @endforeach
-            </div>
-        @else
-            <span class="bg-gray-400 border-2 text-white rounded-full px-2 py-1 text-xs">
-                <i class="bi bi-tag-fill"></i> Sin etiquetas
-            </span>
-        @endif
+        <div class="flex flex-wrap">
+            @livewire('tags-advanced', ['tags' => $article->tags])
+        </div>
 
         @php
         $shareUrl = urlencode(url()->current());
