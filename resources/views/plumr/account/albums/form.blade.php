@@ -122,37 +122,55 @@
 
                 {{-- Previews dinámicos --}}
                 <template x-if="files.length > 0">
-                    <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="mt-4 grid grid-cols-3 md:grid-cols-4 gap-4">
                         <template x-for="(file, index) in files" :key="index">
                             <div class="flex flex-col items-center text-xs text-gray-600 space-y-1">
 
                                 {{-- Imagen --}}
                                 <template x-if="file.type.startsWith('image/')">
-                                    <img :src="URL.createObjectURL(file)" class="h-24 w-auto rounded border shadow-sm">
+                                    <div class="flex flex-col items-center">
+                                        <i class="bi bi-image text-4xl text-indigo-500"></i>
+                                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                                    </div>
                                 </template>
 
                                 {{-- Video --}}
                                 <template x-if="file.type.startsWith('video/')">
-                                    <video controls class="h-24 rounded border shadow-sm">
-                                        <source :src="URL.createObjectURL(file)">
-                                    </video>
+                                    <div class="flex flex-col items-center">
+                                        <i class="bi bi-camera-video text-4xl text-red-500"></i>
+                                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                                    </div>
                                 </template>
 
                                 {{-- Audio --}}
                                 <template x-if="file.type.startsWith('audio/')">
-                                    <audio controls class="w-full">
-                                        <source :src="URL.createObjectURL(file)">
-                                    </audio>
+                                    <div class="flex flex-col items-center">
+                                        <i class="bi bi-music-note-beamed text-4xl text-green-500"></i>
+                                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                                    </div>
                                 </template>
 
                                 {{-- PDF --}}
                                 <template x-if="file.type.includes('pdf')">
-                                    <span class="px-2 py-1 bg-red-100 text-red-700 rounded">📄 <span x-text="file.name"></span></span>
+                                    <div class="flex flex-col items-center">
+                                        <i class="bi bi-file-earmark-pdf text-4xl text-red-600"></i>
+                                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                                    </div>
                                 </template>
+
+                                {{-- Otros --}}
+                                <template x-if="!file.type.startsWith('image/') && !file.type.startsWith('video/') && !file.type.startsWith('audio/') && !file.type.includes('pdf')">
+                                    <div class="flex flex-col items-center">
+                                        <i class="bi bi-file-earmark text-4xl text-gray-400"></i>
+                                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                                    </div>
+                                </template>
+
                             </div>
                         </template>
                     </div>
                 </template>
+
             </div>
 
             {{-- Botón submit --}}
