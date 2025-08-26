@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends Model
 {
@@ -14,9 +15,24 @@ class Media extends Model
         'description', 'tags', 'visibility'
     ];
 
+    protected $appends = [
+        'file_path_url',
+    ];
+
     protected $casts = [
         'tags' => 'array',
     ];
+
+    public function getFilePathUrlAttribute()
+    {
+        $cover_default = 'media/media_default.png';
+        $exists = Storage::disk('public')->exists($this->file_path);
+        if ($this->file_path && $exists) {
+            return asset('storage/'.$this->file_path); // archivo desde /storage
+        }
+
+        return asset('storage/'.$cover_default); // archivo por defecto
+    }
 
     public function albums()
     {

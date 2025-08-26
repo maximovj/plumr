@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Album;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Album;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Media;
+use Illuminate\Support\Facades\Storage;
 
 class AlbumController extends Controller
 {
@@ -74,6 +76,7 @@ class AlbumController extends Controller
             'visibility' => ['nullable', 'in:private,public,followers_only'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['string', 'max:20'],
+            'media.*' => 'mimes:jpg,jpeg,png,gif,mp4,mov,avi,mp3,wav,pdf|max:20480',
         ]);
 
         // Crear un nuevo álbum
@@ -90,6 +93,57 @@ class AlbumController extends Controller
         }
 
         $new_album->save(); // Guardar álbum
+
+        if ($request->hasFile('media')) {
+            $counter = 0;
+            foreach ($request->file('media') as $file) {
+                $counter++;
+                $slug = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s'));
+                $filename = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s')).'.'.$file->getClientOriginalExtension();
+                $path = $file->storeAs(
+                    'media/sources_'.$new_album->user_id.'/'.'album_'.$new_album->id,
+                    $filename,
+                    'public');
+
+                $mime = $file->getClientMimeType();
+                $type = '';
+
+                if (str_starts_with($mime, 'image/')) {
+                    $type = 'photo';
+                } elseif (str_starts_with($mime, 'video/')) {
+                    $type = 'video';
+                } elseif (str_starts_with($mime, 'audio/')) {
+                    $type = 'audio';
+                } elseif ($mime === 'application/pdf') {
+                    $type = 'pdf';
+                } else {
+                    $type = 'other'; // opcional para archivos no soportados
+                }
+
+                $new_media = new Media();
+                $new_media->fill([
+                    'mime_type' => $mime,
+                    'file_path' => $path,
+                    'slug' => $slug,
+                    'type' => $type,
+                    'title' => $filename,
+                    'visibility' => 'public',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $new_media->save();
+
+                DB::table('album_media')->insert([
+                    'album_id' => $new_album->id,
+                    'media_id' => $new_media->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+            }
+        }
+
+
 
         toastr()->addSuccess('Album creado correctamente');
 
