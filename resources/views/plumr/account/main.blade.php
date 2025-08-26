@@ -107,7 +107,11 @@
                     @owner($user)
                     <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums->count() }}</strong> Álbumes</p>
                     @else
-                    <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums()->where('visibility', 'public')->count() }}</strong> Álbumes</p>
+                        @isfollower(auth()->user(), $user)
+                            <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums()->whereIn('visibility', ['public', 'followers_only'])->count() }}</strong> Álbumes</p>
+                        @else
+                            <p><i class="bi bi-file-post-fill"></i> <strong>{{ $user->albums()->where('visibility', 'public')->count() }}</strong> Álbumes</p>
+                        @endisfollower
                     @endowner
                 </a>
 
