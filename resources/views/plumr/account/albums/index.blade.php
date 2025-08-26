@@ -112,7 +112,10 @@
 
                     <div class="grid grid-cols-1 space-y-2">
 
-                        @livewire('tags-advanced', ['tags' => $album->tags])
+                        @livewire('tags-advanced', [
+                            'user' => $user,
+                            'tags' => $album->tags
+                        ])
 
                         <span class="text-xs text-gray-400">Creado en
                             {{ $album->created_at->diffForHumans() }}</span>

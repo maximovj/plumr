@@ -239,7 +239,10 @@ html { scroll-behavior: smooth; }
         </div>
 
         <div class="flex flex-wrap">
-            @livewire('tags-advanced', ['tags' => $article->tags])
+            @livewire('tags-advanced', [
+                'user' => $user,
+                'tags' => $article->tags
+            ])
         </div>
 
         @php
