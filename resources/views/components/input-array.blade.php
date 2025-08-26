@@ -3,9 +3,13 @@
     'label' => 'Estados emocionales',
     'placeholder' => 'Escribe y presiona Enter',
     'inputClass' => 'w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2',
+    'labelClass' => 'text-sm font-medium text-gray-700',
     'suggestions' => [],
+    'items' => [],
+    'type' => 'wire',
 ])
 
+@if($type == 'wire')
 <div x-data="{
         items: @entangle($name).defer,
         newItem: '',
@@ -20,9 +24,25 @@
             this.items.splice(index, 1);
         }
     }" class="flex flex-col gap-2">
+@else
+<div x-data="{
+        items: {{ collect($items) }},
+        newItem: '',
+        addItem() {
+            let value = this.newItem.trim();
+            if (value !== '' && !this.items.includes(value)) {
+                this.items.push(value);
+            }
+            this.newItem = '';
+        },
+        removeItem(index) {
+            this.items.splice(index, 1);
+        }
+}" class="flex flex-col gap-2">
+@endif
 
     <!-- Label -->
-    <label class="text-sm font-medium text-gray-700" for="{{ $name }}">{{ $label }}</label>
+    <label class="{{ $labelClass }}" for="{{ $name }}">{{ $label }}</label>
 
     <!-- Lista de items -->
     <div class="flex flex-wrap gap-2 mb-2">
@@ -43,6 +63,12 @@
            list="list-{{ $name }}"
            @keydown.enter.prevent="addItem()"
            class="{{ $inputClass }}">
+
+    @if($type == 'component')
+        <template x-for="(item, index) in items" :key="index">
+            <input type="hidden" :name="'{{ $name }}['+index+']'" :value="item">
+        </template>
+    @endif
 
     <datalist id="list-{{ $name }}">
         @foreach($suggestions as $item)
