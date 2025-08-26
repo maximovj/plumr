@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\FollowingsController;
@@ -108,6 +109,8 @@ Route::get('{user:username}/articles/create', [ArticleController::class, 'create
 
 Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
     ->name('articles.show');
+
+Route::resource('{user:username}/albums', AlbumController::class);
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
