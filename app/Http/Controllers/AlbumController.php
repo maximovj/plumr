@@ -19,18 +19,17 @@ class AlbumController extends Controller
     public function index(User $user)
     {
         //
-        if(isfollower($user)) {
+        if(isfollower($user)) { // Verificar si usuario autenticado es seguidor
             $albums = $user->albums()
             ->whereIn('visibility', ['public', 'followers_only'])
             ->latest()->take(10)->get();
-        }elseif(auth()->user()->id !== $user->id)
-        {
+        }elseif(auth()->user()->id !== $user->id) { // Verificar si usuario no es el mismo autenticado
             $albums = $user->albums()
             ->whereIn('visibility', ['public'])
             ->latest()->take(10)->get();
         } else {
             $albums = $user->albums()
-            ->latest()->take(10)->get();
+            ->latest('updated_at')->take(10)->get();
         }
 
         return view("plumr.account.albums.index", [
