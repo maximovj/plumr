@@ -62,19 +62,19 @@
                 @forelse($album->media as $media)
                     <div class="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden cursor-pointer"
                          @click="showModal = true;
-                                 mediaType = '{{ pathinfo($media->file, PATHINFO_EXTENSION) }}';
-                                 mediaSrc = '{{ $media->url }}'">
-                        @if(Str::endsWith($media->file, ['.jpg','.jpeg','.png','.gif','.webp']))
-                            <img src="{{ $media->url }}" class="h-48 w-full object-cover" alt="Imagen">
-                        @elseif(Str::endsWith($media->file, ['.mp4','.webm','.ogg']))
+                                 mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
+                                 mediaSrc = '{{ $media->file_path_url }}'">
+                        @if(Str::endsWith($media->file_path_url, ['.jpg','.jpeg','.png','.gif','.webp']))
+                            <img src="{{ $media->file_path_url }}" class="h-48 w-full object-cover" alt="Imagen">
+                        @elseif(Str::endsWith($media->file_path_url, ['.mp4','.webm','.ogg']))
                             <video class="w-full h-48 object-cover">
-                                <source src="{{ $media->url }}" type="video/{{ pathinfo($media->file, PATHINFO_EXTENSION) }}">
+                                <source src="{{ $media->file_path_url }}" type="video/{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}">
                             </video>
-                        @elseif(Str::endsWith($media->file, ['.mp3','.wav','.ogg']))
+                        @elseif(Str::endsWith($media->file_path_url, ['.mp3','.wav','.ogg']))
                             <div class="h-48 flex items-center justify-center bg-gray-100 text-indigo-600 text-sm">
                                 🎵 Audio
                             </div>
-                        @elseif(Str::endsWith($media->file, ['.pdf']))
+                        @elseif(Str::endsWith($media->file_path_url, ['.pdf']))
                             <div class="h-48 flex items-center justify-center bg-gray-100 text-gray-600 text-sm">
                                 📄 PDF
                             </div>
@@ -84,7 +84,7 @@
                             </div>
                         @endif
                         <div class="p-3 border-t">
-                            <p class="text-xs text-gray-600 truncate">{{ $media->file }}</p>
+                            <p class="text-xs text-gray-600 truncate">{{ $media->title }}</p>
                         </div>
                     </div>
                 @empty
