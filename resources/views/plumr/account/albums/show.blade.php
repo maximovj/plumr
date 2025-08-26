@@ -2,8 +2,10 @@
 
 @section('main')
 <x-main>
-    <div class="mx-auto max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden">
-
+    <div
+        x-data="{ showModal: false, mediaType: '', mediaSrc: '' }"
+        class="mx-auto max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden"
+    >
         <!-- Portada grande -->
         @if($album->cover_url)
             <div class="h-72 w-full overflow-hidden">
@@ -58,25 +60,23 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-6">Galería de medios</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($album->media as $media)
-                    <div class="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
+                    <div class="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden cursor-pointer"
+                         @click="showModal = true;
+                                 mediaType = '{{ pathinfo($media->file, PATHINFO_EXTENSION) }}';
+                                 mediaSrc = '{{ $media->url }}'">
                         @if(Str::endsWith($media->file, ['.jpg','.jpeg','.png','.gif','.webp']))
                             <img src="{{ $media->url }}" class="h-48 w-full object-cover" alt="Imagen">
                         @elseif(Str::endsWith($media->file, ['.mp4','.webm','.ogg']))
-                            <video controls class="w-full h-48 object-cover">
+                            <video class="w-full h-48 object-cover">
                                 <source src="{{ $media->url }}" type="video/{{ pathinfo($media->file, PATHINFO_EXTENSION) }}">
                             </video>
                         @elseif(Str::endsWith($media->file, ['.mp3','.wav','.ogg']))
-                            <div class="p-4">
-                                <audio controls class="w-full">
-                                    <source src="{{ $media->url }}" type="audio/{{ pathinfo($media->file, PATHINFO_EXTENSION) }}">
-                                </audio>
+                            <div class="h-48 flex items-center justify-center bg-gray-100 text-indigo-600 text-sm">
+                                🎵 Audio
                             </div>
                         @elseif(Str::endsWith($media->file, ['.pdf']))
-                            <div class="h-48 flex items-center justify-center bg-gray-100">
-                                <span class="text-gray-600 text-sm">📄 PDF</span>
-                            </div>
-                            <div class="p-3 text-center">
-                                <a href="{{ $media->url }}" target="_blank" class="text-indigo-600 text-sm">Abrir PDF</a>
+                            <div class="h-48 flex items-center justify-center bg-gray-100 text-gray-600 text-sm">
+                                📄 PDF
                             </div>
                         @else
                             <div class="h-48 flex items-center justify-center bg-gray-100 text-gray-500 text-xs">
@@ -90,6 +90,42 @@
                 @empty
                     <p class="text-gray-500 text-sm">No hay medios en este álbum.</p>
                 @endforelse
+            </div>
+        </div>
+
+        <!-- Modal Lightbox -->
+        <div x-show="showModal"
+             class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+             x-transition
+             @click.self="showModal = false">
+            <div class="relative max-w-5xl w-full p-4">
+                <!-- Botón cerrar -->
+                <button @click="showModal = false"
+                        class="absolute top-2 right-2 text-white text-2xl">&times;</button>
+
+                <!-- Imagen -->
+                <template x-if="['jpg','jpeg','png','gif','webp'].includes(mediaType)">
+                    <img :src="mediaSrc" class="max-h-[80vh] mx-auto rounded-lg shadow-lg">
+                </template>
+
+                <!-- Video -->
+                <template x-if="['mp4','webm','ogg'].includes(mediaType)">
+                    <video controls autoplay class="max-h-[80vh] mx-auto rounded-lg shadow-lg">
+                        <source :src="mediaSrc" :type="'video/' + mediaType">
+                    </video>
+                </template>
+
+                <!-- Audio -->
+                <template x-if="['mp3','wav','ogg'].includes(mediaType)">
+                    <audio controls autoplay class="w-full">
+                        <source :src="mediaSrc" :type="'audio/' + mediaType">
+                    </audio>
+                </template>
+
+                <!-- PDF -->
+                <template x-if="['pdf'].includes(mediaType)">
+                    <embed :src="mediaSrc" type="application/pdf" class="w-full h-[80vh] rounded border shadow-lg" />
+                </template>
             </div>
         </div>
     </div>
