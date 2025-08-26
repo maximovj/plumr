@@ -112,9 +112,14 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user, Album $album)
     {
-        //
+        return view('plumr.account.albums.show', [
+            'user' => $user,
+            'album' => $album,
+            'route' => route('albums.update', [$user, $album]),
+            'action' => 'edit',
+        ]);
     }
 
     /**
