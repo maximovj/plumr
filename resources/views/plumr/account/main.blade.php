@@ -115,7 +115,18 @@
                     @endowner
                 </a>
 
-                <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
+                 <a href="{{ route('albums.index', ['user' => $user]) }}">
+
+                    @owner($user)
+                    <p><i class="bi bi-collection"></i> <strong>{{ $user->albums->map->media->flatten()->count() }}</strong> Multimedia</p>
+                    @else
+                        @isfollower($user)
+                            <p><i class="bi bi-collection"></i> <strong>{{ $user->albums()->whereIn('visibility', ['public', 'followers_only'])->get()->map->media->flatten()->count() }}</strong> Multimedia</p>
+                        @else
+                            <p><i class="bi bi-collection"></i> <strong>{{ $user->albums()->where('visibility', 'public')->get()->map->media->flatten()->count() }}</strong> Multimedia</p>
+                        @endisfollower
+                    @endowner
+                </a>
 
                 <a href="{{ route('account.followings', ['user' => $user]) }}">
                     <p><i class="bi bi-people"></i>
