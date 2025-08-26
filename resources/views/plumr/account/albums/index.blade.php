@@ -114,7 +114,14 @@
                         @if ($album->tags)
                         <div class="flex gap-2 flex-wrap">
                             @foreach ($album->tags as $tag)
-                            @if ($tag)
+
+                            @if($account_tag = auth()->user()->followings()->where('username', ltrim($tag, '@'))->first())
+                            <a href="{{ route('main_account', [$account_tag]) }}">
+                                <span class="bg-indigo-400 border-2 text-white rounded-full px-2 py-1 text-xs">
+                                    <i class="bi bi-tag-fill"></i> {{ $tag }}
+                                </span>
+                            </a>
+                            @else
                             <span class="bg-gray-400 border-2 text-white rounded-full px-2 py-1 text-xs">
                                 <i class="bi bi-tag-fill"></i> {{ $tag }}
                             </span>
