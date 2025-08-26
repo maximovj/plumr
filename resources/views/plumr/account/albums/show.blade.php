@@ -60,10 +60,7 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-6">Galería de medios</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($album->media as $media)
-                    <div class="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden cursor-pointer"
-                         @click="showModal = true;
-                                 mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
-                                 mediaSrc = '{{ $media->file_path_url }}'">
+                    <div class="relative bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
                         @if(Str::endsWith($media->file_path_url, ['.jpg','.jpeg','.png','.gif','.webp']))
                             <img src="{{ $media->file_path_url }}" class="h-48 w-full object-cover" alt="Imagen">
                         @elseif(Str::endsWith($media->file_path_url, ['.mp4','.webm','.ogg']))
@@ -71,19 +68,72 @@
                                 <source src="{{ $media->file_path_url }}" type="video/{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}">
                             </video>
                         @elseif(Str::endsWith($media->file_path_url, ['.mp3','.wav','.ogg']))
-                            <div class="h-48 flex items-center justify-center bg-gray-100 text-indigo-600 text-sm">
-                                🎵 Audio
+                            <div
+                            style="
+                            background-image: url('{{ asset('storage/media/music-file.gif') }}');
+                            background-position: top;
+                            background-size: 100% 100%;
+                            background-repeat: no-repeat;"
+                            class="h-48 flex items-center justify-center bg-gray-100 text-indigo-600 text-sm">
+                                <div class="flex justify-center items-center bg-black bg-opacity-50 w-24 h-14 rounded-full">
+                                    <span class="text-gray-200 text-sm font-semibold">🎵 Audio</span>
+                                </div>
                             </div>
                         @elseif(Str::endsWith($media->file_path_url, ['.pdf']))
-                            <div class="h-48 flex items-center justify-center bg-gray-100 text-gray-600 text-sm">
-                                📄 PDF
+                            <div
+                            style="
+                            background-image: url('{{ asset('storage/media/pdf.gif') }}');
+                            background-position: top;
+                            background-size: 100% 100%;
+                            background-repeat: no-repeat;"
+                            class="h-48 flex items-center justify-center bg-gray-100 ">
+                                <div class="flex justify-center items-center bg-black bg-opacity-50 w-24 h-14 rounded-full">
+                                    <span class="text-gray-200 text-sm font-semibold">📄 PDF</span>
+                                </div>
                             </div>
                         @else
                             <div class="h-48 flex items-center justify-center bg-gray-100 text-gray-500 text-xs">
                                 Archivo no soportado
                             </div>
                         @endif
-                        <div class="p-3 border-t">
+
+                        <!-- Botón de acciones (solo para el dueño) -->
+                        @if(Auth::check() && Auth::user()->id === $user->id)
+                            <div class="absolute top-2 right-2" x-data="{ showOptions: false }" x-cloak>
+                                <button @click="showOptions = !showOptions"
+                                    class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+
+                                <!-- Menú desplegable -->
+                                <div x-show="showOptions" @click.outside="showOptions = false"
+                                    x-transition:enter="transition ease-out duration-300"
+                                    x-transition:enter-start="opacity-0 scale-90"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-200"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-90"
+                                    class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
+                                    <ul class="flex flex-col py-2">
+                                        <li>
+                                            <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Mover de álbum</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('account.edit_cover', [$user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div
+                        @click="showModal = true;
+                                 mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
+                                 mediaSrc = '{{ $media->file_path_url }}'"
+                        class="p-3 border-t cursor-pointer">
                             <p class="text-xs text-gray-600 truncate">{{ $media->title }}</p>
                         </div>
                     </div>
@@ -97,7 +147,8 @@
         <div x-show="showModal"
              class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
              x-transition
-             @click.self="showModal = false">
+             @click.self="showModal = false"
+             x-cloak>
             <div class="relative max-w-5xl w-full p-4">
                 <!-- Botón cerrar -->
                 <button @click="showModal = false"
