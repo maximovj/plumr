@@ -3,6 +3,13 @@
 @section('main')
 <x-main>
     <div class="bg-white mx-auto p-8 rounded-lg shadow-md max-w-4xl h-full">
+
+        @if(count($errors) > 0)
+        <div class="bg-red-700 text-white px-2 py-4 mb-4">
+            {{ $errors->first() }}
+        </div>
+        @endif
+
         <!-- Crear un nuevo artículo -->
         <section>
             <div class="flex justify-between items-center">
@@ -14,19 +21,14 @@
                 <a href="{{ route('albums.index', ['user' => $user]) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow transition">
                     ← Volver
                 </a>
-            </d>
+                </d>
         </section>
 
         <!-- Formularios de editores -->
-        <form
-        action="{{ $route }}"
-        method="POST"
-        enctype="multipart/form-data"
-        class="space-y-4"
-        x-data="{ imagePreview: '{{ $album->cover_url ?? '' }}' }">
+        <form action="{{ $route }}" method="POST" enctype="multipart/form-data" class="space-y-4" x-data="{ imagePreview: '{{ $album->cover_url ?? '' }}' }">
             @csrf
             @if($action == 'edit')
-                @method('PUT')
+            @method('PUT')
             @endif
 
             <!-- Título y Subtítulo en fila -->
@@ -50,32 +52,18 @@
                 <p class="text-xs text-red-500">{{ $message }}</p>
                 @enderror
             </section>
-            
+
             <section>
                 <!-- Etiquetas -->
-                <x-input-array
-                    type="component"
-                    name="tags"
-                    label="Etiquetas"
-                    :items="$album->tags"
-                    labelClass="text-sm text-gray-700"
-                    placeholder="Escribe un estado y presiona Enter"
-                    inputClass="p-3 rounded-lg bg-blue-50 border border-gray-300
+                <x-input-array type="component" name="tags" label="Etiquetas" :items="$album->tags" labelClass="text-sm text-gray-700" placeholder="Escribe un estado y presiona Enter" inputClass="p-3 rounded-lg bg-blue-50 border border-gray-300
                     focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('title') }}" />
             </section>
 
-            <section 
-                x-data="{ visibility: '{{ old('visibility', $album->visibility) }}' }" 
-                class="flex flex-col gap-2"
-            >
+            <section x-data="{ visibility: '{{ old('visibility', $album->visibility) }}' }" class="flex flex-col gap-2">
                 <label class="text-sm text-gray-700" for="summary">
                     Seleccione modo de visibilidad
                 </label>
-                <select 
-                    x-model="visibility" 
-                    name="visibility" 
-                    class="p-2 rounded border-2 w-36"
-                >
+                <select x-model="visibility" name="visibility" class="p-2 rounded border-2 w-36">
                     <option value="private">Privado</option>
                     <option value="public">Público</option>
                     <option value="followers_only">Protegido</option>
@@ -93,9 +81,7 @@
                 <!-- Portada -->
                 <section class="flex flex-col w-full">
                     <label class="text-gray-700 mb-1">Portada</label>
-                    <input type="file" accept="image/*" name="cover" id="cover"
-                    @change="imagePreview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null"
-                    value="{{ old('cover',$album->cover_url ?? '') }}" placeholder="Ingresa fecha de publicación" autocomplete="off" class="p-3 rounded-lg bg-blue-50 border border-gray-300
+                    <input type="file" accept="image/*" name="cover" id="cover" @change="imagePreview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null" value="{{ old('cover',$album->cover_url ?? '') }}" placeholder="Ingresa fecha de publicación" autocomplete="off" class="p-3 rounded-lg bg-blue-50 border border-gray-300
                         focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('cover') }}" />
                     @error('cover')
                     <p class="text-red-500 text-xs my-2">{{ $message }}</p>
@@ -113,6 +99,39 @@
                 </section>
             </div>
 
+            <section x-data="{ files: [] }">
+                <label class="text-gray-700 mb-1">Archivos</label>
+                <input type="file" name="media[]" id="media" accept="image/*,audio/*,video/*,.pdf" multiple @change="files = Array.from($event.target.files)" class="p-3 rounded-lg bg-blue-50 border border-gray-300
+               focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm" />
+
+                <template x-if="files.length > 0">
+                    <div class="mt-4 space-y-2">
+                        <template x-for="(file, index) in files" :key="index">
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <template x-if="file.type.startsWith('image/')">
+                                    <img :src="URL.createObjectURL(file)" class="h-20 w-auto rounded border shadow-sm">
+                                </template>
+
+                                <template x-if="file.type.startsWith('video/')">
+                                    <video controls class="h-20 rounded border shadow-sm">
+                                        <source :src="URL.createObjectURL(file)" type="video/mp4">
+                                    </video>
+                                </template>
+
+                                <template x-if="file.type.startsWith('audio/')">
+                                    <audio controls class="w-48">
+                                        <source :src="URL.createObjectURL(file)" type="audio/mpeg">
+                                    </audio>
+                                </template>
+
+                                <template x-if="file.type.includes('pdf')">
+                                    <span class="px-2 py-1 bg-red-100 text-red-700 rounded">PDF: <span x-text="file.name"></span></span>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </section>
 
             <button type="submit" class=" bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-2 rounded-lg shadow transition">{{ $action == 'create' ? 'Crear álbum' : 'Actualizar álbum' }}</button>
         </form>
