@@ -110,7 +110,25 @@ Route::get('{user:username}/articles/create', [ArticleController::class, 'create
 Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
     ->name('articles.show');
 
-Route::resource('{user:username}/albums', AlbumController::class);
+// Ruta para álbumes
+Route::resource('{user:username}/albums', AlbumController::class)
+    ->scoped([
+        'user' => 'username',
+        'album' => 'slug',
+    ])
+    ->middleware(['auth'])
+    ->except(['show', 'create', 'edit']);
+
+Route::get('{user:username}/albums/create', [AlbumController::class, 'create'])
+    ->middleware(['auth', 'owner'])
+    ->name('albums.create');
+
+Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 'edit'])
+    ->middleware(['auth', 'owner'])
+    ->name('albums.edit');
+
+Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])
+    ->name('albums.show');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
