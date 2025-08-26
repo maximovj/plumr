@@ -22,8 +22,8 @@ if (!function_exists('is_account_tag')) {
     {
         $username = ltrim($tag, '@');
 
-        return $username === auth()->user()->username
-            ? auth()->user()
+        return $username === $user_check->username
+            ? $user_check
             : $user_check->followings()->where('username', $username)->first();
     }
 }
