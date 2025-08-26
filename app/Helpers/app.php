@@ -17,9 +17,13 @@ if(!function_exists('account_tag')) {
     }
 }
 
-if(!function_exists('is_account_tag')) {
+if (!function_exists('is_account_tag')) {
     function is_account_tag(\App\Models\User $user_check, string $tag)
     {
-        return $user_check->followings()->where('username', ltrim($tag, '@'))->first();
+        $username = ltrim($tag, '@');
+
+        return $username === auth()->user()->username
+            ? auth()->user()
+            : $user_check->followings()->where('username', $username)->first();
     }
 }
