@@ -38,8 +38,10 @@
             No hay álbumes aún
         </div>
         @else
+
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach ($albums as $album)
+            <!-- Tarjetas de álbumes -->
             <div
                 x-data="{
                     hover: false,
@@ -53,8 +55,13 @@
                 @mouseenter="hover = true"
                 x-cloak>
 
+                <!-- Sección para Portada, Acciones, Tipo de visibilidad -->
                 <div class="order-first xl:block w-full h-60 relative">
+                    <!-- Portada -->
                     <img loading="lazy" src="{{ asset($album->cover_url) }}" alt="portada.jpg" class="w-full h-full object-fill rounded-md" />
+
+                    <!-- Acciones -->
+                    @owner($user)
                     <a href="{{ route('albums.edit', [$user, $album]) }}">
                         <div class="absolute flex justify-center content-center items-center
                         top-2 right-4 rounded-full bg-black bg-opacity-30 w-8 h-8
@@ -70,7 +77,9 @@
                             <i class="bi bi-eye-fill text-base text-white "></i>
                         </div>
                     </a>
+                    @endowner
 
+                    <!-- Tipo de visibilidad -->
                     <div
                     x-show="hover"
                     class="absolute flex top-2 left-4 animate__animated animate__fadeIn ">
@@ -89,6 +98,7 @@
                     </div>
                 </div>
 
+                <!-- Contenido principal -->
                 <div class="flex flex-col justify-between items-baseline">
                     <div>
                         <h4 class="font-bold text-base">{{ $album->title }}</h3>
