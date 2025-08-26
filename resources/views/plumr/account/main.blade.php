@@ -103,6 +103,10 @@
                     @endowner
                 </a>
 
+                <a href="{{ route('albums.index', ['user' => $user]) }}">
+                    <p><i class="bi bi-file-post-fill"></i> <strong>0</strong> Álbumes</p>
+                </a>
+
                 <p><i class="bi bi-collection"></i> <strong>1 000</strong> Multimedia</p>
 
                 <a href="{{ route('account.followings', ['user' => $user]) }}">
