@@ -10,9 +10,16 @@ if(!function_exists('isfollower')) {
     }
 }
 
-if(!function_exists('is_account_tag')) {
-    function is_account_tag(string $tag)
+if(!function_exists('account_tag')) {
+    function account_tag(string $tag)
     {
         return auth()->user()->followings()->where('username', ltrim($tag, '@'))->first();
+    }
+}
+
+if(!function_exists('is_account_tag')) {
+    function is_account_tag(\App\Models\User $user_check, string $tag)
+    {
+        return $user_check->followings()->where('username', ltrim($tag, '@'))->first();
     }
 }
