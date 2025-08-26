@@ -239,12 +239,31 @@ html { scroll-behavior: smooth; }
         </div>
 
         <!-- Tags -->
-        @if (!empty($article->tags))
-        <div class="mt-6 flex flex-wrap gap-2">
-            @foreach ($article->tags as $tag)
-            <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">{{ $tag }}</span>
-            @endforeach
-        </div>
+        @php
+            $real_tags = collect($article->tags)->filter(fn($item) => !empty($item));
+        @endphp
+
+        @if (!$real_tags->isEmpty())
+            <div class="flex gap-2 flex-wrap">
+                @foreach ($article->tags as $tag)
+
+                    @if($account_tag = is_account_tag($tag))
+                    <a href="{{ route('main_account', [$account_tag]) }}">
+                        <span class="bg-indigo-500 hover:bg-indigo-600 border-2 text-white rounded-full px-2 py-1 text-xs">
+                            <i class="bi bi-person-fill"></i> {{ $account_tag->username }}
+                        </span>
+                    </a>
+                    @else
+                    <span class="bg-gray-400 border-2 text-white rounded-full px-2 py-1 text-xs">
+                        <i class="bi bi-tag-fill"></i> {{ $tag }}
+                    </span>
+                @endif
+                @endforeach
+            </div>
+        @else
+            <span class="bg-gray-400 border-2 text-white rounded-full px-2 py-1 text-xs">
+                <i class="bi bi-tag-fill"></i> Sin etiquetas
+            </span>
         @endif
 
         @php
