@@ -19,9 +19,23 @@ class AlbumController extends Controller
     public function index(User $user)
     {
         //
+        if(isfollower($user)) {
+            $albums = $user->albums()
+            ->whereIn('visibility', ['public', 'followers_only'])
+            ->latest()->take(10)->get();
+        }elseif(auth()->user()->id !== $user->id)
+        {
+            $albums = $user->albums()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(10)->get();
+        } else {
+            $albums = $user->albums()
+            ->latest()->take(10)->get();
+        }
+
         return view("plumr.account.albums.index", [
             'user' => $user,
-            'albums' => $user->albums()->latest()->take(10)->get(),
+            'albums' => $albums ,
         ]);
     }
 
