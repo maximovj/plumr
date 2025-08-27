@@ -118,7 +118,7 @@
                  <a href="{{ route('albums.index', ['user' => $user]) }}">
 
                     @owner($user)
-                    <p><i class="bi bi-collection"></i> <strong>{{ $user->albums->map->media->flatten()->count() }}</strong> Multimedia</p>
+                    <p><i class="bi bi-collection"></i> <strong>{{ $user->medias->count() }}</strong> Multimedia</p>
                     @else
                         @isfollower($user)
                             <p><i class="bi bi-collection"></i> <strong>{{ $user->albums()->whereIn('visibility', ['public', 'followers_only'])->get()->map->media->flatten()->count() }}</strong> Multimedia</p>
