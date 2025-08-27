@@ -44,7 +44,7 @@ class ConfirmDeleteModelClass extends Component
             }
         } else
         if ($model instanceof \App\Models\Media) {
-            if ($model && $user = $model->albums->first()->user) {
+            if ($model && $user = $model->user) {
                 $this->deletingMedia($model, $user);
             }
         } else

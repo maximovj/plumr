@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Album;
 use App\Models\Media;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class MediaMoveToAlbum extends Component
@@ -67,6 +68,35 @@ class MediaMoveToAlbum extends Component
         $media = Media::find($this->mediaId);
         $album = Album::find($this->albumId);
 
+        if(empty($this->albums_selected) && $album) {
+            if($media && $user = $media->user) {
+                if(isowner($user)) {
+
+                    $oldPath = $media->file_path;
+                    $newPath = str_replace("album_$album->id/", '', $oldPath);
+
+                    // Mover archivo en el disco "public"
+                    if (Storage::disk('public')->exists($oldPath)) {
+                        Storage::disk('public')->move($oldPath, $newPath);
+
+                        // Actualizar en la BD
+                        $media->update([
+                            'file_path' => $newPath,
+                        ]);
+                    }
+
+                    toastr()->addSuccess('Multimedia eliminado correctamente');
+
+                    sweetalert()
+                    ->showConfirmButton(
+                        true,
+                        "Enterado",
+                        "btn btn-success",
+                        "Enterado"
+                    )->addSuccess('Multimedia eliminado correctamente');
+                }
+            }
+        }else
         if(!$album && $media && $user = $media->user) {
 
             if(isowner($user)) {
@@ -86,31 +116,7 @@ class MediaMoveToAlbum extends Component
                 )->addSuccess('Multimedia modificado correctamente');
             }
 
-        }
-
-        /*
-        if(empty($this->albums_selected)) {
-            if($media && $album && $user = $album->user) {
-                if(isowner($user)) {
-
-                    $media->delete();
-
-                    $album->touch();
-
-                    toastr()->addSuccess('Multimedia eliminado correctamente');
-
-                    sweetalert()
-                    ->showConfirmButton(
-                        true,
-                        "Enterado",
-                        "btn btn-success",
-                        "Enterado"
-                    )->addSuccess('Multimedia eliminado correctamente');
-                }
-            }
         }else
-        */
-
         if($media && $album && $user = $album->user) {
             if(isowner($user)) {
 
