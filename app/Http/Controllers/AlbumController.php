@@ -93,6 +93,7 @@ class AlbumController extends Controller
         }
 
         $new_album->save(); // Guardar álbum
+        $new_album->folder = 'media/sources_'.$new_album->user_id.'/'.'album_'.$new_album->id;
 
         if ($request->hasFile('media')) {
             $counter = 0;
@@ -101,7 +102,7 @@ class AlbumController extends Controller
                 $slug = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s'));
                 $filename = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s')).'.'.$file->getClientOriginalExtension();
                 $path = $file->storeAs(
-                    'media/sources_'.$new_album->user_id.'/'.'album_'.$new_album->id,
+                    $new_album->folder,
                     $filename,
                     'public');
 
@@ -143,7 +144,7 @@ class AlbumController extends Controller
             }
         }
 
-
+        $new_album->save();
 
         toastr()->addSuccess('Album creado correctamente');
 

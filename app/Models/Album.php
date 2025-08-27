@@ -11,7 +11,7 @@ class Album extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'title', 'slug', 'description',
+        'user_id', 'title', 'slug', 'description', 'folder',
         'cover', 'visibility', 'tags'
     ];
 
