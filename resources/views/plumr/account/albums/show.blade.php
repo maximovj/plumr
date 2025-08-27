@@ -157,7 +157,17 @@
                                             <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Mover de álbum</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('account.edit_cover', [$user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
+                                            <a
+                                            role="button"
+                                            x-data
+                                            x-on:click="Livewire.emit('confirmDeleteModelClass',
+                                                'App\\Models\\Media', // Clase del modelo
+                                                {{ $media->id }},     // ID del registro
+                                                '{{ route('albums.show', [$user, $album]) }}', // Redirect (opcional)
+                                                '¿Eliminar multimedia?',  // Título (opcional)
+                                                'Este multimedia se eliminará permanentemente.' // Mensaje (opcional)
+                                            )"
+                                            class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>
