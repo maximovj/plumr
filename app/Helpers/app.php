@@ -3,6 +3,13 @@
 // Helpers para el sistema
 // - Controladores, modelos, clases, triats, etc.
 
+if(!function_exists('isowner')) {
+    function isowner(\App\Models\User $user_check)
+    {
+        return auth()->user()->id == $user_check->id;
+    }
+}
+
 if(!function_exists('isfollower')) {
     function isfollower(\App\Models\User $user_check)
     {
