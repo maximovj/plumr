@@ -85,7 +85,7 @@
                         @elseif(Str::endsWith($media->file_path_url, ['.mp3','.wav','.ogg']))
                             <div
                             style="
-                            background-image: url('{{ asset('storage/media/music-file.gif') }}');
+                            background-image: url('{{ asset('storage/media/default_audio.png') }}');
                             background-position: top;
                             background-size: 100% 100%;
                             background-repeat: no-repeat;"
@@ -97,7 +97,7 @@
                         @elseif(Str::endsWith($media->file_path_url, ['.pdf']))
                             <div
                             style="
-                            background-image: url('{{ asset('storage/media/pdf.gif') }}');
+                            background-image: url('{{ asset('storage/media/default_pdf.png') }}');
                             background-position: top;
                             background-size: 100% 100%;
                             background-repeat: no-repeat;"
