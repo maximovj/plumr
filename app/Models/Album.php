@@ -16,7 +16,7 @@ class Album extends Model
     ];
 
     protected $appends = [
-        'cover_url'
+        'cover_url',
     ];
 
     protected $casts = [

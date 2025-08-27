@@ -23,6 +23,16 @@ class Media extends Model
         'tags' => 'array',
     ];
 
+    protected static function booted()
+    {
+        // Crear un observer para eliminar el archivo desde storage
+        static::deleting(function ($media) {
+            if ($media->file_path && Storage::disk('public')->exists($media->file_path)) {
+                Storage::disk('public')->delete($media->file_path);
+            }
+        });
+    }
+
     public function getFilePathUrlAttribute()
     {
         $cover_default = 'media/media_default.png';
