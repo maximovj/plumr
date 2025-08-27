@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function medias()
     {
-        return $this->hasMany(Album::class, 'user_id', 'id');
+        return $this->hasMany(Media::class, 'user_id', 'id');
     }
 
     public function posts()

@@ -12,7 +12,7 @@ class Media extends Model
 
     protected $fillable = [
         'type', 'file_path', 'mime_type', 'title', 'slug',
-        'description', 'tags', 'visibility'
+        'description', 'tags', 'visibility', 'user_id'
     ];
 
     protected $appends = [
