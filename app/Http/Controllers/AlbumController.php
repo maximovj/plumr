@@ -232,6 +232,7 @@ class AlbumController extends Controller
             toastr()->addSuccess('Portada modificado correctamente');
         }
 
+        $album->touch();
         $album->save(); // Actualizar album
 
         toastr()->addSuccess('Album modificado correctamente');
