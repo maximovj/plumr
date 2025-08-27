@@ -42,7 +42,14 @@ class MediaMoveToAlbum extends Component
 
         $user = User::find($this->userId);
         $this->albums = $user->albums()->orderBy('title')->get()->toArray() ?? [];
-        $this->albums_selected[]  = $this->albumId;
+        
+        if($this->albumId == "*") {
+            $media = Media::find($this->mediaId);
+            $AlbumsIds = $media->albums()->get()->pluck('id')->toArray();
+            array_push($this->albums_selected, $AlbumsIds);
+        } else {
+            $this->albums_selected[]  = $this->albumId;
+        }
 
         $this->showModal = true;
     }
@@ -59,6 +66,27 @@ class MediaMoveToAlbum extends Component
 
         $media = Media::find($this->mediaId);
         $album = Album::find($this->albumId);
+
+        if(!$album && $media && $user = $media->user) {
+
+            if(isowner($user)) {
+
+                $media->albums()->sync($this->albums_selected);
+
+                $media->albums()->update(['updated_at' => now()]);
+
+                toastr()->addSuccess('Multimedia modificado correctamente');
+
+                sweetalert()
+                ->showConfirmButton(
+                true,
+                "Enterado",
+                "btn btn-success",
+                "Enterado"
+                )->addSuccess('Multimedia modificado correctamente');
+            }
+
+        }
 
         /*
         if(empty($this->albums_selected)) {

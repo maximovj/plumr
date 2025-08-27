@@ -15,6 +15,9 @@
                 return `${min}:${sec}`;
             }
     }">
+    
+    @livewire('media-move-to-album')
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($medias as $media)
         <div class="relative bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
@@ -60,20 +63,22 @@
                 <!-- Menú desplegable -->
                 <div x-show="showOptions" @click.outside="showOptions = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
                     <ul class="flex flex-col py-2">
-                        {{-- <li>
-                                            <a
-                                            role="button"
-                                            x-data
-                                            x-on:click="
-                                                Livewire.emit('mediaMoveToAlbum',
-                                                    {{ $album->id }},
-                        {{ $media->id }},
-                        {{ $user->id }},
-                        '{{ route('albums.show', [$user, $album]) }}',
-                        );
-                        "
-                        class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Mover a álbum</a>
-                        </li> --}}
+                        <li>
+                            <a
+                                role="button"
+                                x-data
+                                x-on:click="
+                                    Livewire.emit('mediaMoveToAlbum',
+                                        {{ $album->id ?? '"*"' }},
+                                        {{ $media->id }},
+                                        {{ $user->id }},
+                                        '{{ $album ?  route('albums.show', [$user, $album]) : route('medias.index', [$user])  }}',
+                                    );
+                                "
+                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">
+                                Mover a álbum
+                            </a>
+                        </li>
                         <li>
                             <a role="button" x-data x-on:click="Livewire.emit('confirmDeleteModelClass',
                                                 'App\\Models\\Media', // Clase del modelo
