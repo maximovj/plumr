@@ -34,10 +34,36 @@
         <div class="p-8">
             <div class="flex items-center justify-between">
                 <h1 class="text-3xl font-bold text-gray-900">{{ $album->title }}</h1>
-                <a href="{{ route('albums.index', ['user' => $user]) }}"
-                   class="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg shadow">
-                    ← Volver
-                </a>
+
+                <!-- Botones de acción -->
+                <section class="flex flex-row gap-2 mt-4 lg:mt-0">
+                    @owner($user)
+                    <a href="{{ route('albums.edit', [$user, $album]) }}" class="flex items-center gap-2 bg-yellow-100 text-yellow-700 px-3 py-1 rounded hover:bg-yellow-200 transition">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+
+                    <button
+                        x-data
+                        x-on:click="Livewire.emit('confirmDeleteModelClass',
+                            'App\\Models\\Album', // Clase del modelo
+                            {{ $album->id }},     // ID del registro
+                            '{{ route('albums.index', $user) }}', // Redirect (opcional)
+                            '¿Eliminar álbum?',  // Título (opcional)
+                            'Este artículo se eliminará permanentemente.' // Mensaje (opcional)
+                        )"
+                        class="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition"
+                    >
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    @endowner
+
+                    @auth
+                    <a href="{{ route('albums.index', ['user' => $user]) }}"
+                       class="px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg shadow">
+                        ← Volver
+                    </a>
+                    @endauth
+                </section>
             </div>
 
             @if($album->description)
