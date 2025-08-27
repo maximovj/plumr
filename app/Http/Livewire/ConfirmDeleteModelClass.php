@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ConfirmDeleteModelClass extends Component
 {
@@ -50,6 +51,11 @@ class ConfirmDeleteModelClass extends Component
 
                     // Limpiar la relación pivote
                     $album->media()->detach();
+
+                    // Eliminar también la carpeta entera
+                    if ($album->folder && Storage::disk('public')->exists($album->folder)) {
+                        Storage::disk('public')->deleteDirectory($album->folder);
+                    }
 
                     // Eliminar el álbum
                     $album->delete();
