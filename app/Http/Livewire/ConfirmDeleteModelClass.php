@@ -83,6 +83,7 @@ class ConfirmDeleteModelClass extends Component
             $album = $model;
             foreach ($album->media as $media) {
                 $media->delete(); // el observer se encarga de borrar el archivo
+                $media->albums()->detach();   // Limpiar la relación pivote
             }
 
             // Limpiar la relación pivote
