@@ -47,7 +47,7 @@ class MediaMoveToAlbum extends Component
         if($this->albumId == "*") {
             $media = Media::find($this->mediaId);
             $AlbumsIds = $media->albums()->get()->pluck('id')->toArray();
-            array_push($this->albums_selected, $AlbumsIds);
+            array_merge($this->albums_selected, $AlbumsIds); // Unir los valores en un solo arreglo plano
         } else {
             $this->albums_selected[]  = $this->albumId;
         }
@@ -68,22 +68,28 @@ class MediaMoveToAlbum extends Component
         $media = Media::find($this->mediaId);
         $album = Album::find($this->albumId);
 
-        if(empty($this->albums_selected) && $album) {
-            if($media && $user = $media->user) {
+        if(empty($this->albums_selected)) {
+            if($media && ($album = $media->albums()->first()) && $user = $media->user) {
                 if(isowner($user)) {
 
                     $oldPath = $media->file_path;
                     $newPath = str_replace("album_$album->id/", '', $oldPath);
 
                     // Mover archivo en el disco "public"
-                    if (Storage::disk('public')->exists($oldPath)) {
-                        Storage::disk('public')->move($oldPath, $newPath);
+                    try {
+                        if (Storage::disk('public')->exists($oldPath)) {
+                            Storage::disk('public')->move($oldPath, $newPath);
 
-                        // Actualizar en la BD
-                        $media->update([
-                            'file_path' => $newPath,
-                        ]);
+                            // Actualizar en la BD
+                            $media->update([
+                                'file_path' => $newPath,
+                            ]);
+                        }
+                    } catch (\Throwable $th) {
+                        //throw $th;
                     }
+
+                    $media->albums()->detach();
 
                     toastr()->addSuccess('Multimedia eliminado correctamente');
 
