@@ -130,9 +130,15 @@
                         @endif
 
                         <div
-                        @click="showModal = true;
-                                 mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
-                                 mediaSrc = '{{ $media->file_path_url }}'"
+                        @click="
+                            mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
+                            mediaSrc = '{{ $media->file_path_url }}';
+                            showModal = true;
+                            $nextTick(() => {
+                                if($refs.file_audio) { $refs.file_audio.load(); $refs.file_audio.play(); }
+                                if($refs.file_video) { $refs.file_video.load(); $refs.file_video.play(); }
+                            });
+                        "
                         class="p-3 border-t cursor-pointer">
                             <p class="text-xs text-gray-600 truncate">{{ $media->title }}</p>
                         </div>
@@ -147,7 +153,9 @@
         <div x-show="showModal"
              class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
              x-transition
-             @click.self="showModal = false"
+             @click.self="showModal = false;
+                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; }
+                        if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }"
              x-cloak>
             <div class="max-w-5xl w-full p-4">
                 <!-- Botón cerrar -->
@@ -166,14 +174,14 @@
 
                 <!-- Video -->
                 <template x-if="['mp4','webm','ogg'].includes(mediaType)">
-                    <video controls autoplay class="max-h-[80vh] mx-auto rounded-lg shadow-lg">
+                    <video x-ref="file_video" :key="mediaSrc" controls autoplay class="max-h-[80vh] mx-auto rounded-lg shadow-lg">
                         <source :src="mediaSrc" :type="'video/' + mediaType">
                     </video>
                 </template>
 
                 <!-- Audio -->
                 <template x-if="['mp3','wav','ogg'].includes(mediaType)">
-                    <audio x-ref="file_audio" controls autoplay class="w-full">
+                    <audio x-ref="file_audio" :key="mediaSrc" controls autoplay class="w-full">
                         <source :src="mediaSrc" :type="'audio/' + mediaType">
                     </audio>
                 </template>
