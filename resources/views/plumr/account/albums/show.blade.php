@@ -45,15 +45,12 @@
             @endif
 
             <!-- Etiquetas -->
-            @if($album->tags && count($album->tags))
-                <div class="mt-4 flex flex-wrap gap-2">
-                    @foreach($album->tags as $tag)
-                        <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full shadow-sm">
-                            #{{ $tag }}
-                        </span>
-                    @endforeach
-                </div>
-            @endif
+            <div class="mt-4 flex flex-wrap gap-2">
+                @livewire('tags-advanced', [
+                    'user' => $user,
+                    'tags' => $album->tags,
+                ])
+            </div>
 
             <!-- Visibilidad + fechas -->
             <div class="mt-6 flex items-center justify-between text-sm text-gray-500">
