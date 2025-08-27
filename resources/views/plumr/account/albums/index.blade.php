@@ -64,6 +64,19 @@
                     <div class="absolute top-2 right-4 flex flex-col space-y-1">
 
                         @owner($user)
+                        <div
+                        x-on:click="Livewire.emit('confirmDeleteModelClass',
+                            'App\\Models\\Album', // Clase del modelo
+                            {{ $album->id }},     // ID del registro
+                            '{{ route('albums.index', [$user]) }}', // Redirect (opcional)
+                            '¿Eliminar álbum?',  // Título (opcional)
+                            'Este álbum se eliminará permanentemente.' // Mensaje (opcional)
+                        )"
+                        class="flex justify-center content-center items-center
+                        rounded-full bg-black bg-opacity-30 w-8 h-8
+                        text-center p-1 border-2 transform hover:scale-110 hover:shadow-lg">
+                            <i class="bi bi-trash-fill text-base text-white"></i>
+                        </div>
                         <a href="{{ route('albums.edit', [$user, $album]) }}">
                             <div class="flex justify-center content-center items-center
                             rounded-full bg-black bg-opacity-30 w-8 h-8
