@@ -181,9 +181,9 @@
                                             )"
                                             class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </div>
