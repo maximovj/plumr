@@ -15,10 +15,27 @@ class MediaController extends Controller
     public function index(User $user)
     {
         //
+        $medias = $this->getMedias($user);
         return view("plumr.account.medias.index", [
             'user' => $user,
-            'medias' => $user->medias()->take(10)->get(),
+            'medias' => $medias,
         ]);
+    }
+
+    protected function getMedias(User $user)
+    {
+         if(isfollower($user)) { // Verificar si usuario autenticado es seguidor
+            return $user->medias()
+            ->whereIn('visibility', ['public', 'followers_only'])
+            ->latest()->take(10)->get();
+        }elseif(auth()->user()->id !== $user->id) { // Verificar si usuario no es el mismo autenticado
+            return $user->medias()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(10)->get();
+        } else {
+            return $user->medias()
+            ->latest('updated_at')->take(10)->get();
+        }
     }
 
     /**
