@@ -7,6 +7,7 @@
             showModal: false,
             mediaType: '',
             mediaSrc: '',
+            mediaTitle: '',
             currentTime: 0,
             duration: 0,
             interval: null,
@@ -146,6 +147,7 @@
                         @click="
                             mediaType = '{{ pathinfo($media->file_path_url, PATHINFO_EXTENSION) }}';
                             mediaSrc = '{{ $media->file_path_url }}';
+                            mediaTitle = '{{ $media->title }}';
                             showModal = true;
                             $nextTick(() => {
                                 if($refs.file_audio) {
@@ -157,8 +159,6 @@
                                     const audio = $refs.file_audio;
                                     duration = $refs.file_audio.duration || 0;
                                     currentTime = $refs.file_audio.currentTime;
-                                    console.log($refs.file_audio, audio);
-                                    console.log(duration, currentTime);
 
                                     // Actualizar barra cada 200ms
                                     this.interval = setInterval(() => {
@@ -220,7 +220,7 @@
                 <template x-if="['mp3','wav','ogg'].includes(mediaType)">
                     <div class="bg-gray-900 rounded-xl p-5 shadow-lg flex flex-col items-center space-y-4 mt-4">
                         <!-- Título -->
-                        <p class="text-white font-semibold text-center truncate w-full">{{ $media->title }}</p>
+                        <p class="text-white font-semibold text-center truncate w-full" x-text="mediaTitle"></p>
 
                         <!-- Controles -->
                         <div class="flex items-center justify-center gap-6 relative">
