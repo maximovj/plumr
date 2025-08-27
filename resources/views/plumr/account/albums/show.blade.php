@@ -151,7 +151,12 @@
              x-cloak>
             <div class="max-w-5xl w-full p-4">
                 <!-- Botón cerrar -->
-                <button @click="showModal = false"
+                <button @click="
+                        showModal = false;
+                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; }
+                        if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }
+                    "
+
                         class="absolute top-2 right-2 bg-white text-black rounded-full text-2xl w-10 h-10">&times;</button>
 
                 <!-- Imagen -->
@@ -168,7 +173,7 @@
 
                 <!-- Audio -->
                 <template x-if="['mp3','wav','ogg'].includes(mediaType)">
-                    <audio controls autoplay class="w-full">
+                    <audio x-ref="file_audio" controls autoplay class="w-full">
                         <source :src="mediaSrc" :type="'audio/' + mediaType">
                     </audio>
                 </template>
