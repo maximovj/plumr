@@ -37,11 +37,17 @@
             class="
             flex flex-col justify-between items-stretch
             bg-white rounded-lg shadow-lg p-6 w-96 animate__animated animate__faster animate__zoomIn"
-            style="height: 70vh !important;">
+            style="height: 80vh !important;">
 
             <!-- -->
             <section>
                 <h4 class="font-semibold py-2">Lista de álbum</h4>
+
+                <div class="block" x-show="$wire.albums_selected.length === 0">
+                    <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-2xl mr-2"></i>
+                    <span class="font-bold">¿Seguro que deseas eliminar este elemento?</span>
+                </div>
+
                 <div class="w-full h-96 overflow-auto relative">
                     <ul class="space-y-4">
                         <template x-for="album in $wire.albums" :key="album['id']">
