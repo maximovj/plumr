@@ -115,8 +115,7 @@
                     @endowner
                 </a>
 
-                 <a href="{{ route('albums.index', ['user' => $user]) }}">
-
+                <a href="{{ route('medias.index', ['user' => $user]) }}">
                     @owner($user)
                     <p><i class="bi bi-collection"></i> <strong>{{ $user->medias->count() }}</strong> Multimedia</p>
                     @else

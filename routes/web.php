@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\MainAccountController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PostController;
 
 /*
@@ -129,6 +130,26 @@ Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 
 
 Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])
     ->name('albums.show');
+
+// Ruta para multimedias (medias)
+Route::resource('{user:username}/medias', MediaController::class)
+    ->scoped([
+        'user' => 'username',
+        'media' => 'slug',
+    ])
+    ->middleware(['auth'])
+    ->except(['show', 'create', 'edit']);
+
+Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
+    ->middleware(['auth', 'owner'])
+    ->name('medias.create');
+
+Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
+    ->middleware(['auth', 'owner'])
+    ->name('medias.edit');
+
+Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
+    ->name('medias.show');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
