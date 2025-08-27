@@ -37,6 +37,38 @@ class ConfirmDeleteModelClass extends Component
 
         $model = $this->modelClass::find($this->modelId);
 
+        if ($model instanceof \App\Models\Album) {
+
+            if ($model && $user = $model->user) {
+                if(Auth::check() && Auth::user()->id ==  $user->id) {
+
+                    // Eliminar todos los registros de media asociados
+                    $album = $model;
+                    foreach ($album->media as $media) {
+                        $media->delete(); // el observer se encarga de borrar el archivo
+                    }
+
+                    // Limpiar la relación pivote
+                    $album->media()->detach();
+
+                    // Eliminar el álbum
+                    $album->delete();
+
+                    toastr()->addSuccess('Registro eliminado correctamente');
+
+                    sweetalert()
+                    ->showConfirmButton(
+                        true,
+                        "Enterado",
+                        "btn btn-success",
+                        "Enterado"
+                    )
+                    ->addSuccess('Registro eliminado correctamente');
+
+                    //session()->flash('success', 'Registro eliminado ✅');
+                }
+            }
+        } else
         if ($model && $user = $model->owner->first()) {
             if(Auth::check() && Auth::user()->id ==  $user->id) {
                 $model->delete();
