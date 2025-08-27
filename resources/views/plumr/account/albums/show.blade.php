@@ -216,19 +216,22 @@
                     </video>
                 </template>
 
-                <!-- Audio Rediseñado - Versión Compacta -->
+                <!-- Audio Rediseñado - Con Iconos Indicativos de ±10s -->
                 <template x-if="['mp3','wav','ogg'].includes(mediaType)">
-                    <div class="bg-gray-800 rounded-xl p-4 shadow-lg flex flex-col items-center space-y-3 mt-4">
+                    <div class="bg-gray-900 rounded-xl p-5 shadow-lg flex flex-col items-center space-y-4 mt-4">
                         <!-- Título -->
                         <p class="text-white font-semibold text-center truncate w-full">{{ $media->title }}</p>
 
                         <!-- Controles -->
-                        <div class="flex items-center justify-center gap-6">
+                        <div class="flex items-center justify-center gap-6 relative">
                             <!-- Retroceder 10s -->
-                            <button @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();"
-                                    class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
-                                <i class="bi bi-skip-start-fill text-white text-xl"></i>
-                            </button>
+                            <div class="flex flex-col items-center">
+                                <button @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();"
+                                        class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                                    <i class="bi bi-arrow-counterclockwise text-white text-xl"></i>
+                                </button>
+                                <span class="text-xs text-gray-400 mt-1">-10s</span>
+                            </div>
 
                             <!-- Play/Pause -->
                             <button @click="$refs.file_audio.paused ? $refs.file_audio.play() : $refs.file_audio.pause()"
@@ -237,10 +240,13 @@
                             </button>
 
                             <!-- Avanzar 10s -->
-                            <button @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();"
-                                    class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
-                                <i class="bi bi-skip-end-fill text-white text-xl"></i>
-                            </button>
+                            <div class="flex flex-col items-center">
+                                <button @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();"
+                                        class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                                    <i class="bi bi-arrow-clockwise text-white text-xl"></i>
+                                </button>
+                                <span class="text-xs text-gray-400 mt-1">+10s</span>
+                            </div>
                         </div>
 
                         <!-- Barra de progreso -->
@@ -252,7 +258,7 @@
                                 step="0.01"
                                 :value="currentTime"
                                 @input="$refs.file_audio.currentTime = $event.target.value; currentTime = $event.target.value;"
-                                class="flex-1 h-1 rounded-lg bg-gray-600 accent-green-500">
+                                class="flex-1 h-1 rounded-lg bg-gray-700 accent-green-500">
                             <span class="text-xs text-gray-400 w-8 text-left" x-text="formatTime(duration)">00:00</span>
                         </div>
 
@@ -262,8 +268,6 @@
                         </audio>
                     </div>
                 </template>
-
-
 
                 <!-- PDF -->
                 <template x-if="['pdf'].includes(mediaType)">
