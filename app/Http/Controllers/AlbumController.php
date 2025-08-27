@@ -129,7 +129,7 @@ class AlbumController extends Controller
                     'slug' => $slug,
                     'type' => $type,
                     'title' => $filename,
-                    'visibility' => 'public',
+                    'visibility' => 'followers_only',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -267,7 +267,7 @@ class AlbumController extends Controller
                     'slug' => $slug,
                     'type' => $type,
                     'title' => $filename,
-                    'visibility' => 'public',
+                    'visibility' => 'followers_only',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
