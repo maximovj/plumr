@@ -60,6 +60,7 @@ class MediaMoveToAlbum extends Component
         $media = Media::find($this->mediaId);
         $album = Album::find($this->albumId);
 
+        /*
         if(empty($this->albums_selected)) {
             if($media && $album && $user = $album->user) {
                 if(isowner($user)) {
@@ -80,6 +81,8 @@ class MediaMoveToAlbum extends Component
                 }
             }
         }else
+        */
+
         if($media && $album && $user = $album->user) {
             if(isowner($user)) {
 

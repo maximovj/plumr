@@ -45,7 +45,7 @@
 
                 <div class="block" x-show="$wire.albums_selected.length === 0">
                     <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-2xl mr-2"></i>
-                    <span class="font-bold">¿Seguro que deseas eliminar este elemento?</span>
+                    <span class="font-bold">El elemento estará disponible en la página multimedias</span>
                 </div>
 
                 <div class="w-full h-96 overflow-auto relative">
