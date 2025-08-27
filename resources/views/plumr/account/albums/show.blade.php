@@ -3,8 +3,21 @@
 @section('main')
 <x-main>
     <div
-        x-data="{ showModal: false, mediaType: '', mediaSrc: '' }"
-        class="mx-auto max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden"
+    x-data="{
+            showModal: false,
+            mediaType: '',
+            mediaSrc: '',
+            currentTime: 0,
+            duration: 0,
+            interval: null,
+            formatTime(seconds) {
+                const min = Math.floor(seconds / 60);
+                const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+                return `${min}:${sec}`;
+            }
+    }"
+    class="mx-auto max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden"
+    x-cloak
     >
         <!-- Portada grande -->
         @if($album->cover_url)
@@ -135,7 +148,29 @@
                             mediaSrc = '{{ $media->file_path_url }}';
                             showModal = true;
                             $nextTick(() => {
-                                if($refs.file_audio) { $refs.file_audio.load(); $refs.file_audio.play(); }
+                                if($refs.file_audio) {
+                                    // Cargar audio y reproducir
+                                    $refs.file_audio.load();
+                                    $refs.file_audio.play();
+
+                                    // Inicializar duración y barra
+                                    const audio = $refs.file_audio;
+                                    duration = $refs.file_audio.duration || 0;
+                                    currentTime = $refs.file_audio.currentTime;
+                                    console.log($refs.file_audio, audio);
+                                    console.log(duration, currentTime);
+
+                                    // Actualizar barra cada 200ms
+                                    this.interval = setInterval(() => {
+                                        currentTime = audio.currentTime;
+                                        duration = audio.duration || 0;
+                                        if(currentTime === duration) {
+                                            clearInterval(this.interval);
+                                        }
+                                    }, 200);
+
+                                }
+
                                 if($refs.file_video) { $refs.file_video.load(); $refs.file_video.play(); }
                             });
                         "
@@ -150,18 +185,20 @@
         </div>
 
         <!-- Modal Lightbox -->
-        <div x-show="showModal"
+        <div
+
+            x-show="showModal"
              class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
              x-transition
              @click.self="showModal = false;
-                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; }
+                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; clearInterval(this.interval); }
                         if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }"
              x-cloak>
             <div class="max-w-5xl w-full p-4">
                 <!-- Botón cerrar -->
                 <button @click="
                         showModal = false;
-                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; }
+                        if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; clearInterval(this.interval); }
                         if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }
                     "
 
@@ -180,11 +217,59 @@
                 </template>
 
                 <!-- Audio -->
-                <template x-if="['mp3','wav','ogg'].includes(mediaType)">
-                    <audio x-ref="file_audio" :key="mediaSrc" controls autoplay class="w-full">
-                        <source :src="mediaSrc" :type="'audio/' + mediaType">
-                    </audio>
-                </template>
+<!-- Audio -->
+<template x-if="['mp3','wav','ogg'].includes(mediaType)">
+    <div class="bg-gray-800 rounded-lg p-4 flex flex-col items-center shadow-lg mt-4">
+        <p class="text-white font-semibold mb-2 truncate w-full text-center">{{ $media->title }}</p>
+
+        <!-- Barra de progreso -->
+        <div class="w-full flex items-center gap-2">
+            <!-- Tiempo actual -->
+            <span class="text-xs text-gray-400" x-text="formatTime(currentTime)"></span>
+
+            <!-- Slider -->
+            <input type="range"
+            min="0"
+            :max="duration"
+            step="0.01"
+            :value="currentTime"
+            @input="
+                currentTime = $event.target.value;
+                $refs.file_audio.currentTime = $event.target.value
+            "
+            class="flex-1 h-1 rounded-lg bg-gray-600 accent-green-500">
+
+            <!-- Duración total -->
+            <span class="text-xs text-gray-400" x-text="formatTime(duration)">00:00</span>
+        </div>
+
+        <!-- Controles -->
+        <div class="mt-3 flex items-center gap-4">
+            <button
+                @click.outside="
+            currentTime = $refs.file_audio.currentTime;
+            $refs.file_audio.currentTime = currentTime - 10;
+            currentTime = $refs.file_audio.currentTime;
+            $refs.file_audio.play();"
+            class="text-white hover:text-green-400 text-2xl">⏮</button>
+            <button @click="$refs.file_audio.paused ? $refs.file_audio.play() : $refs.file_audio.pause()" class="text-white hover:text-green-400 text-2xl">
+                <span x-text="$refs.file_audio.paused ? '▶️' : '⏸️'"></span>
+            </button>
+            <button
+                @click.outside="
+            currentTime = $refs.file_audio.currentTime;
+            $refs.file_audio.currentTime = currentTime + 10;
+            currentTime = $refs.file_audio.currentTime;
+            $refs.file_audio.play();"
+            class="text-white hover:text-green-400 text-2xl">⏭</button>
+        </div>
+
+        <!-- Audio oculto -->
+        <audio x-ref="file_audio" :key="mediaSrc" controls autoplay class="hidden w-full">
+            <source :src="mediaSrc" :type="'audio/' + mediaType">
+        </audio>
+    </div>
+</template>
 
                 <!-- PDF -->
                 <template x-if="['pdf'].includes(mediaType)">
