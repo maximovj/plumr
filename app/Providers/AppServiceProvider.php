@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         //
         Blade::if('owner', fn($user) => UserPermissions::isOwner($user));
         Blade::if('isnotowner', fn($user) => UserPermissions::isNotOwner($user));
+        Blade::if('isfollower', fn($user_check) => UserPermissions::isFollower($user_check));
 
     }
 }

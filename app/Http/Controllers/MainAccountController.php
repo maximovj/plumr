@@ -15,8 +15,6 @@ class MainAccountController extends Controller
 
     public function index(User $user)
     {
-
-
         return view('plumr.account.main', [
             'user' => $user,
             'profile' => $user->profile,

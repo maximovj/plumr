@@ -129,14 +129,12 @@
                                 @endif
 
                                 <!-- Tags -->
-                                @if (!empty($post->tags))
-                                    <div class="flex flex-wrap gap-2 mb-3">
-                                        @foreach ($post->tags as $tag)
-                                            <span
-                                                class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">#{{ $tag }}</span>
-                                        @endforeach
-                                    </div>
-                                @endif
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    @livewire('tags-advanced', [
+                                        'user' => $user,
+                                        'tags' => $post->tags,
+                                    ])
+                                </div>
 
                         <div x-data="{ progress: 0 }" class="relative w-full">
 

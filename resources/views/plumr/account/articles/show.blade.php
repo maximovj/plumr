@@ -238,14 +238,12 @@ html { scroll-behavior: smooth; }
             <hr class="flex-grow border-t border-gray-300">
         </div>
 
-        <!-- Tags -->
-        @if (!empty($article->tags))
-        <div class="mt-6 flex flex-wrap gap-2">
-            @foreach ($article->tags as $tag)
-            <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full">{{ $tag }}</span>
-            @endforeach
+        <div class="flex flex-wrap">
+            @livewire('tags-advanced', [
+                'user' => $user,
+                'tags' => $article->tags
+            ])
         </div>
-        @endif
 
         @php
         $shareUrl = urlencode(url()->current());

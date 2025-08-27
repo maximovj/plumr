@@ -17,4 +17,10 @@ class UserPermissions
     {
         return Auth::check() && Auth::id() !== $user->id;
     }
+
+    public static function isFollower(User $user_check): bool
+    {
+        return auth()->user()->followings->contains($user_check->id);
+    }
+
 }
