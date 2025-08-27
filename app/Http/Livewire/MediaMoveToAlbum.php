@@ -41,16 +41,14 @@ class MediaMoveToAlbum extends Component
         $this->userId = $userId;
         $this->redirect = $redirect;
 
+        // Obtener la lista de álbumes del usuario
         $user = User::find($this->userId);
         $this->albums = $user->albums()->orderBy('title')->get()->toArray() ?? [];
         
-        if($this->albumId == "*") {
-            $media = Media::find($this->mediaId);
-            $AlbumsIds = $media->albums()->get()->pluck('id')->toArray();
-            array_merge($this->albums_selected, $AlbumsIds); // Unir los valores en un solo arreglo plano
-        } else {
-            $this->albums_selected[]  = $this->albumId;
-        }
+        // Obtener la lista de álbumes de la media
+        $media = Media::find($this->mediaId);
+        $AlbumsIds = $media->albums()->get()->pluck('id')->toArray();
+        $this->albums_selected = array_merge($this->albums_selected, $AlbumsIds);
 
         $this->showModal = true;
     }
