@@ -44,6 +44,12 @@ class Media extends Model
         return asset('storage/'.$cover_default); // archivo por defecto
     }
 
+    // Ruta amigable
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -75,4 +81,5 @@ class Media extends Model
     {
         return $this->visibility === 'followers_only';
     }
+
 }
