@@ -123,6 +123,7 @@ class AlbumController extends Controller
 
                 $new_media = new Media();
                 $new_media->fill([
+                    'user_id' => auth()->user()->id,
                     'mime_type' => $mime,
                     'file_path' => $path,
                     'slug' => $slug,
@@ -260,6 +261,7 @@ class AlbumController extends Controller
 
                 $new_media = new Media();
                 $new_media->fill([
+                    'user_id' => auth()->user()->id,
                     'mime_type' => $mime,
                     'file_path' => $path,
                     'slug' => $slug,
