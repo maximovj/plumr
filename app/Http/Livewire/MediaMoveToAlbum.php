@@ -63,13 +63,32 @@ class MediaMoveToAlbum extends Component
         if(empty($this->albums_selected)) {
             if($media && $album && $user = $album->user) {
                 if(isowner($user)) {
+
                     $media->delete();
+
+                    $album->touch();
+
+                    toastr()->addSuccess('Multimedia eliminado correctamente');
+
+                    sweetalert()
+                    ->showConfirmButton(
+                        true,
+                        "Enterado",
+                        "btn btn-success",
+                        "Enterado"
+                    )->addSuccess('Multimedia eliminado correctamente');
                 }
             }
         }else
         if($media && $album && $user = $album->user) {
             if(isowner($user)) {
+
                 $media->albums()->sync($this->albums_selected);
+
+                $album->touch();
+
+                $media->albums()->update(['updated_at' => now()]);
+
                 toastr()->addSuccess('Multimedia modificado correctamente');
 
                 sweetalert()
