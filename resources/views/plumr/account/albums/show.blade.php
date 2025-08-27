@@ -1,6 +1,7 @@
 @extends('plumr.layout.app')
 
 @section('main')
+@livewire('media-move-to-album')
 <x-main>
     <div
     x-data="{
@@ -154,7 +155,18 @@
                                     class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
                                     <ul class="flex flex-col py-2">
                                         <li>
-                                            <a href="{{ route('account.edit_photo', [$user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Mover de álbum</a>
+                                            <a
+                                            role="button"
+                                            x-data
+                                            x-on:click="
+                                                Livewire.emit('mediaMoveToAlbum',
+                                                    {{ $album->id }},
+                                                    {{ $media->id }},
+                                                    {{ $user->id }},
+                                                    '{{ route('albums.show', [$user, $album]) }}',
+                                                );
+                                            "
+                                            class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Mover a álbum</a>
                                         </li>
                                         <li>
                                             <a
