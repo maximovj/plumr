@@ -8,6 +8,7 @@
             mediaType: '',
             mediaSrc: '',
             mediaTitle: '',
+            ended: false,
             currentTime: 0,
             duration: 0,
             interval: null,
@@ -234,8 +235,29 @@
                             </div>
 
                             <!-- Play/Pause -->
-                            <button @click="$refs.file_audio.paused ? $refs.file_audio.play() : $refs.file_audio.pause()"
-                                    class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition">
+                            <button @click="
+                                if(ended) {
+                                    $refs.file_audio.currentTime = 0; // reinicia audio
+                                    currentTime = 0;                  // reinicia barra de progreso
+                                    ended = false;
+                                }
+                                if($refs.file_audio.paused) {
+                                    $refs.file_audio.play();
+                                    // reinicia interval para actualizar currentTime
+                                    clearInterval(interval);
+                                    interval = setInterval(() => {
+                                        currentTime = $refs.file_audio.currentTime;
+                                        duration = $refs.file_audio.duration || 0;
+                                        if(currentTime >= duration) {
+                                            clearInterval(interval);
+                                            ended = true;
+                                        }
+                                    }, 200);
+                                } else {
+                                    $refs.file_audio.pause();
+                                }
+                            "
+                            class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition">
                                 <i :class="$refs.file_audio.paused ? 'bi bi-play-fill' : 'bi bi-pause-fill'" class="text-white text-2xl"></i>
                             </button>
 
@@ -263,7 +285,8 @@
                         </div>
 
                         <!-- Audio oculto -->
-                        <audio x-ref="file_audio" :key="mediaSrc" class="hidden">
+                        <audio x-ref="file_audio" :key="mediaSrc" class="hidden"
+                            @ended="ended = true; clearInterval(interval); currentTime = duration;">
                             <source :src="mediaSrc" :type="'audio/' + mediaType">
                         </audio>
                     </div>
