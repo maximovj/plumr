@@ -232,6 +232,55 @@ class AlbumController extends Controller
             toastr()->addSuccess('Portada modificado correctamente');
         }
 
+        if ($request->hasFile('media')) {
+            $counter = $user->albums->map->media->flatten()->count();
+            foreach ($request->file('media') as $file) {
+                $counter++;
+                $slug = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s'));
+                $filename = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s')).'.'.$file->getClientOriginalExtension();
+                $path = $file->storeAs(
+                    $album->folder,
+                    $filename,
+                    'public');
+
+                $mime = $file->getClientMimeType();
+                $type = '';
+
+                if (str_starts_with($mime, 'image/')) {
+                    $type = 'photo';
+                } elseif (str_starts_with($mime, 'video/')) {
+                    $type = 'video';
+                } elseif (str_starts_with($mime, 'audio/')) {
+                    $type = 'audio';
+                } elseif ($mime === 'application/pdf') {
+                    $type = 'pdf';
+                } else {
+                    $type = 'other'; // opcional para archivos no soportados
+                }
+
+                $new_media = new Media();
+                $new_media->fill([
+                    'mime_type' => $mime,
+                    'file_path' => $path,
+                    'slug' => $slug,
+                    'type' => $type,
+                    'title' => $filename,
+                    'visibility' => 'public',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $new_media->save();
+
+                DB::table('album_media')->insert([
+                    'album_id' => $album->id,
+                    'media_id' => $new_media->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+            }
+        }
+
         $album->touch();
         $album->save(); // Actualizar album
 
