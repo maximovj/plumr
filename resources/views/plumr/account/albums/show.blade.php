@@ -216,52 +216,44 @@
                     </video>
                 </template>
 
-                <!-- Audio Rediseñado -->
+                <!-- Audio Rediseñado - Versión Compacta -->
                 <template x-if="['mp3','wav','ogg'].includes(mediaType)">
-                    <div class="bg-gray-900 rounded-lg p-5 flex flex-col items-center shadow-lg mt-4">
-                        <!-- Título del audio -->
-                        <p class="text-white font-semibold mb-3 truncate w-full text-center">{{ $media->title }}</p>
+                    <div class="bg-gray-800 rounded-xl p-4 shadow-lg flex flex-col items-center space-y-3 mt-4">
+                        <!-- Título -->
+                        <p class="text-white font-semibold text-center truncate w-full">{{ $media->title }}</p>
+
+                        <!-- Controles -->
+                        <div class="flex items-center justify-center gap-6">
+                            <!-- Retroceder 10s -->
+                            <button @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();"
+                                    class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                                <i class="bi bi-skip-start-fill text-white text-xl"></i>
+                            </button>
+
+                            <!-- Play/Pause -->
+                            <button @click="$refs.file_audio.paused ? $refs.file_audio.play() : $refs.file_audio.pause()"
+                                    class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition">
+                                <i :class="$refs.file_audio.paused ? 'bi bi-play-fill' : 'bi bi-pause-fill'" class="text-white text-2xl"></i>
+                            </button>
+
+                            <!-- Avanzar 10s -->
+                            <button @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();"
+                                    class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                                <i class="bi bi-skip-end-fill text-white text-xl"></i>
+                            </button>
+                        </div>
 
                         <!-- Barra de progreso -->
-                        <div class="w-full flex items-center gap-3">
-                            <!-- Tiempo actual -->
-                            <span class="text-xs text-gray-400" x-text="formatTime(currentTime)">00:00</span>
-
-                            <!-- Slider -->
+                        <div class="flex items-center w-full gap-2">
+                            <span class="text-xs text-gray-400 w-8 text-right" x-text="formatTime(currentTime)">00:00</span>
                             <input type="range"
                                 min="0"
                                 :max="duration"
                                 step="0.01"
                                 :value="currentTime"
-                                @input="
-                                    currentTime = $event.target.value;
-                                    $refs.file_audio.currentTime = $event.target.value
-                                "
-                                class="flex-1 h-1 rounded-lg bg-gray-700 accent-green-500">
-
-                            <!-- Duración total -->
-                            <span class="text-xs text-gray-400" x-text="formatTime(duration)">00:00</span>
-                        </div>
-
-                        <!-- Controles -->
-                        <div class="mt-4 flex items-center gap-6 text-white text-2xl">
-                            <!-- Retroceder 10s -->
-                            <button @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();"
-                                    class="hover:text-green-400">
-                                <i class="bi bi-skip-start-fill"></i>
-                            </button>
-
-                            <!-- Reproducir / Pausar -->
-                            <button @click="$refs.file_audio.paused ? $refs.file_audio.play() : $refs.file_audio.pause()"
-                                    class="hover:text-green-400">
-                                <i :class="$refs.file_audio.paused ? 'bi bi-play-fill' : 'bi bi-pause-fill'"></i>
-                            </button>
-
-                            <!-- Avanzar 10s -->
-                            <button @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();"
-                                    class="hover:text-green-400">
-                                <i class="bi bi-skip-end-fill"></i>
-                            </button>
+                                @input="$refs.file_audio.currentTime = $event.target.value; currentTime = $event.target.value;"
+                                class="flex-1 h-1 rounded-lg bg-gray-600 accent-green-500">
+                            <span class="text-xs text-gray-400 w-8 text-left" x-text="formatTime(duration)">00:00</span>
                         </div>
 
                         <!-- Audio oculto -->
@@ -270,6 +262,7 @@
                         </audio>
                     </div>
                 </template>
+
 
 
                 <!-- PDF -->
