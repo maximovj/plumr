@@ -56,7 +56,7 @@
             <!-- Botón de acciones (solo para el dueño) -->
             @if(Auth::check() && Auth::user()->id === $user->id)
             <div class="absolute top-2 right-2" x-data="{ showOptions: false }" x-cloak>
-                <button
+                <button type="button"
                 @click="showOptions = !showOptions" @mouseleave="showOptions = false"
                 class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
                     <i class="bi bi-three-dots-vertical"></i>
@@ -87,7 +87,7 @@
                             x-on:click="Livewire.emit('confirmDeleteModelClass',
                                     'App\\Models\\Media', // Clase del modelo
                                     {{ $media->id }},     // ID del registro
-                                    '{{ $redirect }}', // Redirect (opcional)
+                                    $wire.redirect, // Redirect (opcional)
                                     '¿Eliminar multimedia?',  // Título (opcional)
                                     'Este multimedia se eliminará permanentemente.' // Mensaje (opcional)
                             );" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
@@ -144,7 +144,7 @@
                             if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }" x-cloak>
         <div class="max-w-5xl w-full p-4">
             <!-- Botón cerrar -->
-            <button @click="
+            <button type="button" @click="
                             showModal = false;
                             if($refs.file_audio) { $refs.file_audio.pause(); $refs.file_audio.currentTime = 0; clearInterval(this.interval); }
                             if($refs.file_video) { $refs.file_video.pause(); $refs.file_video.currentTime = 0; }
@@ -172,14 +172,14 @@
                     <div class="flex items-center justify-center gap-6 relative">
                         <!-- Retroceder 10s -->
                         <div class="flex flex-col items-center">
-                            <button @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();" class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                            <button type="button" @click="$refs.file_audio.currentTime = Math.max(0, $refs.file_audio.currentTime - 10); $refs.file_audio.play();" class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
                                 <i class="bi bi-arrow-counterclockwise text-white text-xl"></i>
                             </button>
                             <span class="text-xs text-gray-400 mt-1">-10s</span>
                         </div>
 
                         <!-- Play/Pause -->
-                        <button @click="
+                        <button type="button" @click="
                                     if(ended) {
                                         $refs.file_audio.currentTime = 0; // reinicia audio
                                         currentTime = 0;                  // reinicia barra de progreso
@@ -206,7 +206,7 @@
 
                         <!-- Avanzar 10s -->
                         <div class="flex flex-col items-center">
-                            <button @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();" class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
+                            <button type="button" @click="$refs.file_audio.currentTime = Math.min(duration, $refs.file_audio.currentTime + 10); $refs.file_audio.play();" class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-500 transition">
                                 <i class="bi bi-arrow-clockwise text-white text-xl"></i>
                             </button>
                             <span class="text-xs text-gray-400 mt-1">+10s</span>

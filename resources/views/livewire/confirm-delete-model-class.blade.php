@@ -42,11 +42,11 @@
             <p class="text-gray-600">{{ $message }}</p>
 
             <div class="mt-6 flex justify-end space-x-2">
-                <button @click="close('cancel')"
+                <button type="button" @click="close('cancel')"
                         class="px-4 py-2 bg-gray-300 rounded">
                     Cancelar
                 </button>
-                <button wire:click="delete" @click="close('confirm')"
+                <button type="button" wire:click="delete" @click="close('confirm')"
                         class="px-4 py-2 bg-red-600 text-white rounded">
                     Confirmar
                 </button>

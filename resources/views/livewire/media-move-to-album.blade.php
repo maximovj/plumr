@@ -64,17 +64,20 @@
             </section>
 
             <div class="mt-6 flex justify-end space-x-2">
-                <button @click="close('cancel')"
-                        class="px-4 py-2 bg-gray-300 rounded">
+                <button
+                    type="button"
+                    @click="close('cancel')"
+                    class="px-4 py-2 bg-gray-300 rounded">
                     Cancelar
                 </button>
                 <button
+                    type="button"
                     wire:click="moveToAlbum"
                     x-on:click="
                         //$wire.moveToAlbum(albums_selected);
                         close('confirm');
                     "
-                        class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded">
+                    class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded">
                     Confirmar
                 </button>
             </div>
