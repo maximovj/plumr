@@ -171,16 +171,19 @@
 
             </section>
 
-            <section>
-                <div class="p-8 bg-gray-50 border-t">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-6">Galería de medios</h2>
-                    @livewire('medias-gallery', [
-                        'user' => $user,
-                        'medias' => $album->medias,
-                        'redirect' => route('albums.edit', [$user->username, $album->slug]),
-                    ])
-                </div>
-            </section>
+            @if($action == 'edit')
+                <!-- Galería de medios -->
+                <section>
+                    <div class="p-8 bg-gray-50 border-t">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-6">Galería de medios</h2>
+                        @livewire('medias-gallery', [
+                            'user' => $user,
+                            'medias' => $album->medias,
+                            'redirect' => route('albums.edit', [$user->username, $album->slug]),
+                        ])
+                    </div>
+                </section>
+            @endif
 
             {{-- Botón enviar --}}
             <button type="submit"
