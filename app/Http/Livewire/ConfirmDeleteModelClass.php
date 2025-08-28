@@ -81,13 +81,13 @@ class ConfirmDeleteModelClass extends Component
 
             // Eliminar todos los registros de media asociados
             $album = $model;
-            foreach ($album->media as $media) {
+            foreach ($album->medias as $media) {
                 $media->delete(); // el observer se encarga de borrar el archivo
                 $media->albums()->detach();   // Limpiar la relación pivote
             }
 
             // Limpiar la relación pivote
-            $album->media()->detach();
+            $album->medias()->detach();
 
             // Eliminar también la carpeta entera
             if ($album->folder && Storage::disk('public')->exists($album->folder)) {
