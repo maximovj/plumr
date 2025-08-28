@@ -68,28 +68,29 @@
                     <ul class="flex flex-col py-2">
                         <li>
                             <a
-                                role="button"
-                                x-data
-                                x-on:click="
-                                    Livewire.emit('mediaMoveToAlbum',
-                                        {{ $album->id ?? '"*"' }},
-                                        {{ $media->id }},
-                                        {{ $user->id }},
-                                        '{{ $album ?  route('albums.show', [$user, $album]) : route('medias.index', [$user])  }}',
-                                    );
-                                "
-                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">
-                                Mover a álbum
+                            role="button"
+                            x-data
+                            x-on:click="Livewire.emit('mediaMoveToAlbum',
+                                    {{ $album->id ?? '"*"' }}, // Album id (requerido)
+                                    {{ $media->id }}, // Media id (requerido)
+                                    {{ $user->id }}, // User id (requerido)
+                                    '{{ $redirect }}', // Redirect (opcional)
+                            );"
+                            class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">
+                            Mover a álbum
                             </a>
                         </li>
                         <li>
-                            <a role="button" x-data x-on:click="Livewire.emit('confirmDeleteModelClass',
-                                                'App\\Models\\Media', // Clase del modelo
-                                                {{ $media->id }},     // ID del registro
-                                                '{{ route('medias.index', [$user]) }}', // Redirect (opcional)
-                                                '¿Eliminar multimedia?',  // Título (opcional)
-                                                'Este multimedia se eliminará permanentemente.' // Mensaje (opcional)
-                                            )" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
+                            <a
+                            role="button"
+                            x-data
+                            x-on:click="Livewire.emit('confirmDeleteModelClass',
+                                    'App\\Models\\Media', // Clase del modelo
+                                    {{ $media->id }},     // ID del registro
+                                    '{{ $redirect }}', // Redirect (opcional)
+                                    '¿Eliminar multimedia?',  // Título (opcional)
+                                    'Este multimedia se eliminará permanentemente.' // Mensaje (opcional)
+                            );" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
                         </li>
                         {{-- <li>
                                             <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>

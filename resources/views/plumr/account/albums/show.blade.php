@@ -81,7 +81,8 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-6">Galería de medios</h2>
         @livewire('medias-gallery', [
             'user' => $user,
-            'medias' => $album->medias
+            'medias' => $album->medias,
+            'album' => $album,
         ])
         </div>
 
