@@ -39,7 +39,7 @@ class Album extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function media()
+    public function medias()
     {
         return $this->belongsToMany(Media::class, 'album_media')->withTimestamps();
     }

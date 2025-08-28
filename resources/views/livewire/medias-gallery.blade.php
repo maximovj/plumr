@@ -1,5 +1,5 @@
-<section 
-    x-cloak 
+<section
+    x-cloak
     x-data="{
             showModal: false,
             mediaType: '',
@@ -15,7 +15,7 @@
                 return `${min}:${sec}`;
             }
     }">
-    
+
     @livewire('media-move-to-album')
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -56,12 +56,15 @@
             <!-- Botón de acciones (solo para el dueño) -->
             @if(Auth::check() && Auth::user()->id === $user->id)
             <div class="absolute top-2 right-2" x-data="{ showOptions: false }" x-cloak>
-                <button @click="showOptions = !showOptions" class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
+                <button
+                @click="showOptions = !showOptions" @mouseleave="showOptions = false"
+                class="bg-gray-700 text-white w-10 h-10 p-2 rounded-full hover:bg-gray-800 focus:outline-none relative">
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
 
                 <!-- Menú desplegable -->
-                <div x-show="showOptions" @click.outside="showOptions = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
+                <div x-show="showOptions" @mouseenter="showOptions = true" @mouseleave="showOptions = false"
+                @click.outside="showOptions = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-10">
                     <ul class="flex flex-col py-2">
                         <li>
                             <a
