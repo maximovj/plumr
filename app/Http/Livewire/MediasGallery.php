@@ -17,15 +17,17 @@ class MediasGallery extends Component
         $this->user = $user;
         $this->album = $album;
         $this->redirect = $redirect;
-    }
 
-    public function render()
-    {
         if($this->redirect == null){
         $this->redirect = isset($this->album->slug) ?
             route('albums.show', [$this->user, $this->album]) :
             route('medias.index', [$this->user]);
         }
+    }
+
+    public function render()
+    {
+
         return view('livewire.medias-gallery');
     }
 }
