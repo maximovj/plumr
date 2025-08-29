@@ -92,9 +92,9 @@
                                     'Este multimedia se eliminará permanentemente.' // Mensaje (opcional)
                             );" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Eliminar</a>
                         </li>
-                        {{-- <li>
-                                            <a href="{{ route('profile.edit', ['user' => $user]) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>
-                        </li> --}}
+                        <li>
+                            <a href="{{ route('medias.edit', [$user, $media] ) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-green-100 rounded">Editar</a>
+                        </li>
                     </ul>
                 </div>
             </div>
