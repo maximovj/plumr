@@ -80,35 +80,60 @@
                 <span class="text-xs text-gray-500 mt-1">Seleccionado: <strong x-text="visibility"></strong></span>
             </section>
 
+
             {{-- Archivo único --}}
-            <section x-data="{ file: null, previewFile: null }">
+            <section
+                x-data="{
+                    file: null,
+                    previewFile: null,
+                    previewUrl: '{{ $action == 'edit' && $media->file_path ? asset('storage/' . $media->file_path) : '' }}'
+                }"
+            >
                 <label class="text-gray-700 mb-1 block">Archivo</label>
                 <input type="file" name="media" id="media" accept="image/*,audio/*,video/*,.pdf"
-                    @change="file = $event.target.files[0]"
+                    @change="
+                        file = $event.target.files[0];
+                        previewUrl = URL.createObjectURL(file);
+                    "
                     class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
 
-                {{-- Icono del archivo --}}
-                <template x-if="file">
+                {{-- Icono + nombre archivo (nuevo o existente) --}}
+                <template x-if="previewUrl">
                     <div class="mt-4 flex flex-col items-center text-xs text-gray-600 space-y-1 cursor-pointer"
-                        @click="previewFile = file">
+                        @click="previewFile = previewUrl">
 
-                        <template x-if="file.type.startsWith('image/')">
+                        {{-- Iconos según tipo --}}
+                        <template x-if="file && file.type.startsWith('image/')">
                             <i class="bi bi-image text-4xl text-indigo-500"></i>
                         </template>
-                        <template x-if="file.type.startsWith('video/')">
+                        <template x-if="file && file.type.startsWith('video/')">
                             <i class="bi bi-camera-video text-4xl text-red-500"></i>
                         </template>
-                        <template x-if="file.type.startsWith('audio/')">
+                        <template x-if="file && file.type.startsWith('audio/')">
                             <i class="bi bi-music-note-beamed text-4xl text-green-500"></i>
                         </template>
-                        <template x-if="file.type.includes('pdf')">
+                        <template x-if="file && file.type.includes('pdf')">
                             <i class="bi bi-file-earmark-pdf text-4xl text-red-600"></i>
                         </template>
-                        <template x-if="!file.type.startsWith('image/') && !file.type.startsWith('video/') && !file.type.startsWith('audio/') && !file.type.includes('pdf')">
-                            <i class="bi bi-file-earmark text-4xl text-gray-400"></i>
+                        <template x-if="!file">
+                            {{-- Si no se subió uno nuevo → mostramos ícono genérico segun extensión --}}
+                            @php
+                                $ext = pathinfo($media->file_path ?? '', PATHINFO_EXTENSION);
+                            @endphp
+                            @if(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                                <i class="bi bi-image text-4xl text-indigo-500"></i>
+                            @elseif(in_array($ext, ['mp4','webm','mov']))
+                                <i class="bi bi-camera-video text-4xl text-red-500"></i>
+                            @elseif(in_array($ext, ['mp3','wav','ogg']))
+                                <i class="bi bi-music-note-beamed text-4xl text-green-500"></i>
+                            @elseif($ext === 'pdf')
+                                <i class="bi bi-file-earmark-pdf text-4xl text-red-600"></i>
+                            @else
+                                <i class="bi bi-file-earmark text-4xl text-gray-400"></i>
+                            @endif
                         </template>
 
-                        <span class="truncate w-20 text-center" x-text="file.name"></span>
+                        <span class="truncate w-20 text-center" x-text="file ? file.name : '{{ basename($media->file_path ?? '') }}'"></span>
                     </div>
                 </template>
 
@@ -124,32 +149,33 @@
                         </button>
 
                         {{-- Imagen --}}
-                        <template x-if="previewFile && previewFile.type.startsWith('image/')">
-                            <img :src="URL.createObjectURL(previewFile)" class="max-h-96 w-auto rounded" alt="">
+                        <template x-if="previewFile && previewFile.match(/\.(jpg|jpeg|png|gif|webp)$/i)">
+                            <img :src="previewFile" class="max-h-96 w-auto rounded" alt="">
                         </template>
 
                         {{-- Video --}}
-                        <template x-if="previewFile && previewFile.type.startsWith('video/')">
+                        <template x-if="previewFile && previewFile.match(/\.(mp4|webm|mov)$/i)">
                             <video controls class="max-h-96 w-full rounded">
-                                <source :src="URL.createObjectURL(previewFile)" :type="previewFile.type">
+                                <source :src="previewFile">
                             </video>
                         </template>
 
                         {{-- Audio --}}
-                        <template x-if="previewFile && previewFile.type.startsWith('audio/')">
+                        <template x-if="previewFile && previewFile.match(/\.(mp3|wav|ogg)$/i)">
                             <audio controls class="w-full">
-                                <source :src="URL.createObjectURL(previewFile)" :type="previewFile.type">
+                                <source :src="previewFile">
                             </audio>
                         </template>
 
                         {{-- PDF --}}
-                        <template x-if="previewFile && previewFile.type.includes('pdf')">
-                            <iframe :src="URL.createObjectURL(previewFile)" class="w-full h-96"></iframe>
+                        <template x-if="previewFile && previewFile.match(/\.pdf$/i)">
+                            <iframe :src="previewFile" class="w-full h-96"></iframe>
                         </template>
 
                     </div>
                 </div>
             </section>
+
 
 
             {{-- Botón enviar --}}

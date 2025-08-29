@@ -7,6 +7,7 @@ use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MediaController extends Controller
@@ -161,6 +162,54 @@ class MediaController extends Controller
     public function update(Request $request, User $user, Media $media)
     {
         //
+        // Validar formulario
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:3'],
+            'description' => ['nullable', 'string', 'min:3'],
+            'visibility' => ['nullable', 'in:private,public,followers_only'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['string', 'max:20'],
+            'media' => 'mimes:jpg,jpeg,png,gif,mp4,mov,avi,mp3,wav,pdf|max:20480',
+        ]);
+
+        $old_media = (object) $media->toArray();
+        $new_media = $media;
+        $new_media->fill($validated);
+
+        if($request->hasFile('media')) {
+            $file = $request->file('media');
+
+            // Eliminar portada del artículo antiguo
+            if($old_media->file_path && Storage::disk('public')->exists($old_media->file_path)) {
+                Storage::disk('public')->delete($old_media->file_path);
+                toastr()->addInfo('Portada anterior eliminado correctamente');
+            }
+
+
+            $path = $file->store('medias/source_'.auth()->user()->id, 'public');
+            $mime_type = $file->getClientMimeType();
+            $type = '';
+
+            if (str_starts_with($mime_type, 'image/')) {
+                $type = 'photo';
+            } elseif (str_starts_with($mime_type, 'video/')) {
+                $type = 'video';
+            } elseif (str_starts_with($mime_type, 'audio/')) {
+                $type = 'audio';
+            } elseif ($mime_type === 'application/pdf') {
+                $type = 'pdf';
+            } else {
+                $type = 'other'; // opcional para archivos no soportados
+            }
+
+            $new_media->file_path = $path;
+            $new_media->mime_type = $mime_type;
+            $new_media->type = $type;
+            toastr()->addSuccess('Portada cargado correctamente');
+        }
+
+        $new_media->save();
+
         toastr()->addSuccess('Multimedia actualizado correctamente');
 
         sweetalert()
