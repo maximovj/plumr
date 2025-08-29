@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Album::class, 'user_id', 'id');
     }
 
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'user_id', 'id');
+    }
+
     public function medias()
     {
         return $this->hasMany(Media::class, 'user_id', 'id');
