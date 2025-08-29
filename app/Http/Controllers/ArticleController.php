@@ -23,9 +23,9 @@ class ArticleController extends Controller
     {
         //
         if($user->id == auth()->user()->id) {
-            $articles = $user->articles()->latest('updated_at')->take(10)->get();
+            $articles = $user->articles()->latest('updated_at')->take(30)->get();
         }else {
-            $articles = $user->articles()->where('is_publish', true)->latest('published_at')->take(10)->get();
+            $articles = $user->articles()->where('is_publish', true)->latest('published_at')->take(30)->get();
         }
 
         return view('plumr.account.articles.index', [

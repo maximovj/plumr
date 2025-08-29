@@ -33,14 +33,14 @@ class AlbumController extends Controller
          if(isfollower($user)) { // Verificar si usuario autenticado es seguidor
             return $user->albums()
             ->whereIn('visibility', ['public', 'followers_only'])
-            ->latest()->take(10)->get();
+            ->latest()->take(30)->get();
         }elseif(auth()->user()->id !== $user->id) { // Verificar si usuario no es el mismo autenticado
             return $user->albums()
             ->whereIn('visibility', ['public'])
-            ->latest()->take(10)->get();
+            ->latest()->take(30)->get();
         } else {
             return $user->albums()
-            ->latest('updated_at')->take(10)->get();
+            ->latest('updated_at')->take(30)->get();
         }
     }
 
