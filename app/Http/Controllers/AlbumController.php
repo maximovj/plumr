@@ -173,8 +173,6 @@ class AlbumController extends Controller
         return view('plumr.account.albums.show', [
             'user' => $user,
             'album' => $album,
-            'route' => route('albums.update', [$user, $album]),
-            'action' => 'edit',
         ]);
     }
 

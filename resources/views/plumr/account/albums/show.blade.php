@@ -62,14 +62,27 @@
             </div>
 
             <!-- Visibilidad + fechas -->
-            <div class="mt-6 flex items-center justify-between text-sm text-gray-500">
-                <span class="px-3 py-1 rounded-lg text-xs font-semibold
-                    {{ $album->visibility === 'public' ? 'bg-green-100 text-green-700' :
-                       ($album->visibility === 'followers_only' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700') }}">
-                    {{ ucfirst(str_replace('_',' ',$album->visibility)) }}
-                </span>
+            <div class="mt-6 flex items-center justify-between">
+                <!-- Tipo de visibilidad -->
+                @owner($user)
+                        <span
+                        x-data
+                        class="block font-semibold text-xs border text-center p-2 rounded"
+                        :class="{
+                            'bg-green-100 text-green-700' : {{ $album->visibility == 'public' ? 1 : 0 }},
+                            'bg-gray-100 text-gray-700' : {{ $album->visibility == 'private' ? 1 : 0 }},
+                            'bg-red-100 text-red-700' : {{ $album->visibility == 'followers_only' ? 1 : 0 }},
+                        }"
+                        >
+                            {{ $album->visibility == 'public' ? 'Público' : '' }}
+                            {{ $album->visibility == 'private' ? 'Privado' : '' }}
+                            {{ $album->visibility == 'followers_only' ? 'Protegido' : '' }}
+                        </span>
+                @else
+                <span></span>
+                @endowner
 
-                <div class="text-right">
+                <div class="text-sm text-gray-500 text-right">
                     <p>Creado: {{ $album->created_at->format('d/m/Y H:i') }}</p>
                     <p>Actualizado: {{ $album->updated_at->format('d/m/Y H:i') }}</p>
                 </div>
