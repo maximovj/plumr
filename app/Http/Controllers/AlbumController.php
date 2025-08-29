@@ -234,7 +234,7 @@ class AlbumController extends Controller
         }
 
         if ($request->hasFile('media')) {
-            $counter = $user->albums->map->media->flatten()->count();
+            $counter = $user->albums->map->medias->flatten()->count();
             foreach ($request->file('media') as $file) {
                 $counter++;
                 $slug = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s'));
