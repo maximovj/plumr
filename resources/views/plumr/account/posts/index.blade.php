@@ -18,7 +18,7 @@
                         mode: 'create',
                         redirect: '{{ route('posts.index', [$user]) }}'
                     })"
-                            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition text-xs animate__animated animate__pulse animate__infinite">
+                            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition text-xs animate__animated animate__pulse animate__infinite animate__slow">
                             <i class="bi bi-plus-circle"></i> Nueva publicación
                         </button>
                     @endowner

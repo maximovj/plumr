@@ -14,7 +14,7 @@
 
                 @owner($user)
                     <a href="{{ route('articles.create', $user) }}"
-                        class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite">
+                        class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite animate__slow">
                         + Crear artículo
                     </a>
                 @endowner
