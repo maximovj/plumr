@@ -82,6 +82,26 @@ Route::get('/{user:username}/followings', FollowingsController::class)
     ->middleware(['auth'])
     ->name('account.followings');
 
+// Ruta para multimedias (medias)
+Route::resource('{user:username}/medias', MediaController::class)
+    ->scoped([
+        'user' => 'username',
+        'media' => 'slug',
+    ])
+    ->middleware(['auth'])
+    ->except(['show', 'create', 'edit']);
+
+Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
+    ->middleware(['auth', 'owner'])
+    ->name('medias.create');
+
+Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
+    ->middleware(['auth', 'owner'])
+    ->name('medias.edit');
+
+Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
+    ->name('medias.show');
+
 // Rutas para publicaciones
 Route::resource('/{user:username}/posts', PostController::class)
     ->scoped([
@@ -130,26 +150,6 @@ Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 
 
 Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])
     ->name('albums.show');
-
-// Ruta para multimedias (medias)
-Route::resource('{user:username}/medias', MediaController::class)
-    ->scoped([
-        'user' => 'username',
-        'media' => 'slug',
-    ])
-    ->middleware(['auth'])
-    ->except(['show', 'create', 'edit']);
-
-Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
-    ->middleware(['auth', 'owner'])
-    ->name('medias.create');
-
-Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
-    ->middleware(['auth', 'owner'])
-    ->name('medias.edit');
-
-Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
-    ->name('medias.show');
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
