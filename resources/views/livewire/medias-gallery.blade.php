@@ -18,7 +18,13 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($medias as $media)
-            <div class="relative bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
+            <div
+            x-data="{
+                hover: false,
+            }"
+            @mouseenter="hover = !hover"
+            @mouseleave="hover = false"
+            class="relative bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
                 @if (Str::endsWith($media->file_path_url, ['.jpg', '.jpeg', '.png', '.gif', '.webp']))
                     <img src="{{ $media->file_path_url }}" class="h-48 w-full object-cover" alt="Imagen">
                 @elseif(Str::endsWith($media->file_path_url, ['.mp4', '.webm', '.ogg']))
@@ -137,6 +143,27 @@
                     class="p-3 border-t cursor-pointer">
                     <p class="text-xs text-gray-600 truncate">{{ $media->title }}</p>
                 </div>
+
+                <!-- Tipo de visibilidad -->
+                    @owner($user)
+                    <div
+                    x-show="hover"
+                    class="absolute flex top-2 left-4 animate__animated animate__fadeIn ">
+                            <span
+                            class="font-semibold text-xs border text-center p-2 rounded"
+                            :class="{
+                                'bg-green-100 text-green-700' : {{ $media->visibility == 'public' ? 1 : 0 }},
+                                'bg-gray-100 text-gray-700' : {{ $media->visibility == 'private' ? 1 : 0 }},
+                                'bg-red-100 text-red-700' : {{ $media->visibility == 'followers_only' ? 1 : 0 }},
+                            }"
+                            >
+                                {{ $media->visibility == 'public' ? 'Público' : '' }}
+                                {{ $media->visibility == 'private' ? 'Privado' : '' }}
+                                {{ $media->visibility == 'followers_only' ? 'Protegido' : '' }}
+                            </span>
+                    </div>
+                    @endowner
+
             </div>
         @empty
             <p class="text-gray-500 text-sm">No hay medios en este álbum.</p>
