@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMediaRequest;
+use App\Http\Requests\UpdateMediaRequest;
 use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,21 +67,11 @@ class MediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user)
+    public function store(StoreMediaRequest $request, User $user)
     {
         //
-        // Validar formulario
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'min:3'],
-            'description' => ['nullable', 'string', 'min:3'],
-            'visibility' => ['nullable', 'in:private,public,followers_only'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['string', 'max:20'],
-            'media' => 'mimes:jpg,jpeg,png,gif,mp4,mov,avi,mp3,wav,pdf|max:20480',
-        ]);
-
         $new_media = new Media();
-        $new_media->fill($validated);
+        $new_media->fill($request->validated);
         $new_media->user_id = auth()->user()->id;
         $new_media->slug = Str::slug($new_media->title.'-'.now()->format('d-M-Y H:m:s'));
 
@@ -108,6 +100,7 @@ class MediaController extends Controller
             toastr()->addSuccess('Portada cargado correctamente');
         }
 
+        $new_media->albums()->sync($request->get('albums') ?? []);
         $new_media->save();
 
         toastr()->addSuccess('Multimedia creado correctamente');
@@ -159,22 +152,12 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user, Media $media)
+    public function update(UpdateMediaRequest $request, User $user, Media $media)
     {
         //
-        // Validar formulario
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'min:3'],
-            'description' => ['nullable', 'string', 'min:3'],
-            'visibility' => ['nullable', 'in:private,public,followers_only'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['string', 'max:20'],
-            'media' => 'mimes:jpg,jpeg,png,gif,mp4,mov,avi,mp3,wav,pdf|max:20480',
-        ]);
-
         $old_media = (object) $media->toArray();
         $new_media = $media;
-        $new_media->fill($validated);
+        $new_media->fill($request->validated);
 
         if($request->hasFile('media')) {
             $file = $request->file('media');
@@ -208,6 +191,7 @@ class MediaController extends Controller
             toastr()->addSuccess('Portada cargado correctamente');
         }
 
+        $new_media->albums()->sync($request->get('albums') ?? []);
         $new_media->save();
 
         toastr()->addSuccess('Multimedia actualizado correctamente');
