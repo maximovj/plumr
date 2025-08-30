@@ -35,7 +35,9 @@ class RegisterController extends Controller
         $max_year = (date('Y'));
 
         // Modificar request
-        $request->request->add(['username' => Str::slug($request->username)]);
+        $username = Str::slug($request->username);
+        $username = Str::replace('-', '_', $username);
+        $request->request->add(['username' => $username ]);
 
         // Crear validador
         $validator = Validator::make($request->all(), [
@@ -74,6 +76,7 @@ class RegisterController extends Controller
             $suggestions = collect();
             for ($i = 0; $i < 5; $i++) {
                 $suggested = $inputUsername . Str::random(2);
+                $suggested = Str::replace('-', '_', $suggested);
                 if (!User::where('username', $suggested)->exists()) {
                     $suggestions->push($suggested);
                 }
