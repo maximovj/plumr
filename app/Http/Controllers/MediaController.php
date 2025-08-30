@@ -71,7 +71,7 @@ class MediaController extends Controller
     {
         //
         $new_media = new Media();
-        $new_media->fill($request->validated);
+        $new_media->fill($request->validated());
         $new_media->user_id = auth()->user()->id;
         $new_media->slug = Str::slug($new_media->title.'-'.now()->format('d-M-Y H:m:s'));
 
@@ -97,7 +97,7 @@ class MediaController extends Controller
             $new_media->file_path = $path;
             $new_media->mime_type = $mime_type;
             $new_media->type = $type;
-            toastr()->addSuccess('Portada cargado correctamente');
+            toastr()->addSuccess('Multimedia cargado correctamente');
         }
 
         $new_media->albums()->sync($request->get('albums') ?? []);
@@ -157,15 +157,15 @@ class MediaController extends Controller
         //
         $old_media = (object) $media->toArray();
         $new_media = $media;
-        $new_media->fill($request->validated);
+        $new_media->fill($request->validated());
 
         if($request->hasFile('media')) {
             $file = $request->file('media');
 
-            // Eliminar portada del artículo antiguo
+            // Eliminar Multimedia del artículo antiguo
             if($old_media->file_path && Storage::disk('public')->exists($old_media->file_path)) {
                 Storage::disk('public')->delete($old_media->file_path);
-                toastr()->addInfo('Portada anterior eliminado correctamente');
+                toastr()->addInfo('Multimedia anterior eliminado correctamente');
             }
 
 
@@ -188,7 +188,7 @@ class MediaController extends Controller
             $new_media->file_path = $path;
             $new_media->mime_type = $mime_type;
             $new_media->type = $type;
-            toastr()->addSuccess('Portada cargado correctamente');
+            toastr()->addSuccess('Multimedia cargado correctamente');
         }
 
         $new_media->albums()->sync($request->get('albums') ?? []);
