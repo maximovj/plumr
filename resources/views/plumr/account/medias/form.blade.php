@@ -96,6 +96,9 @@
                         previewUrl = URL.createObjectURL(file);
                     "
                     class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
+                @error('media')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
 
                 {{-- Icono + nombre archivo (nuevo o existente) --}}
                 <template x-if="previewUrl">
@@ -176,7 +179,24 @@
                 </div>
             </section>
 
-
+            <!--- Seleccionar álbum --->
+            <section class="flex flex-col gap-2">
+                <label class="text-sm text-gray-700">Seleccionar álbum</label>
+                <ul class="max-h-40 overflow-auto relative space-y-4">
+                    @foreach ($user->albums as $album)
+                    <li class="flex justify-start items-center gap-4 w-full">
+                        <input type="checkbox" class="w-6 h-6 inline"
+                        name="albums[]" id="albums[]" value="{{ $album->id }}"
+                        @if($media->albums()->get()->contains($album->id)) checked  @endif>
+                        <a class="text-indigo-600 hover:text-indigo-700 hover:underline cursor-pointer" href="{{ route('albums.show', [$user, $album]) }}">
+                            <span class="block">
+                                {{ $album->title }} ({{ $album->medias()->count() }})
+                            </span>
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </section>
 
             {{-- Botón enviar --}}
             <button type="submit"
