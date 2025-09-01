@@ -106,15 +106,23 @@ class ArticleController extends Controller
     public function show(User $user, Article $article)
     {
         //
-        if(auth()->check() == false && !$article->is_publish) {
+        $is_publish = $article->is_publish;
+
+        // Usuario NO autenticado → solo puede ver artículos públicos
+        if (!auth()->check() && !$is_publish) {
             return redirect()
                 ->to('/')
-                ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
-        }else
-        if(!$article->is_publish) {
-            return redirect()
-                ->to('/')
-                ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
+                ->with('app-error', 'Lo siento, este artículo no es público');
+        }
+
+        // Usuario autenticado que NO es dueño del artículo
+        if (auth()->check() && auth()->id() !== $user->id) {
+            // Artículo privado → nadie más que el dueño puede verlo
+            if (!$is_publish) {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
+            }
         }
 
         return view('plumr.account.articles.show', compact('user', 'article'));
