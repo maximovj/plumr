@@ -6,6 +6,7 @@
     ended: false,
     currentTime: 0,
     duration: 0,
+    hover: false,
     interval: null,
     formatTime(seconds) {
         const min = Math.floor(seconds / 60);
@@ -19,9 +20,6 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($medias as $media)
             <div
-            x-data="{
-                hover: false,
-            }"
             @mouseenter="hover = !hover"
             @mouseleave="hover = false"
             class="relative bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
