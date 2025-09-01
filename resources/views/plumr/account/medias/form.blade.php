@@ -40,7 +40,7 @@
             {{-- Título --}}
             <div class="flex flex-col md:flex-row gap-4">
                 <section class="flex flex-col w-full">
-                    <label class="text-gray-700 mb-1">Título</label>
+                    <label class="text-gray-700 mb-1">Título (Requerido)</label>
                     <input type="text" name="title" id="title" value="{{ old('title', $media->title ?? '') }}"
                            placeholder="Ingresa un título para el álbum" autocomplete="off" autofocus
                            class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('title') }}">
@@ -89,13 +89,14 @@
                     previewUrl: '{{ $action == 'edit' && $media->file_path ? asset('storage/' . $media->file_path) : '' }}'
                 }"
             >
-                <label class="text-gray-700 mb-1 block">Archivo</label>
+                <label class="text-gray-700 mb-1 block">Seleccione un solo archivo</label>
                 <input type="file" name="media" id="media" accept="image/*,audio/*,video/*,.pdf"
                     @change="
                         file = $event.target.files[0];
                         previewUrl = URL.createObjectURL(file);
                     "
                     class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
+                <small class="text-xs text-gray-400">Se admiten images, audios, videos y .pdf</small>
                 @error('media')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
@@ -181,9 +182,9 @@
 
             <!--- Seleccionar álbum --->
             <section class="flex flex-col gap-2">
-                <label class="text-sm text-gray-700">Seleccionar álbum</label>
+                <label class="text-sm text-gray-700">Seleccionar álbum (Opcional)</label>
                 <ul class="max-h-40 overflow-auto relative space-y-4">
-                    @foreach ($user->albums as $album)
+                    @forelse ($user->albums as $album)
                     <li class="flex justify-start items-center gap-4 w-full">
                         <input type="checkbox" class="w-6 h-6 inline"
                         name="albums[]" id="albums[]" value="{{ $album->id }}"
@@ -194,7 +195,11 @@
                             </span>
                         </a>
                     </li>
-                    @endforeach
+                    @empty
+                    <li class="flex justify-start items-center gap-4 w-full">
+                        <span class="text-xs text-gray-400">Aún no hay álbumes</span>
+                    </li>
+                    @endforelse
                 </ul>
             </section>
 
