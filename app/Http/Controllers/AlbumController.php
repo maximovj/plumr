@@ -30,11 +30,11 @@ class AlbumController extends Controller
 
     protected function getAlbums(User $user)
     {
-         if(isfollower($user)) { // Verificar si usuario autenticado es seguidor
+        if(auth()->check() && isfollower($user)) {  // Verificar si usuario autenticado es seguidor
             return $user->albums()
             ->whereIn('visibility', ['public', 'followers_only'])
             ->latest()->take(30)->get();
-        }elseif(auth()->user()->id !== $user->id) { // Verificar si usuario no es el mismo autenticado
+        }elseif(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
             return $user->albums()
             ->whereIn('visibility', ['public'])
             ->latest()->take(30)->get();
@@ -170,10 +170,28 @@ class AlbumController extends Controller
      */
     public function show(User $user, Album $album)
     {
+        $medias = $this->getMedias($user, $album);
         return view('plumr.account.albums.show', [
             'user' => $user,
             'album' => $album,
+            'medias' => $medias,
         ]);
+    }
+
+    protected function getMedias(User $user, Album $album)
+    {
+        if(auth()->check() && isfollower($user)) { // Verificar si usuario autenticado es seguidor
+            return $album->medias()
+            ->whereIn('visibility', ['public', 'followers_only'])
+            ->latest()->take(30)->get();
+        }elseif(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
+            return $album->medias()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(30)->get();
+        } else {
+            return $album->medias()
+            ->latest('updated_at')->take(30)->get();
+        }
     }
 
     /**
