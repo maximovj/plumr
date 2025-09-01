@@ -96,7 +96,7 @@
                         previewUrl = URL.createObjectURL(file);
                     "
                     class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
-                <small class="text-xs text-gray-400">Se admiten images, audios, videos y .pdf</small>
+                <small class="text-xs text-gray-400">Se admiten images, audios, videos y PDF</small>
                 @error('media')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
