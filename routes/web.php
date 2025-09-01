@@ -22,15 +22,26 @@ use App\Http\Controllers\PostController;
 
 // Página principal
 Route::get('/', HomeController::class)->name('home');
+Route::redirect('/home', '/');
 
 // Rutas para login
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'store'])->name('auth.login');
-Route::post('/logout', [LoginController::class, 'destroy'])->name('auth.logout');
+Route::get('/login', [LoginController::class, 'index'])
+    ->middleware(['guest'])
+    ->name('login');
+Route::post('/login', [LoginController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('auth.login');
+Route::post('/logout', [LoginController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('auth.logout');
 
 // Rutas para registro
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.attempt');
+Route::get('/register', [RegisterController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('register');
+Route::post('/register', [RegisterController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('register.attempt');
 
 // Recuperación de cuenta
 Route::get('/recover-password', fn () => "Recuperar Cuenta (FrontEnd).")
