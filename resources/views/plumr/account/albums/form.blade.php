@@ -32,7 +32,7 @@
             {{-- Título --}}
             <div class="flex flex-col md:flex-row gap-4">
                 <section class="flex flex-col w-full">
-                    <label class="text-gray-700 mb-1">Título</label>
+                    <label class="text-gray-700 mb-1">Título (Requerido)</label>
                     <input type="text" name="title" id="title" value="{{ old('title', $album->title ?? '') }}"
                            placeholder="Ingresa un título para el álbum" autocomplete="off" autofocus
                            class="p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm {{ e_class('title') }}">
@@ -97,10 +97,11 @@
 
             {{-- Archivos múltiples --}}
             <section>
-                <label class="text-gray-700 mb-1 block">Archivos</label>
+                <label class="text-gray-700 mb-1 block">Selecciona uno o más archivos (Opcional)</label>
                 <input type="file" name="media[]" id="media" accept="image/*,audio/*,video/*,.pdf" multiple
                        @change="files = Array.from($event.target.files)"
                        class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
+                <small class="text-xs text-gray-400">Se admiten images, audios, videos y PDF</small>
 
                 {{-- Grid de iconos --}}
                 <template x-if="files.length > 0">
