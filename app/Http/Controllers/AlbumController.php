@@ -30,13 +30,14 @@ class AlbumController extends Controller
 
     protected function getAlbums(User $user)
     {
+        if(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
+            return $user->albums()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(30)->get();
+        } else
         if(auth()->check() && isfollower($user)) {  // Verificar si usuario autenticado es seguidor
             return $user->albums()
             ->whereIn('visibility', ['public', 'followers_only'])
-            ->latest()->take(30)->get();
-        }elseif(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
-            return $user->albums()
-            ->whereIn('visibility', ['public'])
             ->latest()->take(30)->get();
         } else {
             return $user->albums()
@@ -180,13 +181,14 @@ class AlbumController extends Controller
 
     protected function getMedias(User $user, Album $album)
     {
+        if(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
+            return $album->medias()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(30)->get();
+        } else
         if(auth()->check() && isfollower($user)) { // Verificar si usuario autenticado es seguidor
             return $album->medias()
             ->whereIn('visibility', ['public', 'followers_only'])
-            ->latest()->take(30)->get();
-        }elseif(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
-            return $album->medias()
-            ->whereIn('visibility', ['public'])
             ->latest()->take(30)->get();
         } else {
             return $album->medias()
