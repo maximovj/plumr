@@ -181,7 +181,34 @@ class AlbumController extends Controller
      */
     public function show(User $user, Album $album)
     {
+        $visibility = $album->visibility;
+
+        // Usuario NO autenticado → solo puede ver álbumes públicos
+        if (!auth()->check() && $visibility !== 'public') {
+            return redirect()
+                ->to('/')
+                ->with('app-error', 'Lo siento, este álbum no es público');
+        }
+
+        // Usuario autenticado que NO es dueño del álbum
+        if (auth()->check() && auth()->id() !== $user->id) {
+            // Álbum protegido solo para seguidores
+            if ($visibility === 'followers_only' && !isfollower($user)) {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, solo los seguidores pueden ver este álbum');
+            }
+
+            // Álbum privado → nadie más que el dueño puede verlo
+            if ($visibility === 'private') {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, este álbum es privado');
+            }
+        }
+
         $medias = $this->getMedias($user, $album);
+
         return view('plumr.account.albums.show', [
             'user' => $user,
             'album' => $album,
