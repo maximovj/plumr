@@ -88,27 +88,24 @@ Route::resource('{user:username}/medias', MediaController::class)
         'user' => 'username',
         'media' => 'slug',
     ])
-    ->middleware(['auth'])
     ->except(['show', 'create', 'edit']);
 
 Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
-    ->middleware(['auth', 'owner'])
     ->name('medias.create');
 
 Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
-    ->middleware(['auth', 'owner'])
     ->name('medias.edit');
 
 Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
     ->name('medias.show');
 
 // Rutas para publicaciones
+// TODO: Corregir las rutas y agregar ruta para ver, editar y crear
 Route::resource('/{user:username}/posts', PostController::class)
     ->scoped([
         'user' => 'username',
         'post' => 'url_access',
     ])
-    ->middleware(['auth'])
     ->except(['show']);
 
 // Ruta pública para mostrar un post
@@ -116,16 +113,15 @@ Route::get('/{user:username}/posts/{post:url_access}', [PostController::class, '
     ->name('posts.show');
 
 // Ruta para artículos
+// TODO: Corregir las rutas y agregar ruta para ver, editar y crear
 Route::resource('{user:username}/articles', ArticleController::class)
     ->scoped([
         'user' => 'username',
         'article' => 'slug',
     ])
-    ->middleware(['auth'])
     ->except(['show', 'create']);
 
 Route::get('{user:username}/articles/create', [ArticleController::class, 'create'])
-    ->middleware(['auth', 'owner'])
     ->name('articles.create');
 
 Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
@@ -137,15 +133,12 @@ Route::resource('{user:username}/albums', AlbumController::class)
         'user' => 'username',
         'album' => 'slug',
     ])
-    ->middleware(['auth'])
     ->except(['show', 'create', 'edit']);
 
 Route::get('{user:username}/albums/create', [AlbumController::class, 'create'])
-    ->middleware(['auth', 'owner'])
     ->name('albums.create');
 
 Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 'edit'])
-    ->middleware(['auth', 'owner'])
     ->name('albums.edit');
 
 Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])

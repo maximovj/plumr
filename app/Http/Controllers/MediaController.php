@@ -14,6 +14,16 @@ use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
+
+    public function __construct()
+    {
+        // Todos los métodos requieren auth excepto 'show'
+        $this->middleware('auth')->except(['show']);
+
+        // Solo el dueño puede crear o editar o eliminar
+        $this->middleware('owner')->only(['create', 'edit', 'store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
