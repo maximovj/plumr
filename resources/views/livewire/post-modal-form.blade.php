@@ -48,7 +48,7 @@
 
                     <!-- Título -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Título</label>
+                        <label class="block text-sm font-medium text-gray-700">Título (Requerido)</label>
                         <input type="text" wire:model="title" placeholder="Escribe un título"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 p-2">
                         @error('title') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
