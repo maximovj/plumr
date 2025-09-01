@@ -87,62 +87,28 @@ Route::resource('{user:username}/medias', MediaController::class)
     ->scoped([
         'user' => 'username',
         'media' => 'slug',
-    ])
-    ->except(['show', 'create', 'edit']);
-
-Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
-    ->name('medias.create');
-
-Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
-    ->name('medias.edit');
-
-Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
-    ->name('medias.show');
+    ]);
 
 // Rutas para publicaciones
-// TODO: Corregir las rutas y agregar ruta para ver, editar y crear
 Route::resource('/{user:username}/posts', PostController::class)
     ->scoped([
         'user' => 'username',
         'post' => 'url_access',
-    ])
-    ->except(['show']);
-
-// Ruta pública para mostrar un post
-Route::get('/{user:username}/posts/{post:url_access}', [PostController::class, 'show'])
-    ->name('posts.show');
+    ]);
 
 // Ruta para artículos
-// TODO: Corregir las rutas y agregar ruta para ver, editar y crear
 Route::resource('{user:username}/articles', ArticleController::class)
     ->scoped([
         'user' => 'username',
         'article' => 'slug',
-    ])
-    ->except(['show', 'create']);
-
-Route::get('{user:username}/articles/create', [ArticleController::class, 'create'])
-    ->name('articles.create');
-
-Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
-    ->name('articles.show');
+    ]);
 
 // Ruta para álbumes
 Route::resource('{user:username}/albums', AlbumController::class)
     ->scoped([
         'user' => 'username',
         'album' => 'slug',
-    ])
-    ->except(['show', 'create', 'edit']);
-
-Route::get('{user:username}/albums/create', [AlbumController::class, 'create'])
-    ->name('albums.create');
-
-Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 'edit'])
-    ->name('albums.edit');
-
-Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])
-    ->name('albums.show');
+    ]);
 
 // Rutas para editar perfil de usuario
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
