@@ -157,7 +157,7 @@
 
                         {{-- Audio --}}
                         <template x-if="previewFile && previewFile.type.startsWith('audio/')">
-                            <audio controls class="w-full">
+                            <audio controls autoplay loop>
                                 <source :src="URL.createObjectURL(previewFile)" :type="previewFile.type">
                             </audio>
                         </template>
