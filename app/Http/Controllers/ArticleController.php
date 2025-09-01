@@ -96,6 +96,17 @@ class ArticleController extends Controller
     public function show(User $user, Article $article)
     {
         //
+        if(auth()->check() == false && !$article->is_publish) {
+            return redirect()
+                ->to('/')
+                ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
+        }else
+        if(!$article->is_publish) {
+            return redirect()
+                ->to('/')
+                ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
+        }
+
         return view('plumr.account.articles.show', compact('user', 'article'));
     }
 
