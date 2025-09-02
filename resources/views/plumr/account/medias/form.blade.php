@@ -101,6 +101,19 @@
 
                         return null;
                     },
+                    // Getters de validación por tipo
+                    get isImage() {
+                        return this.file?.type?.startsWith('image/') || this.objectURL?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+                    },
+                    get isVideo() {
+                        return this.file?.type?.startsWith('video/') || this.objectURL?.match(/\.(mp4|webm|mov)$/i);
+                    },
+                    get isAudio() {
+                        return this.file?.type?.startsWith('audio/') || this.objectURL?.match(/\.(mp3|wav|ogg)$/i);
+                    },
+                    get isPDF() {
+                        return this.file?.type?.includes('pdf') || this.objectURL?.match(/\.pdf$/i);
+                    },
                 }"
             >
                 <label class="text-gray-700 mb-1 block">Seleccione un solo archivo</label>
@@ -184,26 +197,26 @@
                         </button>
 
                         {{-- Imagen --}}
-                        <template x-if="objectURL && (file?.type?.startsWith('image/') || objectURL.match(/\.(jpg|jpeg|png|gif|webp)$/i))">
+                        <template x-if="objectURL && isImage">
                             <img :src="objectURL" class="max-h-96 w-auto rounded" alt="">
                         </template>
 
                         {{-- Video --}}
-                        <template x-if="objectURL && (file?.type?.startsWith('video/') || objectURL.match(/\.(mp4|webm|mov)$/i))">
+                        <template x-if="objectURL && isVideo">
                             <video controls class="max-h-96 w-full rounded">
                                 <source :src="objectURL">
                             </video>
                         </template>
 
                         {{-- Audio --}}
-                        <template x-if="objectURL && (file?.type?.startsWith('audio/') || objectURL.match(/\.(mp3|wav|ogg)$/i))">
+                        <template x-if="objectURL && isAudio">
                             <audio controls autoplay loop>
                                 <source :src="objectURL">
                             </audio>
                         </template>
 
                         {{-- PDF --}}
-                        <template x-if="objectURL && (file?.type?.includes('pdf') || objectURL.match(/\.pdf$/i))">
+                        <template x-if="objectURL && isPDF">
                             <iframe :src="objectURL" class="w-full h-96"></iframe>
                         </template>
 
