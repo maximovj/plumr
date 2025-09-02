@@ -86,25 +86,47 @@
                 x-data="{
                     file: null,
                     previewFile: null,
-                    previewUrl: '{{ $action == 'edit' && $media->file_path ? asset('storage/' . $media->file_path) : '' }}'
+                    previewUrl: '{{ $action == 'edit' && $media->file_path ? asset('storage/' . $media->file_path) : '' }}',
+                    get objectURL() {
+                        // Caso: usuario aún no subió nada nuevo → usamos la URL que vino desde el servidor
+                        if (!this.file && this.previewUrl) {
+
+                            return this.previewUrl;
+                        }
+
+                        // Caso: usuario subió un archivo nuevo
+                        if (this.file) {
+                            return URL.createObjectURL(this.file);
+                        }
+
+                        return null;
+                    },
                 }"
             >
                 <label class="text-gray-700 mb-1 block">Seleccione un solo archivo</label>
-                <input type="file" name="media" id="media" accept="image/*,audio/*,video/*,.pdf"
+                <input
+                    type="file"
+                    name="media"
+                    id="media"
+                    accept="image/*,audio/*,video/*,.pdf"
                     @change="
                         file = $event.target.files[0];
-                        previewUrl = URL.createObjectURL(file);
+                        previewFile = objectURL; // guardamos la URL en previewFile para el modal
                     "
-                    class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm">
-                <small class="text-xs text-gray-400">Se admiten images, audios, videos y PDF</small>
+                    class="w-full p-3 rounded-lg bg-blue-50 border border-gray-300
+                        focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm"
+                >
+                <small class="text-xs text-gray-400">
+                    Se admiten imágenes, audios, videos y PDF
+                </small>
                 @error('media')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
 
                 {{-- Icono + nombre archivo (nuevo o existente) --}}
-                <template x-if="previewUrl">
+                <template x-if="objectURL">
                     <div class="mt-4 flex flex-col items-center text-xs text-gray-600 space-y-1 cursor-pointer"
-                        @click="previewFile = previewUrl">
+                        @click="previewFile = objectURL">
 
                         {{-- Iconos según tipo --}}
                         <template x-if="file && file.type.startsWith('image/')">
@@ -119,8 +141,9 @@
                         <template x-if="file && file.type.includes('pdf')">
                             <i class="bi bi-file-earmark-pdf text-4xl text-red-600"></i>
                         </template>
+
+                        {{-- Si no se subió uno nuevo → ícono segun extensión en servidor --}}
                         <template x-if="!file">
-                            {{-- Si no se subió uno nuevo → mostramos ícono genérico segun extensión --}}
                             @php
                                 $ext = pathinfo($media->file_path ?? '', PATHINFO_EXTENSION);
                             @endphp
@@ -137,43 +160,51 @@
                             @endif
                         </template>
 
-                        <span class="truncate w-20 text-center" x-text="file ? file.name : '{{ basename($media->file_path ?? '') }}'"></span>
+                        <span class="truncate w-20 text-center"
+                            x-text="file ? file.name : '{{ basename($media->file_path ?? '') }}'">
+                        </span>
                     </div>
                 </template>
 
                 {{-- Modal Preview --}}
-                <div x-cloak x-show="previewFile" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                    x-transition.opacity>
-                    <div class="bg-white rounded-lg shadow-lg p-4 max-w-lg max-h-screen relative">
+                <div
+                    x-cloak
+                    x-show="previewFile"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                    x-transition.opacity
+                >
+                    <div class="bg-white rounded-lg shadow-lg p-4 max-w-lg max-h-screen">
 
                         {{-- Botón cerrar --}}
-                        <button type="button" @click="previewFile = null"
-                                class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow hover:bg-gray-100 transition duration-200">
+                        <button type="button"
+                                @click="previewFile = null"
+                                class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center bg-white
+                                    rounded-full shadow hover:bg-gray-100 transition duration-200">
                             <i class="bi bi-x-lg text-2xl text-gray-700"></i>
                         </button>
 
                         {{-- Imagen --}}
-                        <template x-if="previewFile && previewFile.match(/\.(jpg|jpeg|png|gif|webp)$/i)">
-                            <img :src="previewFile" class="max-h-96 w-auto rounded" alt="">
+                        <template x-if="objectURL && (file?.type?.startsWith('image/') || objectURL.match(/\.(jpg|jpeg|png|gif|webp)$/i))">
+                            <img :src="objectURL" class="max-h-96 w-auto rounded" alt="">
                         </template>
 
                         {{-- Video --}}
-                        <template x-if="previewFile && previewFile.match(/\.(mp4|webm|mov)$/i)">
+                        <template x-if="objectURL && (file?.type?.startsWith('video/') || objectURL.match(/\.(mp4|webm|mov)$/i))">
                             <video controls class="max-h-96 w-full rounded">
-                                <source :src="previewFile">
+                                <source :src="objectURL">
                             </video>
                         </template>
 
                         {{-- Audio --}}
-                        <template x-if="previewFile && previewFile.match(/\.(mp3|wav|ogg)$/i)">
-                            <audio controls class="w-full">
-                                <source :src="previewFile">
+                        <template x-if="objectURL && (file?.type?.startsWith('audio/') || objectURL.match(/\.(mp3|wav|ogg)$/i))">
+                            <audio controls autoplay loop>
+                                <source :src="objectURL">
                             </audio>
                         </template>
 
                         {{-- PDF --}}
-                        <template x-if="previewFile && previewFile.match(/\.pdf$/i)">
-                            <iframe :src="previewFile" class="w-full h-96"></iframe>
+                        <template x-if="objectURL && (file?.type?.includes('pdf') || objectURL.match(/\.pdf$/i))">
+                            <iframe :src="objectURL" class="w-full h-96"></iframe>
                         </template>
 
                     </div>
