@@ -13,7 +13,7 @@
                 </div>
 
                 @owner($user)
-                <a href="{{ route('albums.create', $user) }}" class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite">
+                <a href="{{ route('albums.create', $user) }}" class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite animate__slow">
                     + Crear album
                 </a>
                 @endowner
@@ -96,6 +96,7 @@
                     </div>
 
                     <!-- Tipo de visibilidad -->
+                    @owner($user)
                     <div
                     x-show="hover"
                     class="absolute flex top-2 left-4 animate__animated animate__fadeIn ">
@@ -112,6 +113,7 @@
                                 {{ $album->visibility == 'followers_only' ? 'Protegido' : '' }}
                             </span>
                     </div>
+                    @endowner
                 </div>
 
                 <!-- Contenido principal -->

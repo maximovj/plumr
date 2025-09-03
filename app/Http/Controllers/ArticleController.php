@@ -14,6 +14,16 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        // Todos los métodos requieren auth excepto 'show'
+        $this->middleware('auth')->except(['show']);
+
+        // Solo el dueño puede crear o editar o eliminar
+        $this->middleware('owner')->only(['create', 'edit', 'store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,9 +33,9 @@ class ArticleController extends Controller
     {
         //
         if($user->id == auth()->user()->id) {
-            $articles = $user->articles()->latest('updated_at')->take(10)->get();
+            $articles = $user->articles()->latest('updated_at')->take(30)->get();
         }else {
-            $articles = $user->articles()->where('is_publish', true)->latest('published_at')->take(10)->get();
+            $articles = $user->articles()->where('is_publish', true)->latest('published_at')->take(30)->get();
         }
 
         return view('plumr.account.articles.index', [
@@ -96,6 +106,25 @@ class ArticleController extends Controller
     public function show(User $user, Article $article)
     {
         //
+        $is_publish = $article->is_publish;
+
+        // Usuario NO autenticado → solo puede ver artículos públicos
+        if (!auth()->check() && !$is_publish) {
+            return redirect()
+                ->to('/')
+                ->with('app-error', 'Lo siento, este artículo no es público');
+        }
+
+        // Usuario autenticado que NO es dueño del artículo
+        if (auth()->check() && auth()->id() !== $user->id) {
+            // Artículo privado → nadie más que el dueño puede verlo
+            if (!$is_publish) {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, el autor de este artículo lo tiene en privado');
+            }
+        }
+
         return view('plumr.account.articles.show', compact('user', 'article'));
     }
 

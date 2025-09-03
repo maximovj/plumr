@@ -13,6 +13,15 @@ use App\Models\UserPost;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        // Todos los métodos requieren auth excepto 'show'
+        $this->middleware('auth')->except(['show']);
+
+        // Solo el dueño puede crear o editar o eliminar
+        $this->middleware('owner')->only(['create', 'edit', 'store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,9 +30,9 @@ class PostController extends Controller
     public function index(User $user)
     {
         if($user->id == auth()->user()->id) {
-            $posts = $user->posts()->with('author.profile')->latest('updated_at')->take(10)->get();
+            $posts = $user->posts()->with('author.profile')->latest('updated_at')->take(30)->get();
         }else {
-            $posts = $user->posts()->with('author.profile')->take(10)->get();
+            $posts = $user->posts()->with('author.profile')->take(30)->get();
         }
 
         return view("plumr.account.posts.index", [

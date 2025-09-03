@@ -38,13 +38,13 @@
                 @enderror
             </div>
 
-            {{-- <div class="flex items-center justify-between text-sm text-gray-600">
+            <div class="flex items-center justify-between text-sm text-gray-600">
                 <label class="flex items-center gap-2">
                     <input type="checkbox" name="remember" class="rounded border-gray-300">
                     Recuerdame
                 </label>
-                <a href="{{ route('password.request') }}" class="hover:underline text-indigo-600">¿Olvidaste tu contraseña?</a>
-            </div> --}}
+                <a href="#" class="hover:underline text-indigo-600">¿Olvidaste tu contraseña?</a>
+            </div>
 
             <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow transition">
                 Iniciar sesión

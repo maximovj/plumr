@@ -18,46 +18,50 @@ use App\Http\Controllers\PostController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
+// Página principal
 Route::get('/', HomeController::class)->name('home');
+Route::redirect('/home', '/');
 
 // Rutas para login
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'store'])->name('auth.login');
-Route::post('/logout', [LoginController::class, 'destroy'])->name('auth.logout');
-
-// Login para registro
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.attempt');
-
-Route::get('/recover-password', function () {
-    return "Recuperar Cuenta (FrontEnd).";
-})->name('recover-password.index');
-
-Route::get('/recover-account', function () {
-    return "Recuperar Cuenta (BackEnd)";
-})->name('recover-account.index');
-
-Route::get('/authorization-account', function () {
-    return "Autorizar operación (FrontEnd).";
-})->name('authorization-account.index');
-
-Route::get('/authorization-account', function () {
-    return "Autorizar operación (BackEnd).";
-})->name('authorization-account.index');
-
-// Rutas para la cuenta del usuario
-Route::get('/{user:username}', [MainAccountController::class, 'index'])
+Route::get('/login', [LoginController::class, 'index'])
+    ->middleware(['guest'])
+    ->name('login');
+Route::post('/login', [LoginController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('auth.login');
+Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware(['auth'])
-    ->name('main_account');
+    ->name('auth.logout');
 
-// Rutas para editar cuenta de usuario
+// Rutas para registro
+Route::get('/register', [RegisterController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('register');
+Route::post('/register', [RegisterController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('register.attempt');
+
+// Recuperación de cuenta
+Route::get('/recover-password', fn () => "Recuperar Cuenta (FrontEnd).")
+    ->name('recover-password.index');
+
+Route::get('/recover-account', fn () => "Recuperar Cuenta (BackEnd)")
+    ->name('recover-account.index');
+
+// Autorizaciones
+Route::get('/authorization-account', fn () => "Autorizar operación (FrontEnd).")
+    ->name('authorization-account.index');
+
+Route::get('/authorization-account', fn () => "Autorizar operación (BackEnd).")
+    ->name('authorization-account.index');
+
+// ----------------------------
+// Rutas relacionadas a usuarios
+// ----------------------------
+
+// Cuenta de usuario (editar)
 Route::get('/{user:username}/account', [AccountController::class, 'edit'])
     ->middleware(['auth', 'owner'])
     ->name('account.edit');
@@ -74,6 +78,7 @@ Route::get('/{user:username}/edit/cover', [AccountController::class, 'edit_cover
     ->middleware(['auth', 'owner'])
     ->name('account.edit_cover');
 
+// Seguidores y seguidos
 Route::get('/{user:username}/followers', FollowersController::class)
     ->middleware(['auth'])
     ->name('account.followers');
@@ -82,76 +87,35 @@ Route::get('/{user:username}/followings', FollowingsController::class)
     ->middleware(['auth'])
     ->name('account.followings');
 
-// Rutas para publicaciones
-Route::resource('/{user:username}/posts', PostController::class)
-    ->scoped([
-        'user' => 'username',
-        'post' => 'url_access',
-    ])
-    ->middleware(['auth'])
-    ->except(['show']);
-
-// Ruta pública para mostrar un post
-Route::get('/{user:username}/posts/{post:url_access}', [PostController::class, 'show'])
-    ->name('posts.show');
-
-// Ruta para artículos
-Route::resource('{user:username}/articles', ArticleController::class)
-    ->scoped([
-        'user' => 'username',
-        'article' => 'slug',
-    ])
-    ->middleware(['auth'])
-    ->except(['show', 'create']);
-
-Route::get('{user:username}/articles/create', [ArticleController::class, 'create'])
-    ->middleware(['auth', 'owner'])
-    ->name('articles.create');
-
-Route::get('{user:username}/articles/{article:slug}', [ArticleController::class, 'show'])
-    ->name('articles.show');
-
-// Ruta para álbumes
-Route::resource('{user:username}/albums', AlbumController::class)
-    ->scoped([
-        'user' => 'username',
-        'album' => 'slug',
-    ])
-    ->middleware(['auth'])
-    ->except(['show', 'create', 'edit']);
-
-Route::get('{user:username}/albums/create', [AlbumController::class, 'create'])
-    ->middleware(['auth', 'owner'])
-    ->name('albums.create');
-
-Route::get('{user:username}/albums/{album:slug}/edit', [AlbumController::class, 'edit'])
-    ->middleware(['auth', 'owner'])
-    ->name('albums.edit');
-
-Route::get('{user:username}/albums/{album:slug}', [AlbumController::class, 'show'])
-    ->name('albums.show');
-
-// Ruta para multimedias (medias)
+// Medias
 Route::resource('{user:username}/medias', MediaController::class)
     ->scoped([
         'user' => 'username',
         'media' => 'slug',
-    ])
-    ->middleware(['auth'])
-    ->except(['show', 'create', 'edit']);
+    ]);
 
-Route::get('{user:username}/medias/create', [MediaController::class, 'create'])
-    ->middleware(['auth', 'owner'])
-    ->name('medias.create');
+// Posts
+Route::resource('{user:username}/posts', PostController::class)
+    ->scoped([
+        'user' => 'username',
+        'post' => 'url_access',
+    ]);
 
-Route::get('{user:username}/medias/{media:slug}/edit', [MediaController::class, 'edit'])
-    ->middleware(['auth', 'owner'])
-    ->name('medias.edit');
+// Articles
+Route::resource('{user:username}/articles', ArticleController::class)
+    ->scoped([
+        'user' => 'username',
+        'article' => 'slug',
+    ]);
 
-Route::get('{user:username}/medias/{media:slug}', [MediaController::class, 'show'])
-    ->name('medias.show');
+// Albums
+Route::resource('{user:username}/albums', AlbumController::class)
+    ->scoped([
+        'user' => 'username',
+        'album' => 'slug',
+    ]);
 
-// Rutas para editar perfil de usuario
+// Perfil
 Route::get('/{user:username}/profile', [ProfileController::class, 'edit'])
     ->middleware(['auth', 'owner'])
     ->name('profile.edit');
@@ -160,3 +124,9 @@ Route::post('/{user:username}/profile', [ProfileController::class, 'update'])
     ->middleware(['auth', 'owner'])
     ->name('profile.update');
 
+// ----------------------------
+// Ruta genérica al final
+// ----------------------------
+Route::get('/{user:username}', [MainAccountController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('main_account');

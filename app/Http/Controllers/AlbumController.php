@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Storage;
 
 class AlbumController extends Controller
 {
+
+    public function __construct()
+    {
+        // Todos los métodos requieren auth excepto 'show'
+        $this->middleware('auth')->except(['show']);
+
+        // Solo el dueño puede crear o editar o eliminar
+        $this->middleware('owner')->only(['create', 'edit', 'store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,17 +40,18 @@ class AlbumController extends Controller
 
     protected function getAlbums(User $user)
     {
-         if(isfollower($user)) { // Verificar si usuario autenticado es seguidor
-            return $user->albums()
-            ->whereIn('visibility', ['public', 'followers_only'])
-            ->latest()->take(10)->get();
-        }elseif(auth()->user()->id !== $user->id) { // Verificar si usuario no es el mismo autenticado
+        if(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
             return $user->albums()
             ->whereIn('visibility', ['public'])
-            ->latest()->take(10)->get();
+            ->latest()->take(30)->get();
+        } else
+        if(auth()->check() && isfollower($user)) {  // Verificar si usuario autenticado es seguidor
+            return $user->albums()
+            ->whereIn('visibility', ['public', 'followers_only'])
+            ->latest()->take(30)->get();
         } else {
             return $user->albums()
-            ->latest('updated_at')->take(10)->get();
+            ->latest('updated_at')->take(30)->get();
         }
     }
 
@@ -170,12 +181,56 @@ class AlbumController extends Controller
      */
     public function show(User $user, Album $album)
     {
+        $visibility = $album->visibility;
+
+        // Usuario NO autenticado → solo puede ver álbumes públicos
+        if (!auth()->check() && $visibility !== 'public') {
+            return redirect()
+                ->to('/')
+                ->with('app-error', 'Lo siento, este álbum no es público');
+        }
+
+        // Usuario autenticado que NO es dueño del álbum
+        if (auth()->check() && auth()->id() !== $user->id) {
+            // Álbum protegido solo para seguidores
+            if ($visibility === 'followers_only' && !isfollower($user)) {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, solo los seguidores pueden ver este álbum');
+            }
+
+            // Álbum privado → nadie más que el dueño puede verlo
+            if ($visibility === 'private') {
+                return redirect()
+                    ->to('/')
+                    ->with('app-error', 'Lo siento, este álbum es privado');
+            }
+        }
+
+        $medias = $this->getMedias($user, $album);
+
         return view('plumr.account.albums.show', [
             'user' => $user,
             'album' => $album,
-            'route' => route('albums.update', [$user, $album]),
-            'action' => 'edit',
+            'medias' => $medias,
         ]);
+    }
+
+    protected function getMedias(User $user, Album $album)
+    {
+        if(!auth()->check()) { // Verificar si usuario no es el mismo autenticado
+            return $album->medias()
+            ->whereIn('visibility', ['public'])
+            ->latest()->take(30)->get();
+        } else
+        if(auth()->check() && isfollower($user)) { // Verificar si usuario autenticado es seguidor
+            return $album->medias()
+            ->whereIn('visibility', ['public', 'followers_only'])
+            ->latest()->take(30)->get();
+        } else {
+            return $album->medias()
+            ->latest('updated_at')->take(30)->get();
+        }
     }
 
     /**
@@ -234,7 +289,7 @@ class AlbumController extends Controller
         }
 
         if ($request->hasFile('media')) {
-            $counter = $user->albums->map->media->flatten()->count();
+            $counter = $user->albums->map->medias->flatten()->count();
             foreach ($request->file('media') as $file) {
                 $counter++;
                 $slug = Str::slug('media-'.$counter.'-'.now()->format('d-m-Y H:m:s'));

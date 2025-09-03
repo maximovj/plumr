@@ -12,8 +12,8 @@ class PostModalForm extends Component
     public $showModal = false;
     public $mode = 'create'; // create | edit
     public $postId = null;
-    public $title = 'x';
-    public $content = 'Pero este no cambia para nada';
+    public $title = '';
+    public $content = '';
     public $status = [];
     public $tags = [];
     public $links = [];

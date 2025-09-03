@@ -11,12 +11,12 @@
                     <strong>{{ $medias->count() }}</strong> multimedias
                 </div>
 
-                {{-- @owner($user)
+                @owner($user)
                     <a href="{{ route('medias.create', $user) }}"
-                        class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite">
+                        class="text-green-600 font-semibold hover:underline text-sm animate__animated animate__pulse animate__infinite animate__slow">
                         + Agregar multimedia
                     </a>
-                @endowner --}}
+                @endowner
             </div>
 
             <div>
