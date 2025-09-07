@@ -24,6 +24,21 @@ Este conjunto de tecnologías y características para este sitio web:
   - tailwindcss v2.2.19
   - alpinejs v2.8.2
 
+# Funcionalidades
+
+- Sistema de Login
+- Sistema de Registro
+- Modificar y Eliminar cuenta de usuario
+- Modificar y Eliminar cuenta de perfil
+- Modificar portada
+- Modificar foto de perfil
+- Sistema de seguidores
+- Sistema de seguidos
+- CRUD para Multimedias (imagen, audio, video y pdf)
+- CRUD para Álbumes de multimedia
+- CRUD para Artículos
+- CRUD para publicaciones
+
 # Vista Previas
 
 ![preview_01.jpg](/screenshots/preview_01.jpg)
