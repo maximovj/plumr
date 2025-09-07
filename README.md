@@ -1,8 +1,19 @@
 # Plumr
 
-Este un proyecto de Laravel 8.x y PHP 7.4.33 es una red social para blogger
+Este un proyecto de Laravel 8.x y PHP 7.4.33 es una red social para publicar artículos, hacer artículos, crear publicaciones
 
-Requisitos
+Este conjunto de tecnologías y características para este sitio web:
+
+Proyecto dockerizado. (*)
+Proyecto vagratizado. (*)
+Estilos de Tailwind CSS
+Componentes de Laravel Blade
+Componentes de Laravel Livewire
+Iconos de Bootstrap v5
+Alpine Js
+LiveWire
+
+# Requisitos
 - PHP v7.4.33
 - MySQL v5.2
 - Composer v2.4.1
@@ -12,3 +23,17 @@ Requisitos
   - npm v9.6.2 
   - tailwindcss v2.2.19
   - alpinejs v2.8.2
+
+# Vista Previas
+
+![preview_01.jpg](/screenshots/preview_01.jpg)
+
+![preview_02.jpg](/screenshots/preview_02.jpg)
+
+![preview_03.jpg](/screenshots/preview_03.jpg)
+
+![preview_04.jpg](/screenshots/preview_04.jpg)
+
+![preview_05.jpg](/screenshots/preview_05.jpg)
+
+![preview_06.jpg](/screenshots/preview_06.jpg)
