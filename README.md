@@ -4,14 +4,14 @@ Este un proyecto de Laravel 8.x y PHP 7.4.33 es una red social para publicar art
 
 Este conjunto de tecnologías y características para este sitio web:
 
-Proyecto dockerizado. (*)
-Proyecto vagratizado. (*)
-Estilos de Tailwind CSS
-Componentes de Laravel Blade
-Componentes de Laravel Livewire
-Iconos de Bootstrap v5
-Alpine Js
-LiveWire
+- Proyecto dockerizado. (*)
+- Proyecto vagratizado. (*)
+- Estilos de Tailwind CSS
+- Componentes de Laravel Blade
+- Componentes de Laravel Livewire
+- Iconos de Bootstrap v5
+- Alpine Js
+- LiveWire
 
 # Requisitos
 - PHP v7.4.33
