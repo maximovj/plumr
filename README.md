@@ -38,6 +38,7 @@ Este conjunto de tecnologías y características para este sitio web:
 - CRUD para Álbumes de multimedia
 - CRUD para Artículos
 - CRUD para publicaciones
+- LightBox para ver/reproducir multimedias
 
 # Vista Previas
 
