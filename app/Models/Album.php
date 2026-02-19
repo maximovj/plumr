@@ -25,13 +25,11 @@ class Album extends Model
 
     public function getCoverUrlAttribute()
     {
-        $cover_default = 'albums/cover/cover_default.png';
-        $exists = Storage::disk('public')->exists($this->cover);
-        if ($this->cover && $exists) {
-            return asset('storage/'.$this->cover); // portada desde /storage
+        if ($this->cover && Storage::disk('public')->exists($this->cover)) {
+            return asset('storage/' . $this->cover);
         }
 
-        return asset('storage/'.$cover_default); // portada por defecto
+        return asset('img/albums/cover/cover_default.png');
     }
 
     public function user()

@@ -35,13 +35,14 @@ class Media extends Model
 
     public function getFilePathUrlAttribute()
     {
-        $cover_default = 'media/media_default.png';
-        $exists = Storage::disk('public')->exists($this->file_path);
-        if ($this->file_path && $exists) {
-            return asset('storage/'.$this->file_path); // archivo desde /storage
+        // Archivo por defecto si no existe
+        $default_file = 'img/media/media_default.png';
+
+        if ($this->file_path && Storage::disk('public')->exists($this->file_path)) {
+            return asset('storage/' . $this->file_path); // archivo real desde /storage
         }
 
-        return asset('storage/'.$cover_default); // archivo por defecto
+        return asset($default_file); // archivo por defecto
     }
 
     // Ruta amigable

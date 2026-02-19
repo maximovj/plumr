@@ -58,13 +58,11 @@ class Article extends Model
 
     public function getCoverUrlAttribute()
     {
-        $cover_default = 'articles/cover/cover-default.jpg';
-        $exists = Storage::disk('public')->exists($this->cover);
-        if ($this->cover && $exists) {
-            return asset('storage/'.$this->cover); // portada desde /storage
+        if ($this->cover && Storage::disk('public')->exists($this->cover)) {
+            return asset('storage/' . $this->cover);
         }
 
-        return asset('storage/'.$cover_default); // portada por defecto
+        return asset('img/articles/cover/cover-default.jpg');
     }
 
     public function getTagsStrAttribute()

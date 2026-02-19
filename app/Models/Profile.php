@@ -47,26 +47,24 @@ class Profile extends Model
 
     public function getPhotoUrlAttribute()
     {
-        $photo_default = 'users/profiles/photo/user_default.png';
-        $photo = $this->photo;
-        $exists = Storage::disk('public')->exists($photo);
-        if ($photo && $exists) {
-            return asset('storage/'.$photo); // portada desde /storage
+        $photoDefault = 'img/users/profiles/photo/user_default.png';
+
+        if ($this->photo && Storage::disk('public')->exists($this->photo)) {
+            return asset('storage/' . $this->photo);
         }
 
-        return asset('storage/'.$photo_default); // portada por defecto
+        return asset($photoDefault);
     }
 
     public function getCoverUrlAttribute()
     {
-        $photo_default = 'users/profiles/cover/cover_default.jpg';
-        $cover = $this->cover;
-        $exists = Storage::disk('public')->exists($cover);
-        if ($cover && $exists) {
-            return asset('storage/'.$cover); // portada desde /storage
+        $coverDefault = 'img/users/profiles/cover/cover_default.jpg';
+
+        if ($this->cover && Storage::disk('public')->exists($this->cover)) {
+            return asset('storage/' . $this->cover);
         }
 
-        return asset('storage/'.$photo_default); // portada por defecto
+        return asset($coverDefault);
     }
 
 }
