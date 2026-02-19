@@ -29,7 +29,7 @@
                     </video>
                 @elseif(Str::endsWith($media->file_path_url, ['.mp3', '.wav', '.ogg']))
                     <div style="
-                            background-image: url('{{ asset('storage/media/default_audio.png') }}');
+                            background-image: url('{{ file_path_url('img/media/default_audio.png') }}');
                             background-position: top;
                             background-size: 100% 100%;
                             background-repeat: no-repeat;"
@@ -40,7 +40,7 @@
                     </div>
                 @elseif(Str::endsWith($media->file_path_url, ['.pdf']))
                     <div style="
-                            background-image: url('{{ asset('storage/media/default_pdf.png') }}');
+                            background-image: url('{{ file_path_url('img/media/default_pdf.png') }}');
                             background-position: top;
                             background-size: 100% 100%;
                             background-repeat: no-repeat;"

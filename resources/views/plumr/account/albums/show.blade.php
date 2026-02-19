@@ -5,11 +5,7 @@
     <div class="mx-auto max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Portada grande -->
         @if($album->cover_url)
-            <div class="h-72 w-full overflow-hidden">
-                <img src="{{ $album->cover_url }}"
-                     alt="Portada del álbum"
-                     class="w-full h-full object-cover">
-            </div>
+            <div class="album-cover h-72 w-full"></div>
         @endif
 
         <!-- Info básica -->
@@ -101,4 +97,17 @@
 
     </div>
 </x-main>
+
+<style>
+    .album-cover {
+        background-image: url('{{ $album->cover_url }}');
+        background-size: cover;
+        background-position: top left;
+        background-repeat: no-repeat;
+        image-rendering: auto; /* suaviza imagen escalada */
+
+        /* filtros para suavizar pixelado */
+        filter: blur(0.5px) contrast(1.05) saturate(1.1);
+    }
+</style>
 @endsection

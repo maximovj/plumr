@@ -50,7 +50,7 @@
                 @if($account->profile->cover)
                     <div class="h-full w-full bg-top bg-contain bg-no-repeat" style="background-image: url('{{ asset($account->profile->cover_url) }}')"></div>
                 @else
-                    <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ asset('img/fondo.jpg') }}')"></div>
+                    <div class="h-full w-full bg-center bg-cover" style="background-image: url('{{ file_path_url('img/fondo.jpg') }}')"></div>
                 @endif
 
                 <!-- Foto de usuario -->

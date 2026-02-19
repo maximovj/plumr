@@ -29,7 +29,7 @@ class Album extends Model
             return asset('storage/' . $this->cover);
         }
 
-        return asset('img/albums/cover/cover_default.png');
+        return asset('img/albums/cover/album_cover_default.jpg');
     }
 
     public function user()

@@ -62,7 +62,7 @@ class Article extends Model
             return asset('storage/' . $this->cover);
         }
 
-        return asset('img/articles/cover/cover-default.jpg');
+        return asset('img/articles/cover/article_cover_default.jpg');
     }
 
     public function getTagsStrAttribute()

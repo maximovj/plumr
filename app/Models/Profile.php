@@ -47,7 +47,7 @@ class Profile extends Model
 
     public function getPhotoUrlAttribute()
     {
-        $photoDefault = 'img/users/profiles/photo/user_default.png';
+        $photoDefault = 'img/users/profiles/photo/user_photo_default.png';
 
         if ($this->photo && Storage::disk('public')->exists($this->photo)) {
             return asset('storage/' . $this->photo);
@@ -58,7 +58,7 @@ class Profile extends Model
 
     public function getCoverUrlAttribute()
     {
-        $coverDefault = 'img/users/profiles/cover/cover_default.jpg';
+        $coverDefault = 'img/users/profiles/cover/user_cover_default.jpg';
 
         if ($this->cover && Storage::disk('public')->exists($this->cover)) {
             return asset('storage/' . $this->cover);
