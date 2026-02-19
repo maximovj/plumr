@@ -20,6 +20,14 @@ class EnsureUserIsOwner
         // Obtener el usuario de la ruta
         $routeUser = $request->route('user');
 
+        if (!$routeUser instanceof \App\Models\User) {
+            $routeUser = \App\Models\User::where('username', $routeUser)->first();
+        }
+
+        if (!$routeUser) {
+            abort(404);
+        }
+
         // Verificar si hay un usuario autenticado
         if (!Auth::check()) {
             // Redirigir al login si no está autenticado
