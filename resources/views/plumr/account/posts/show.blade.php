@@ -231,20 +231,7 @@
             <aside class="space-y-6">
                 <div class="bg-white rounded-xl shadow p-6">
                     <h3 class="font-bold text-gray-800 mb-4">Compartir publicación</h3>
-                    <div x-data="shareButtons()" class="flex flex-col gap-3">
-                        <button @click="shareFacebook()" class="bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700">
-                            <i class="bi bi-facebook"></i> Facebook
-                        </button>
-                        <button @click="shareTwitter()" class="bg-gray-800 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-900">
-                            <i class="bi bi-twitter"></i> Twitter / X
-                        </button>
-                        <button @click="shareWhatsapp()" class="bg-green-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-green-600">
-                            <i class="bi bi-whatsapp"></i> WhatsApp
-                        </button>
-                        <button @click="shareLinkedin()" class="bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-800">
-                            <i class="bi bi-linkedin"></i> LinkedIn
-                        </button>
-                    </div>
+                    <x-share-buttons :url="url()->current()"></x-share-buttons>
                 </div>
             </aside>
         </section>
